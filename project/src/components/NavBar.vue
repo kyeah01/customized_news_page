@@ -13,30 +13,33 @@
     </v-toolbar-items>
   </v-toolbar>
 
-  <v-navigation-drawer app v-model="drawer" class="gray lighten-2">
-    <v-toolbar>
-      <v-list>
-        <v-list-tile>
-          <v-list-tile-title class="title">Menu</v-list-tile-title>
-        </v-list-tile>
-      </v-list>
-    </v-toolbar>
-
-    <v-divider></v-divider>
-
+  <v-navigation-drawer app v-model="drawer">
     <v-list>
-      <v-list-tile
-        v-for="item in items"
-        :key="item.title"
-        @click="item.routerTo">
+      <v-list-tile>
         <v-list-tile-action>
-
+          <v-icon>home</v-icon>
         </v-list-tile-action>
-        <v-list-tile-content>
-          <v-list-tile-title>{{item.title}}</v-list-tile-title>
-        </v-list-tile-content>
+        <v-list-tile-title>Home</v-list-tile-title>
       </v-list-tile>
+
+      <v-list-group>
+        <template v-slot:activator>
+          <v-list-tile>
+            <v-list-tile-title>Users</v-list-tile-title>
+          </v-list-tile>
+        </template>
+
+        <script>
+        export default {
+        }
+        </script>
+
+        <style lang="css" scoped>
+        </style>
+
+      </v-list-group>
     </v-list>
+
   </v-navigation-drawer>
   </nav>
 </template>
@@ -48,11 +51,14 @@ export default {
       drawer: false,
       items: [{
           title: 'Home',
-          icon: 'dashboard'
+          icon: 'dashboard',
+          routerTo:this.goto('')
         },
         {
-          title: 'About',
-          icon: 'question_answer'
+          title: 'Test Space',
+          icon: 'question_answer',
+          routerTo:this.goto('test')
+
         }
       ]
     }
