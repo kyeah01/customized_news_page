@@ -1,11 +1,21 @@
-### JupyterNotebooks ###
-# gitignore template for Jupyter Notebooks
-# website: http://jupyter.org/
+.DS_Store
+node_modules
+/dist
 
-.ipynb_checkpoints
-*/.ipynb_checkpoints/*
+# local env files
+.env.local
+.env.*.local
 
-# Remove previous ipynb_checkpoints
-#   git rm -r .ipynb_checkpoints/
-#
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
