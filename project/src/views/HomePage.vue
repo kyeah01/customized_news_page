@@ -1,6 +1,5 @@
 <template lang="html">
 
-  
   <v-container>
 
     <!-- title -->
@@ -23,7 +22,11 @@
     </v-layout>
 
   </v-container>
+
 </template>
+
+
+
 
 <script>
 export default {
