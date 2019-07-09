@@ -1,11 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import HomePage from './views/HomePage.vue'
-import LoginPage from './views/LoginPage.vue'
-import testPage from './views/testPage.vue'
-
-
 Vue.use(Router)
 
 export default new Router({
@@ -15,17 +10,27 @@ export default new Router({
 		{
 			path: '/',
 			name: 'home',
-			component: HomePage
+			component: ()=> import( './views/HomePage.vue' )
 		},
 		{
-			path: '/login',
-			name: 'login',
-			component: LoginPage
+			path: '/mypage',
+			name: 'mypage',
+      component: ()=> import( './views/mypage.vue' )
 		},
-		{
-			path: '/test',
-			name: 'test',
-			component: testPage
-		}
+    {
+      path: '/admin',
+      name: 'admin',
+      component: ()=> import( './views/adminPage.vue' )
+    },
+    {
+      path: '/article',
+      name: 'article',
+      component: ()=> import( './views/articlePage.vue' )
+    },
+    {
+      path: '/test',
+      name: 'test',
+      component: ()=> import( './views/testPage.vue' )
+    }
   ]
 })
