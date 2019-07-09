@@ -4,7 +4,7 @@
     <v-toolbar-side-icon
     @click.stop="drawer = !drawer"
     ></v-toolbar-side-icon>
-    <v-toolbar-title>Title</v-toolbar-title>
+    <v-toolbar-title>Menu</v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items class="hidden-sm-and-down">
       <v-btn flat>Link One</v-btn>
@@ -14,31 +14,34 @@
   </v-toolbar>
 
   <v-navigation-drawer app v-model="drawer">
-    <v-list>
-      <v-list-tile>
-        <v-list-tile-action>
-          <v-icon>home</v-icon>
-        </v-list-tile-action>
-        <v-list-tile-title>Home</v-list-tile-title>
-      </v-list-tile>
+    <v-toolbar flat>
+      <v-list>
+        <v-list-tile>
+          <v-list-tile-title class="title">
+            Application
+          </v-list-tile-title>
+        </v-list-tile>
+      </v-list>
+    </v-toolbar>
 
-      <v-list-group>
-        <template v-slot:activator>
-          <v-list-tile>
-            <v-list-tile-title>Users</v-list-tile-title>
-          </v-list-tile>
-        </template>
+    <v-divider></v-divider>
 
-        <script>
-        export default {
-        }
-        </script>
+    <v-list dense class="pt-0">
+     <v-list-tile
+       v-for="item in items"
+       :key="item.title"
+       @click="goto('/'+item.routerTo)"
+     >
+       <v-list-tile-action>
+         <v-icon>{{ item.icon }}</v-icon>
+       </v-list-tile-action>
 
-        <style lang="css" scoped>
-        </style>
+       <v-list-tile-content>
+         <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+       </v-list-tile-content>
+     </v-list-tile>
+   </v-list>
 
-      </v-list-group>
-    </v-list>
 
   </v-navigation-drawer>
   </nav>
@@ -52,19 +55,31 @@ export default {
       items: [{
           title: 'Home',
           icon: 'dashboard',
-          routerTo:this.goto('')
+          routerTo: ''
+        },
+        {
+          title: 'mypage',
+          icon: 'question_answer',
+          routerTo: 'mypage'
+
+        },
+        {
+          title: 'admin',
+          icon: 'question_answer',
+          routerTo: this.goto('test')
+
         },
         {
           title: 'Test Space',
           icon: 'question_answer',
-          routerTo:this.goto('test')
+          routerTo: this.goto('test')
 
         }
       ]
     }
   },
-  methods:{
-    goto: function(addr){
+  methods: {
+    goto: function(addr) {
       this.$router.push('/' + addr)
     }
   }
