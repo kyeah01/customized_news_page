@@ -17,6 +17,7 @@ export default new Router({
 			name: 'mypage',
       component: ()=> import( './views/mypage.vue' )
 		},
+
     {
       path: '/admin',
       name: 'admin',
@@ -31,6 +32,12 @@ export default new Router({
       path: '/test',
       name: 'test',
       component: ()=> import( './views/testPage.vue' )
-    }
+	},
+	{
+		path: '/admin',
+		name: 'admin',
+		component: ()=> import( './views/adminPage.vue' )
+	}
+
   ]
 })

@@ -1,5 +1,6 @@
 .DS_Store
 /dist
+testPage.vue
 
 # local env files
 .env.local
