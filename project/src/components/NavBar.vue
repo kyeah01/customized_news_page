@@ -30,7 +30,7 @@
      <v-list-tile
        v-for="item in items"
        :key="item.title"
-       @click="goto('/'+item.routerTo)"
+       router :to="{name: item.routerTo}"
      >
        <v-list-tile-action>
          <v-icon>{{ item.icon }}</v-icon>
@@ -55,7 +55,7 @@ export default {
       items: [{
           title: 'Home',
           icon: 'dashboard',
-          routerTo: ''
+          routerTo: 'home'
         },
         {
           title: 'mypage',
@@ -66,13 +66,13 @@ export default {
         {
           title: 'admin',
           icon: 'question_answer',
-          routerTo: this.goto('test')
+          routerTo: 'admin'
 
         },
         {
           title: 'Test Space',
           icon: 'question_answer',
-          routerTo: this.goto('test')
+          routerTo: 'test'
 
         }
       ]
