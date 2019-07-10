@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-btn v-on:click="GoogleLogin">Google Login</v-btn>
+        <v-btn round color="#df4a31" dark v-on:click="GoogleLogin">Google Login</v-btn>
     </div>
 </template>
 
