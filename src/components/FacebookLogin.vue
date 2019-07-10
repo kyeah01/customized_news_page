@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-btn v-on:click="FacebookLogin">Facebook Login</v-btn>
+        <v-btn round color="blue" dark v-on:click="FacebookLogin">Facebook Login</v-btn>
     </div>
 </template>
 

@@ -5,6 +5,7 @@
     <LoginCheck/>
     <GoogleLogin/>
     <FacebookLogin/>
+    <SignUp/>
     <router-view></router-view>
   </v-app>
 </template>
@@ -15,6 +16,7 @@ import Login from './components/Login'
 import LoginCheck from './components/LoginCheck'
 import GoogleLogin from './components/GoogleLogin'
 import FacebookLogin from './components/FacebookLogin'
+import SignUp from './components/SignUp'
 
 export default {
   name: 'App',
@@ -24,6 +26,7 @@ export default {
     LoginCheck,
     GoogleLogin,
     FacebookLogin,
+    SignUp,
   },
   data () {
     return {
