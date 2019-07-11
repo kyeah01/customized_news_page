@@ -41,10 +41,6 @@
        </v-list-tile-content>
      </v-list-tile>
    </v-list>
-
-    <v-container>
-      {{ weather }}
-    </v-container>
   </v-navigation-drawer>
   </nav>
 </template>
@@ -90,11 +86,6 @@ export default {
       this.$router.push('/' + addr)
     }
   },
-  created() {
-      axios.get('http://api.openweathermap.org/data/2.5/weather?q=daejeon&appid=ab8589d621c1abe7a5d4d62b9bb21c33')
-        .then(res => this.weather = res.data)
-        .catch(error => console.log(error))
-  }
 }
 </script>
 
