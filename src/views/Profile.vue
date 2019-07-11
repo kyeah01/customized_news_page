@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-container>
-        
+
         <v-layout row header>
           <v-flex xs6 md6>
           <h1>
@@ -30,7 +30,7 @@
                   <v-card-text>
                     <v-container grid-list-md>
                       <v-layout wrap xs6>
-                        
+
                         <div>
                         <v-flex xs12>
                           <v-text-field label="Your given name"></v-text-field>
@@ -53,7 +53,7 @@
                         </div>
 
 
-                        
+
                       </v-layout>
                     </v-container>
                     <small>*indicates required field</small>
@@ -235,15 +235,15 @@
       },
     }
 
-    
-    
+
+
 </script>
 
 <style>
   .header {
     margin-bottom: 3rem;
   }
-  
+
   .header h1 .sub {
     color: #757575;
     font-size: 1.25rem;
