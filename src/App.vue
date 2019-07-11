@@ -38,10 +38,10 @@ export default {
   },
   methods: {
     translater: async function () {
-      const googleTranslate = require('google-translate')('AIzaSyCWwcfPvVrgAbrDw6urNwinqawQ6WlE_f4')
-      googleTranslate.translate('My name is Brandon', 'ko', function(err, translation) {
-        console.log(translation.translatedText);
-      });
+      // const googleTranslate = require('google-translate')('AIzaSyCWwcfPvVrgAbrDw6urNwinqawQ6WlE_f4')
+      // googleTranslate.translate('My name is Brandon', 'ko', function(err, translation) {
+      //   console.log(translation.translatedText);
+      // });
     }
   },
   created () {
