@@ -7,6 +7,7 @@
     <FacebookLogin/>
     <SignUp/>
     <router-view></router-view>
+    <Footer/>
   </v-app>
 </template>
 
@@ -17,6 +18,7 @@ import LoginCheck from './components/LoginCheck'
 import GoogleLogin from './components/GoogleLogin'
 import FacebookLogin from './components/FacebookLogin'
 import SignUp from './components/SignUp'
+import Footer from './components/Footer'
 
 export default {
   name: 'App',
@@ -27,11 +29,23 @@ export default {
     GoogleLogin,
     FacebookLogin,
     SignUp,
+    Footer,
   },
   data () {
     return {
       //
     }
+  },
+  methods: {
+    translater: async function () {
+      const googleTranslate = require('google-translate')('AIzaSyCWwcfPvVrgAbrDw6urNwinqawQ6WlE_f4')
+      googleTranslate.translate('My name is Brandon', 'ko', function(err, translation) {
+        console.log(translation.translatedText);
+      });
+    }
+  },
+  created () {
+    this.translater()
   }
 }
 </script>
