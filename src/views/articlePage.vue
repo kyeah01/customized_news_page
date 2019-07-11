@@ -1,9 +1,14 @@
 <template lang="html">
-  <span>articles</span>
+  <articles/>
 </template>
 
 <script>
+import articles from '../components/article.vue'
+
 export default {
+  components: {
+    articles,
+  }
 }
 </script>
 
