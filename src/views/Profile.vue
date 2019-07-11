@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-container>
-        <!-- <h1>Manage Account</h1> -->
+        
         <v-layout row header>
           <v-flex xs6 md6>
           <h1>
@@ -46,7 +46,8 @@
                         <div>
                           <v-flex xs12>Your profile picture</v-flex>
                           <v-flex xs12>Image</v-flex>
-                          <v-flex xs12>Choose file</v-flex>
+                          <!-- Image Upload using Imgur api -->
+                          <v-flex xs12><router-link to="/imageupload"><v-btn>Choose file</v-btn></router-link></v-flex>
                           <v-flex xs12>Remove image</v-flex>
 
                         </div>
