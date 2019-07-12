@@ -1,37 +1,44 @@
 <template lang="html">
-  <div id="graph-container"></div>
+  <div id="graph-container">
+
+
+  </div>
 </template>
 
 <script>
-import { createGitgraph } from "@gitgraph/js";
+import { log } from 'util';
+import cube from '../timeCheck'
+import calcDiffOfDates from '../calcDiffOfDates'
 
 export default {
+  data(){
+    return {
+      sDate:null,
+      eDate:null,
+      diffDate:null
+    }
+  },
+  created(){
+    this.sDate = cube()
+    console.log(this.sDate);
+    
+    // console.log(`sDate : ${this.sDate.hour}:${this.sDate.min}:${this.sDate.second}`)    
+  },
 
-  mounted: function() {
-    // Get the graph container HTML element.
-    const graphContainer = document.getElementById("graph-container");
+  destroyed(){
+    console.log('destroy');
+    this.eDate = cube()
+    // console.log(`eDate : ${this.eDate.hour}:${this.eDate.min}:${this.eDate.second}`)
+    // console.log(this.eDate);
+    
 
-    // Instantiate the graph.
-    const gitgraph = createGitgraph(graphContainer);
-
-    // Simulate git commands with Gitgraph API.
-    const master = gitgraph.branch("master");
-    master.commit("Initial commit");
-
-    const develop = gitgraph.branch("develop");
-    develop.commit("Add TypeScript");
-
-    const aFeature = gitgraph.branch("a-feature");
-    aFeature
-      .commit("Make it work")
-      .commit("Make it right")
-      .commit("Make it fast");
-
-    develop.merge(aFeature);
-    develop.commit("Prepare v1");
-
-    master.merge(develop).tag("v1.0.0");
+    this.diffDate = calcDiffOfDates(this.sDate, this.eDate)
+    console.log(this.diffDate);
+    
+    // console.log(this.diffDate);
+    
   }
+
 }
 </script>
 
