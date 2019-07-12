@@ -12,12 +12,14 @@ var config = {
 firebase.initializeApp(config)
 
 export default {
-    logout() {
+    data () {
+        return {
+        }
+    },
+    Logout() {
         firebase.auth().signOut().then(() => {
-            // Sign-out successful.
-            alert('logout')
-            this.$router.push('/login')
-            
+            alert('Logout')
+            this.$router.push('/')
         }).catch(function(error) {
             // An error happened.
         });

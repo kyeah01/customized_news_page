@@ -1,6 +1,6 @@
 <template>
-<div>
-    <v-layout row justify-center>
+    <div>
+
         <v-btn
         color="primary"
         dark
@@ -35,9 +35,9 @@
             </v-card-actions>
         </v-card>
         </v-dialog>
-    </v-layout>
-    <v-btn v-on:click="Logout">Logout</v-btn>
-</div>
+
+        <!-- <v-btn v-on:click="Logout">Logout</v-btn> -->
+    </div>
 </template>
 
 
@@ -56,12 +56,12 @@ export default {
     methods: {
         Login: function() {
             firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(() => {
-            alert('Well done ! You are now connected')
+                alert('Well done ! You are now connected')
             })
         },
-        Logout: function() {
-            FirebaseService.logout()
-        }
+        // Logout: function() {
+        //     FirebaseService.logout()
+        // }
     }
 }
 </script>
