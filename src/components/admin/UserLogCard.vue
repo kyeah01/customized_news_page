@@ -20,7 +20,7 @@
       <template v-slot:items="props">
         <td class="text-xs-left">{{ props.item.id }}</td>
         <td class="text-xs-left">{{ props.item.domain }}</td>
-        <td class="text-xs-left">{{ props.item.log }}</td>
+        <td class="text-xs-left">{{ props.item.path }}</td>
         <td class="text-xs-left">{{ props.item.time}}</td>
       </template>
       <template v-slot:no-results>
@@ -34,26 +34,27 @@
 
 <script>
 import { userInfo } from 'os';
+import firebase from 'firebase'
+import FirebaseService from '@/services/FirebaseService'
+import 'firebase/firestore'
 
 export default {
- 
+  
   data(){
     return{
       headers : [
         {text : '아이디', value: 'id'},
         {text : '도메인', value: 'domain'},
-        {text : '로그내용', value: 'log'},
-        {text : '접속시간', value: 'time'},
+        {text : '접근 페이지', value: 'path'},
+        {text : '접속시간', value: 'path'},
+        {text : '머무른시간', value: 'time'},
       ],
-      userInfo : [
-      {id : 'test1@google.com', domain : 'google', log : 'describe article' , time : '2019-07-09'},
-      {id : 'test2@google.com', domain : 'google', log : 'describe article' , time : '2019-07-09'},
-      {id : 'test3@google.com', domain : 'google', log : 'describe article' , time : '2019-07-09'},
-      {id : 'test4@google.com', domain : 'google', log : 'describe article' , time : '2019-07-09'},
-      {id : 'test5@google.com', domain : 'google', log : 'describe article' , time : '2019-07-09'},
-      {id : 'test6@google.com', domain : 'google', log : 'describe article' , time : '2019-07-09'},
-       ]
+      userInfo : []
      }
+  },
+  created(){
+    
   }
+
 }
 </script>
