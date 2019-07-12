@@ -177,12 +177,7 @@ export default {
       
   }),
   methods : {
-    search(){
-      this.$firebase.collection('user').add({
-
-      })
-        
-    }
+    
   }
 }
 </script>
