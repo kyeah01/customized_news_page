@@ -137,6 +137,10 @@
 <script>
 import UserLogCard from '@/components/admin/UserLogCard'
 
+//user log
+import timeCheck from '../timeCheck'
+import userLog from '../userLog'
+
 export default {
   components : {
     UserLogCard
@@ -173,11 +177,32 @@ export default {
         content : 'login22 page',
         date : '2019-07-10'
       }
-    ]
+    ],
+
+    sDate : null,
+    eDate : null,
+    path : '/article'
       
   }),
   methods : {
-    
+
+    search(){
+      this.$firebase.collection('user').add({
+
+      })
+        
+    }
+  },
+  created (){
+    //user log
+    this.sDate= timeCheck()
+   },
+  destroyed(){
+    //user log
+    this.eDate= timeCheck()
+    var user=firebase.auth().currentUser
+    userLog(user, this.path, this.sDate, this.eDate)
+
   }
 }
 </script>

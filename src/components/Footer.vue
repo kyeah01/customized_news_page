@@ -20,7 +20,7 @@
       </v-card-text>
 
       <v-card-text class="white--text pt-0">
-          {{ weather.weather[0].main }}, {{ weather.weather[1].main }}<br>
+          {{ weather.weather["0"].main }}, {{ weather.weather["1"].main }}<br>
           the low : {{ weather.main.temp_min - 273.15 }} °C<br>
           the high : {{ weather.main.temp_max - 273.15 }} °C
       </v-card-text>
