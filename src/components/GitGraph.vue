@@ -1,18 +1,17 @@
 <template>
     <div>
-        <div id="graph-container"></div>
+        <v-flex class="hidden-md-and-down"> 
+            <div id="graph-container"></div>
+        </v-flex>
     </div>
 </template>
 
 <script>
 const axios = require('axios');
-// const graphContainer = document.getElementById("graph-container");
-// const gitgraph = GitgraphJS.createGitgraph(graphContainer);
 
 export default {
     data() {
         return {
-            jsondata: ''
         }
     },
     mounted() {
@@ -24,21 +23,14 @@ export default {
             ).then(res => { 
                 var jsondata = res.data
                 const graphContainer = document.getElementById("graph-container");
-                const gitgraph = GitgraphJS.createGitgraph(graphContainer, options);
-                const options = {
-                   mode: "compact"
-                    };
-                // var array = ["kyeah01@gmail.com", "hs.ssafy@gmail.com", "hj123190@gmail.com", "hojin1357@naver.com", "jnunseok@gmail.com"]
+                const gitgraph = GitgraphJS.createGitgraph(graphContainer);
                 var master = ''
                 var LHJ = ''
                 var PHJ = ''
                 var KYW = ''
                 var KJS = ''
-                var SHS = ''
 
                 for (var i in jsondata.reverse()) {
-                    console.log(i)
-                 
                     if (jsondata[i].title[0] === "M") {
                         var parent_id = jsondata[i].parent_ids[0]
                         var jsondata_id = ""
@@ -59,19 +51,29 @@ export default {
                             master.merge(KYW)
                         }
                     } else if (jsondata[i].author_email === "kyeah01@gmail.com") {
-                        KYW = gitgraph.branch("KYW")
+                        if (!KYW){
+                            KYW = gitgraph.branch("KYW")
+                        }
                         KYW.commit(jsondata[i].title)
                     } else if (jsondata[i].author_email === "hs.ssafy@gmail.com") {
-                        master = gitgraph.branch("master")
+                        if (!master){
+                            master = gitgraph.branch("master")
+                        }
                         master.commit(jsondata[i].title)
                     } else if (jsondata[i].author_email === "hj123190@gmail.com") {
-                        PHJ = gitgraph.branch("PHJ")
+                        if (!PHJ){
+                            PHJ = gitgraph.branch("PHJ")
+                        }
                         PHJ.commit(jsondata[i].title)
                     } else if (jsondata[i].author_email === "hojin1357@naver.com") {
-                        LHJ = gitgraph.branch("LHJ")
+                        if (!LHJ){
+                            LHJ = gitgraph.branch("LHJ")
+                        }
                         LHJ.commit(jsondata[i].title)
                     } else if (jsondata[i].author_email === "jnunseok@gmail.com") {
-                        KJS = gitgraph.branch("KJS")
+                        if (!KJS){
+                            KJS = gitgraph.branch("KJS")
+                        }
                         KJS.commit(jsondata[i].title)
                     }
                     
