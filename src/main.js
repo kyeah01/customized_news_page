@@ -18,7 +18,7 @@ new Vue({
 Vue.use(Trend)
 
 Vue.use(VueAnalytics, {
-  id: 'UA-143621356-1',
+  id: 'UA-143664405-1',
   router,
   autoTracking: {
     pageviewOnLoad: false
