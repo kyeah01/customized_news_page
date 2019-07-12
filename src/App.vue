@@ -7,6 +7,7 @@
     <FacebookLogin/>
     <SignUp/>
     <router-view></router-view>
+    <GitGraph/>
     <Footer/>
   </v-app>
 </template>
@@ -19,6 +20,7 @@ import GoogleLogin from './components/GoogleLogin'
 import FacebookLogin from './components/FacebookLogin'
 import SignUp from './components/SignUp'
 import Footer from './components/Footer'
+import GitGraph from './components/GitGraph'
 
 export default {
   name: 'App',
@@ -30,6 +32,7 @@ export default {
     FacebookLogin,
     SignUp,
     Footer,
+    GitGraph,
   },
   data () {
     return {
