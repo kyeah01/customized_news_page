@@ -1,7 +1,7 @@
 <template>
   <v-footer
     dark
-    height="auto"
+    width="100%"
   >
     <v-card
       flat
@@ -20,9 +20,9 @@
       </v-card-text>
 
       <v-card-text class="white--text pt-0">
-          {{ weather.weather["0"].main }}, {{ weather.weather["1"].main }}<br>
-          the low : {{ weather.main.temp_min - 273.15 }} °C<br>
-          the high : {{ weather.main.temp_max - 273.15 }} °C
+          {{ weather.one }}, {{ weather.two }}<br>
+          the low : {{ weather.temp_min }} °C<br>
+          the high : {{ weather.temp_max }} °C
       </v-card-text>
 
       <v-divider></v-divider>
@@ -36,9 +36,15 @@
 <script>
   export default {
     data: () => ({
-        weather: '',
+        weather: {
+          one:'',
+          two:'',
+          temp_max:'',
+          temp_min:'',
+          raw:''
+        },
       icons: [
-        'fab fa-facebook',
+        'fab fa-github',
         'fab fa-twitter',
         'fab fa-google-plus',
         'fab fa-linkedin',
@@ -47,7 +53,13 @@
     }),
     created() {
         axios.get('http://api.openweathermap.org/data/2.5/weather?q=daejeon&appid=ab8589d621c1abe7a5d4d62b9bb21c33')
-            .then(res => this.weather = res.data)
+            .then(res => {
+              this.weather.raw = res.data
+              this.weather.one = res.data.weather[0].main
+              this.weather.two = res.data.length>1 ? res.data.weather[1].main : ''
+              this.weather.temp_max = res.data.main.temp_max - 273.15
+              this.weather.temp_min = res.data.main.temp_min - 273.15
+              })
             .catch(error => console.log(error))
     }
   }
