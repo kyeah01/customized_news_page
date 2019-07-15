@@ -172,50 +172,107 @@
             <v-btn
               color="pink"
               dark
-              @click.stop="rdrawer = !rdrawer"
+              @click.stop="right_drawer = !right_drawer"
             >
               Toggle
             </v-btn>
           </v-layout>
         </v-container>
 
-        <v-navigation-drawer
-          v-model="rdrawer"
-          absolute
-          temporary
-          app
-          right
-        >
-          <v-list class="pa-1">
-            <v-list-tile avatar>
-              <v-list-tile-avatar>
-                <img src="https://randomuser.me/api/portraits/men/85.jpg">
-              </v-list-tile-avatar>
+        <div v-if="right_drawer">
+          <v-navigation-drawer
+            app
+            v-model="right_drawer"
+            right
+            style="width:83vw"
+          >
+            <section class="container630 centered">
+                <h1>
+                  <div class="kicker">Manage account</div>
+                  <div class="heading">Your profile</div>
+                </h1>
 
-              <v-list-tile-content>
-                <v-list-tile-title>John Leider</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-          </v-list>
+              <v-layout row wrap>
+                <v-flex xs8>
+                  <div class="form profile m-b-2">
+                    <div class="text-fields">
+                      <div class="field">
+                        <label>Your given name</label>
+                        <v-text-field outline id="box"></v-text-field>
+                        <!-- <div class="fx-input">
+                          <input id placeholder type="text" value="test">
+                        </div> -->
+                      </div>
+                      <div class="field">
+                        <label>Your family name</label>
+                        <div class="fx-input">
+                          <input id placeholder type="text" value="test">
+                        </div>
+                      </div>
+                      <div class="field">
+                        <label>Email address</label>
+                        <div class="fx-input">
+                          <input id placeholder type="text" value="test">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </v-flex>
 
-          <v-list class="pt-0" dense>
-            <v-divider></v-divider>
+                <v-flex xs4>
+                  <div class="field picture-upload">
+                    <label>Your profile picture</label>
+                  </div>
+                  
+                  <ImgUpload></ImgUpload>
+                  <!-- <div class="picture" style="background-image: url(https://source.unsplash.com/random);">
+                  </div> -->
+                  <!-- <button class="secondary small" type="button">Choose File</button><br>
+                  <button class="secondary small" type="button">Remove Image</button><br> -->
+                </v-flex>
+              </v-layout>
+              <button class="primary" type="button">Save changes</button>
+            </section>
+          </v-navigation-drawer>
+        </div>
+        
+        <div v-else>
+          <v-navigation-drawer
+            app
+            v-model="right_drawer"
+            right
+          >
+            <v-list class="pa-1">
+              <v-list-tile avatar>
+                <v-list-tile-avatar>
+                  <img src="https://randomuser.me/api/portraits/men/85.jpg">
+                </v-list-tile-avatar>
 
-            <v-list-tile
-              v-for="item in items"
-              :key="item.title"
-              @click=""
-            >
-              <v-list-tile-action>
-                <v-icon>{{ item.icon }}</v-icon>
-              </v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title>John Leider</v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+            </v-list>
 
-              <v-list-tile-content>
-                <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-          </v-list>
-        </v-navigation-drawer>
+            <v-list class="pt-0" dense>
+              <v-divider></v-divider>
+
+              <v-list-tile
+                v-for="item in items"
+                :key="item.title"
+                @click=""
+              >
+                <v-list-tile-action>
+                  <v-icon>{{ item.icon }}</v-icon>
+                </v-list-tile-action>
+
+                <v-list-tile-content>
+                  <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+            </v-list>
+          </v-navigation-drawer>
+        </div>
       </v-layout>
 
   </div>
@@ -226,35 +283,65 @@
 import firebase from 'firebase'
 import FirebaseService from '@/services/FirebaseService'
 import 'firebase/firestore'
+import ImgUpload from '../components/ImgUpload'
 
-//user log
-import timeCheck from '../timeCheck'
-import userLog from '../userLog'
-
-export default {
-    data () {
-      return {
-        dialog: false,
-        rdrawer: null,
-        items: [
-          { title: 'Home', icon: 'dashboard' },
-          { title: 'About', icon: 'question_answer' }
-        ],
-        sDate : null,
-        eDate : null,
-        path : '/profile'
-      }
-    },  
-    created (){
-    this.sDate= timeCheck()
+    export default {
+      components: {
+        ImgUpload
+      },
+      data () {
+        return {
+          dialog: false,
+          right_drawer: false,
+          items: [
+            { title: 'Home', icon: 'dashboard' },
+            { title: 'About', icon: 'question_answer' }
+          ],
+          sDate : {
+            hour : null,
+            min : null,
+            second : null
+          },
+          eDate : {
+            hour : null,
+            min : null,
+            second : null
+          },
+          diffDate : {
+            hour : null,
+            min : null,
+            second : null
+          }
+        }
+      },  
+        created (){
+    var date= new Date();
+    this.sDate.hour=date.getHours()
+    this.sDate.min=date.getMinutes()
+    this.sDate.second=date.getSeconds()
    },
   destroyed(){
-    this.eDate= timeCheck()
-    
     var user=firebase.auth().currentUser
-    
-    userLog(user, this.path, this.sDate, this.eDate)
 
+    var date= new Date();
+    this.eDate.hour=date.getHours()
+    this.eDate.min=date.getMinutes()
+    this.eDate.second=date.getSeconds()
+
+    this.diffDate.hour=this.eDate.hour-this.sDate.hour
+    this.diffDate.min=this.eDate.min-this.sDate.min
+    this.diffDate.second=this.eDate.second-this.sDate.second
+    
+    console.log('before')
+    firebase.firestore().collection('Users').add({
+      Email : user.email,
+      Uid : user.uid,
+      Path : '/profile',
+      enterTime : this.sDate,
+      exitTime : this.eDate,
+      diffTime : this.diffDate
+    })
+    console.log('end')
   }
   }
 
@@ -272,7 +359,75 @@ export default {
     font-size: 1.25rem;
     font-weight: normal;
   }
-  .v-navigation-drawer {
-    width: 500px;
+
+  .container630 {
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 24px;
+    padding-right: 24px;
+    max-width: 654px;
+  }
+
+  .kicker {
+    color: #9e9e9e;
+    font-size: 11px;
+    font-weight: normal;
+    letter-spacing: 0;
+    line-height: 1em;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+  }
+
+  .v-navigation-drawer--right h1 {
+    font-size: 2.125rem;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1.25em;
+    margin-bottom: 3rem;
+    margin-top: 3rem;
+    text-transform: none;
+  }
+
+  .v-text-field--box > .v-input__control > .v-input__slot, .v-text-field--full-width > .v-input__control > .v-input__slot, .v-text-field--outline > .v-input__control > .v-input__slot {
+    min-height: 40px !important;
+  }
+  /* .v-input__slot {
+      min-height: 40px !important;
+    } */
+
+  /* .v-input__slot .v-text-field__slot{
+    height: 40px;
+  }
+
+  .v-input__slot .v-text-field__slot input{
+    margin-top: 0;
+    height: 40px;
+  } */
+
+  .text-fields {
+    display: inline-block;
+    padding-right: 4rem;
+    width: 75%;
+  }
+
+  .text-fields .field {
+    margin-bottom: 1.5rem;
+  }
+  .text-fields .field label {
+    display: block;
+    margin: 0 0 8px;
+    font-size: 0.875rem;
+    line-height: 20px;
+    font-weight: 700;
+    text-transform: none;
+  }
+
+  .text-fields .field label .fx-input {
+    border: 1px;
+
+  }
+  
+  .text-fields .field label input {
+    height: 2.5rem;
   }
 </style>
