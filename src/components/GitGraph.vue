@@ -1,9 +1,12 @@
 <template>
-    <div>
-        <v-flex class="hidden-md-and-down"> 
-            <div id="graph-container"></div>
-        </v-flex>
-    </div>
+    <v-container>
+        <v-btn v-on:click="Open('https://lab.ssafy.com/HSx3/webmobile-sub2/network/master')">그래프</v-btn>
+        <v-layout>
+            <v-flex class="hidden-sm-and-down"> 
+                <div id="graph-container"></div>
+            </v-flex>
+        </v-layout>
+    </v-container>
 </template>
 
 <script>
@@ -81,8 +84,21 @@ export default {
             })
     },
     methods: {
-        
+        Open(url) {
+            var win = window.open(url, '_blank');
+            win.focus();
+        }
     }
 
 }
 </script>
+
+<style>
+#graph-container {
+    overflow:scroll;
+    overflow:auto;
+    white-space:nowrap;
+    width:100%; height:700px;
+    padding:10px; 
+}
+</style>

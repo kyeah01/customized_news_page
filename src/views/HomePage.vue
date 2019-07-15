@@ -12,21 +12,24 @@
       <v-flex>
         <v-form>
           <v-text-field
-             outline
-             label="Prepend inner"
-             prepend-inner-icon="place"
-           ></v-text-field>
+            outline
+            label="Prepend inner"
+            prepend-inner-icon="place"
+          ></v-text-field>
         </v-form>
       </v-flex>
     </v-layout>
-
+  <GitGraph/>
   </v-container>
+
+
 </template>
 
 <script>
 import firebase from 'firebase'
 import FirebaseService from '@/services/FirebaseService'
 import 'firebase/firestore'
+import GitGraph from '../components/GitGraph'
 
 //user log
 import timeCheck from '../timeCheck'
@@ -41,6 +44,9 @@ export default {
       eDate : null,
       path : '/'
     }
+  },
+  components: {
+    GitGraph
   },
   created (){
     this.sDate = timeCheck()
