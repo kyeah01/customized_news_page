@@ -1,7 +1,7 @@
 <template>
   <v-layout row>
     <v-flex xs12 sm6 offset-sm3>
-      <v-card>
+      <v-card height="500px">
         <v-list two-line>
           <template v-for="(item, index) in todayArticle">
             <v-subheader 
@@ -37,6 +37,14 @@
 
           </template>
         </v-list>
+        <div class="text-xs-center">
+          <v-pagination
+            v-model="currentPage"
+            :length="totalPage"
+            :total-visible="totalPage"
+            @click="showPage(currentPage+1)"
+          ></v-pagination>
+        </div>
       </v-card>
     </v-flex>
   </v-layout>
@@ -46,25 +54,27 @@
 import firebase from 'firebase'
 import FirebaseService from '@/services/FirebaseService'
 import 'firebase/firestore'
+import { async, Promise } from 'q';
 
   export default {
+    
     data () {
       return {
         header : 'Today',
         todayArticle: [
          
+        ],
+        totalPage : 1,
+        currentPage : 1,
+        length : 4,
+        allArticle : [
+
         ]
       }
     },
     mounted(){
-      console.log('mounted')
-      const snapshot=firebase.firestore().collection('Article').get()
-        .then((snapshot)=>{
-          snapshot.forEach((doc)=>{
-            // console.log(doc.data())
-            this.todayArticle.push(doc.data())
-          })
-        })
+      this.totalNum()
+      this.showPage(1)
     },
     methods: {
         translater: async function (text) {
@@ -73,15 +83,41 @@ import 'firebase/firestore'
             console.log(translation.translatedText);
             });
         },
-        searchCategory: async function(cate){
-          if(cate===null){
-
-          }else{
-            
-          }
+        totalNum : async function(){
+          var tmp=0;
+          var db2=await firebase.firestore().collection('Article').get()
+            .then((snapshot)=>{
+              snapshot.forEach((doc)=>{
+                this.allArticle.push(doc.data())
+                // console.log(doc.data())
+                tmp++
+              })
+            })
+            if(tmp%this.length==0){
+              this.totalPage=tmp/this.length
+            }else{
+              this.totalPage=parseInt((tmp/this.length))+1
+            }
+            console.log(this.totalPage)
+        },
+        showPage : function(num){
+          // console.log(this.totalPage)
+          this.todayArticle=[]
+          console.log(num)
+          let tmp=firebase.firestore().collection('Article').orderBy('registerTime').limit(num*this.length)
+          tmp.get()
+            .then((snapshot)=>{
+              let first=snapshot.docs[(num-1)*this.length]
+              let next=firebase.firestore().collection('Article').orderBy('registerTime').startAt(first.data().registerTime).limit(this.length)
+              next.get().then((snapshot)=>{
+                snapshot.forEach((doc)=>{
+                  this.todayArticle.push(doc.data())
+                })
+              })
+            })
         }
-    },
-  }
+      }
+   }
 </script>
 
 <style lang="css" scoped>
