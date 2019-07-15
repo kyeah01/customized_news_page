@@ -4,7 +4,7 @@
     <LoginCheck/>
     <router-view></router-view>
     <GitGraph/>
-    <!-- <Footer/> -->
+    <Footer/>
   </v-app>
 </template>
 
