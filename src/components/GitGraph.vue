@@ -26,7 +26,16 @@ export default {
             ).then(res => { 
                 var jsondata = res.data
                 const graphContainer = document.getElementById("graph-container");
-                const gitgraph = GitgraphJS.createGitgraph(graphContainer);
+                const metroTemplateWithoutAuthor = GitgraphJS.templateExtend("metro", {
+                    commit: {
+                        message: {
+                            displayAuthor: false,
+                        }
+                    }
+                })
+                const gitgraph = GitgraphJS.createGitgraph(graphContainer, {
+                    template: metroTemplateWithoutAuthor,
+                });
                 var master = ''
                 var LHJ = ''
                 var PHJ = ''

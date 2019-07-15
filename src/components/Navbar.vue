@@ -82,8 +82,6 @@
         </v-card>
       </v-dialog>
    
-    
-  
       <v-btn @click="goto('test')" flat>Test Space</v-btn>
     </v-toolbar-items>
   </v-toolbar>
@@ -179,23 +177,19 @@ export default {
         alert('Well done ! You are now connected')
       })
     },
-    Logout: function() {
-      firebase.auth().signOut().then(() => {
-            alert('Logout')
-        }).catch(function(error) {
-            // An error happened.
-        });
-    },
     SignUp: function() {
       firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(
-          function (user) {
-              alert('created!!')
+        function (user) {
+          alert('created!!')
           },
           function (err) {
-              alert('Oops, ' + err.message)
+            alert('Oops, ' + err.message)
           }
       );
-    }
+    },
+    Logout: function() {
+      FirebaseService.Logout()
+    },
   },
   created() {
     firebase.auth().onAuthStateChanged((user) => {
