@@ -19,9 +19,17 @@ export default {
     Logout() {
         firebase.auth().signOut().then(() => {
             alert('Logout')
-            this.$router.push('/')
         }).catch(function(error) {
             // An error happened.
         });
-    }   
+    },
+    Delete() {
+        var user = firebase.auth().currentUser;
+        user.delete().then(function() {
+        // User deleted.
+        alert('Delete')
+        }).catch(function(error) {
+        // An error happened.
+        });
+    } 
 }
