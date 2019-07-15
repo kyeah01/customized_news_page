@@ -21,7 +21,7 @@ export default {
     Navbar,
     LoginCheck,
     Footer,
-    GitGraph,
+    // GitGraph,
   },
   data () {
     return {
