@@ -4,11 +4,15 @@
   <img id="image" :src="imageSrc" />
   <br>
   <input id="file" @change="upload" type="file" />
+  <v-btn input-value outline small text--grey id="file" @change="upload" type="file" style="color: #757575; border: 1px solid rgba(0, 0, 0, 0.15);">choose file</v-btn>
+  <v-btn outline small text--grey @click="remove" style="color: #757575; border: 1px solid rgba(0, 0, 0, 0.15);">remove image</v-btn>
+  <v-btn outline small text--grey @click="delete_account" style="color: #757575; border: 1px solid rgba(0, 0, 0, 0.15);">delete account</v-btn>
 </div>
 </template>
 
 <script>
 import firebase from 'firebase'
+import FirebaseService from '@/services/FirebaseService'
 
 export default {
   data() {
@@ -78,6 +82,22 @@ export default {
         // console.log(target.files[0])
       };
 
+    },
+    remove() {
+      console.log("remove")
+      this.imageSrc = "https://source.unsplash.com/random"
+
+      var userinfo = firebase.auth().currentUser
+      Object.defineProperty(userinfo, 'photoURL', {
+              writable: true
+            });
+      userinfo.updateProfile ({
+              photoURL: this.imageSrc,
+            })
+    },
+    delete_account() {
+      FirebaseService.Delete()
+      
     }
   }
 }
@@ -87,5 +107,10 @@ export default {
     #image {
         height: 118px;
         width: 118px;
+        border-radius: 50%;
     }
+
+    .picture-upload div button .v-btn__content {
+      color: #757575;
+    } 
 </style>

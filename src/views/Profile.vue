@@ -139,27 +139,6 @@
                 </v-card>
             </v-flex> -->
 
-            <!-- 4 -->
-            <!-- <v-flex d-flex xs12 sm6 md3 offset-sm1>
-                <v-card>
-                    <v-img
-                    src="https://cdn.vuetifyjs.com/images/cards/desert.jpg"
-                    aspect-ratio="2.75"
-                    ></v-img>
-
-                    <v-card-title primary-title>
-                    <div>
-                        <h3 class="headline mb-0">Kangaroo Valley Safari</h3>
-                        <div> {{ card_text }} </div>
-                    </div>
-                    </v-card-title>
-
-                    <v-card-actions>
-                    <v-btn flat color="orange">Share</v-btn>
-                    <v-btn flat color="orange">Explore</v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-flex> -->
         </v-layout>
     </v-container>
 
@@ -194,7 +173,7 @@
 
               <v-layout row wrap>
                 <v-flex xs8>
-                  <div class="form profile m-b-2">
+                  <div class="form profile mb-2">
                     <div class="text-fields">
                       <div class="field">
                         <label>Your given name</label>
@@ -205,15 +184,11 @@
                       </div>
                       <div class="field">
                         <label>Your family name</label>
-                        <div class="fx-input">
-                          <input id placeholder type="text" value="test">
-                        </div>
+                        <v-text-field outline id="box"></v-text-field>
                       </div>
                       <div class="field">
                         <label>Email address</label>
-                        <div class="fx-input">
-                          <input id placeholder type="text" value="test">
-                        </div>
+                        <v-text-field outline id="box"></v-text-field>
                       </div>
                     </div>
                   </div>
@@ -231,6 +206,7 @@
                   <button class="secondary small" type="button">Remove Image</button><br> -->
                 </v-flex>
               </v-layout>
+              <v-btn class="green white--text">Save changes</v-btn>
               <button class="primary" type="button">Save changes</button>
             </section>
           </v-navigation-drawer>
@@ -319,6 +295,12 @@ import ImgUpload from '../components/ImgUpload'
     this.sDate.hour=date.getHours()
     this.sDate.min=date.getMinutes()
     this.sDate.second=date.getSeconds()
+
+    firebase.auth().onAuthStateChanged((user) => {
+                if (!user) {
+                    this.$router.push("/")
+                }
+            })
    },
   destroyed(){
     var user=firebase.auth().currentUser
@@ -388,9 +370,6 @@ import ImgUpload from '../components/ImgUpload'
     text-transform: none;
   }
 
-  .v-text-field--box > .v-input__control > .v-input__slot, .v-text-field--full-width > .v-input__control > .v-input__slot, .v-text-field--outline > .v-input__control > .v-input__slot {
-    min-height: 40px !important;
-  }
   /* .v-input__slot {
       min-height: 40px !important;
     } */
@@ -407,27 +386,32 @@ import ImgUpload from '../components/ImgUpload'
   .text-fields {
     display: inline-block;
     padding-right: 4rem;
-    width: 75%;
+    width: 100%;
   }
 
-  .text-fields .field {
+  /* .text-fields .field {
     margin-bottom: 1.5rem;
-  }
-  .text-fields .field label {
+  } */
+
+  /* .text-fields .field label {
     display: block;
     margin: 0 0 8px;
     font-size: 0.875rem;
     line-height: 20px;
     font-weight: 700;
     text-transform: none;
-  }
+  } */
 
-  .text-fields .field label .fx-input {
+  /* .text-fields .field label .fx-input {
     border: 1px;
-
-  }
+  } */
   
-  .text-fields .field label input {
+  /* .text-fields .field label input {
     height: 2.5rem;
+  } */
+  
+  .field label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
   }
 </style>

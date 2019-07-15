@@ -25,9 +25,11 @@ export default {
     },
     Delete() {
         var user = firebase.auth().currentUser;
-        user.delete().then(function() {
+        user.delete().then(() => {
         // User deleted.
         alert('Delete')
+        
+        // this.$router.push("/")
         }).catch(function(error) {
         // An error happened.
         });
