@@ -1,25 +1,43 @@
 <template lang="html">
-  <v-container>{{ user }}
-    <div><br><br><br><br><br></div>
-  </v-container>
-  
+
+<div class="">
+
+  <div id="autocomplete" class="autocomplete">
+    <input class="autocomplete-input" placeholder="Search for a country" aria-label="Search for a country">
+    <ul class="autocomplete-result-list"></ul>
+  </div>
+
+</div>
+
+
 </template>
 
 <script>
-import firebase from 'firebase'
-
 export default {
   data(){
     return {
-      user: ''
+      countries :[
+        'korea',
+        'america'
+      ]
     }
   },
-  created() {
-    this.user = firebase.auth.importUsers()
-    console.log(this.user)
+  mounted(){
+    this.loadAutoComplete()
+  },
+  methods:{
+    loadAutoComplete:function(){
+      new Autocomplete('#autocomplete', {
+        search: input => {
+          if (input.length < 1) { return [] }
+          return this.countries.filter(country => {
+            return country.toLowerCase()
+              .startsWith(input.toLowerCase())
+          })
+        }
+      })
+    }
   }
-
-
 }
 </script>
 
