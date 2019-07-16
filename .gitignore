@@ -1,8 +1,8 @@
-testPage.vue
 
 .DS_Store
 node_modules
 /dist
+testPage.vue
 
 # local env files
 .env.local
