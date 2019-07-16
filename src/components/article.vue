@@ -56,30 +56,22 @@ import { async, Promise } from 'q';
         header : 'Today',
         article : [
 
-        ],
-        pageNum : 1,
-        totalPage : 1,
-        currentPage : 1,
+        ]
       }
     },
     mounted(){
-      //this.todayArticle()
-      //this.showPage(1)
       this.allArticle()
       // this.todayArticle()
-
       $(window).scroll(function(){
            let $window = $(this);
            let scrollTop = $window.scrollTop();
            let windowHeight = $window.height();
            let documentHeight = $(document).height();
-            // scrollbar의 thumb가 바닥 전 30px까지 도달 하면 리스트를 가져온다.
-           if( scrollTop + windowHeight + 30 > documentHeight ){
-              console.log("bb")
-              this.allArticle()
+            if( scrollTop + windowHeight == documentHeight ){
+              console.log("scroll")
+              
             }
       })
-  
     },
     methods: {
         translater: async function (text) {
@@ -88,8 +80,8 @@ import { async, Promise } from 'q';
             console.log(translation.translatedText);
             });
         },
-        allArticle : function(){
-           firebase.firestore().collection('Article').get()
+        allArticle : async function(){
+           await firebase.firestore().collection('Article').get()
             .then((snapshot)=>{
               snapshot.forEach((doc)=>{
                 this.article.push(doc.data())
@@ -108,38 +100,6 @@ import { async, Promise } from 'q';
                   this.article.push(doc.data())
                 })
               }
-            })
-        },
-        totalNum : async function(){
-          var tmp=0;
-          var db2=await firebase.firestore().collection('Article').get()
-            .then((snapshot)=>{
-              snapshot.forEach((doc)=>{
-                this.article.push(doc.data())
-                // console.log(doc.data())
-                tmp++
-              })
-            })
-            if(tmp%this.length==0){
-              this.totalPage=tmp/this.length
-            }else{
-              this.totalPage=parseInt((tmp/this.length))+1
-            }
-            console.log(this.totalPage)
-        },
-        showPage : function(pageNum){
-          // console.log(this.totalPage)
-          console.log(num)
-          let tmp=firebase.firestore().collection('Article').orderBy('registerTime').limit(num*this.length)
-          tmp.get()
-            .then((snapshot)=>{
-              let first=snapshot.docs[(num-1)*this.length]
-              let next=firebase.firestore().collection('Article').orderBy('registerTime').startAt(first.data().registerTime).limit(this.length)
-              next.get().then((snapshot)=>{
-                snapshot.forEach((doc)=>{
-                  this.article.push(doc.data())
-                })
-              })
             })
         }
      }  
