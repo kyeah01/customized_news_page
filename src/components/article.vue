@@ -76,6 +76,7 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
           if (this.page<5){
           this.page += 1
           this.busy = true
+
           newsapi.v2.topHeadlines({
             country: this.country,
             category: this.category,
