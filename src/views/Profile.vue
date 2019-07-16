@@ -33,7 +33,7 @@
 
                         <div>
                         <v-flex xs12>
-                          <v-text-field label="Your given name"></v-text-field>
+                          <v-text-field mb-1 label="Your given name"></v-text-field>
                         </v-flex>
                         <v-flex xs12>
                           <v-text-field label="Your family name"></v-text-field>
@@ -177,24 +177,25 @@
                     <div class="text-fields">
                       <div class="field">
                         <label>Your given name</label>
-                        <v-text-field outline id="box"></v-text-field>
+                        <v-text-field label="Outline" single-line outline style="border-color: rgba(0, 0, 0, 0.15)"></v-text-field>
                         <!-- <div class="fx-input">
                           <input id placeholder type="text" value="test">
                         </div> -->
                       </div>
                       <div class="field">
                         <label>Your family name</label>
-                        <v-text-field outline id="box"></v-text-field>
+                        <v-text-field label="Outline" single-line outline style="color: #757575; border: 1px solid rgba(0, 0, 0, 0.15);"></v-text-field>
                       </div>
                       <div class="field">
                         <label>Email address</label>
-                        <v-text-field outline id="box"></v-text-field>
+                        <v-text-field label="Outline" v-bind:value=email single-line outline></v-text-field>
                       </div>
                     </div>
                   </div>
                 </v-flex>
 
                 <v-flex xs4>
+                  <div>
                   <div class="field picture-upload">
                     <label>Your profile picture</label>
                   </div>
@@ -204,10 +205,11 @@
                   </div> -->
                   <!-- <button class="secondary small" type="button">Choose File</button><br>
                   <button class="secondary small" type="button">Remove Image</button><br> -->
+                </div>
                 </v-flex>
               </v-layout>
-              <v-btn class="green white--text">Save changes</v-btn>
-              <button class="primary" type="button">Save changes</button>
+              <v-btn class="green white--text" @click.stop="right_drawer=false">Save changes</v-btn>
+              <!-- <button class="primary" type="button">Save changes</button> -->
             </section>
           </v-navigation-drawer>
         </div>
@@ -267,6 +269,7 @@ import ImgUpload from '../components/ImgUpload'
       },
       data () {
         return {
+          email: '',
           dialog: false,
           right_drawer: false,
           items: [
@@ -291,40 +294,43 @@ import ImgUpload from '../components/ImgUpload'
         }
       },  
         created (){
-    var date= new Date();
-    this.sDate.hour=date.getHours()
-    this.sDate.min=date.getMinutes()
-    this.sDate.second=date.getSeconds()
+          var date= new Date();
+          this.sDate.hour=date.getHours()
+          this.sDate.min=date.getMinutes()
+          this.sDate.second=date.getSeconds()
 
-    firebase.auth().onAuthStateChanged((user) => {
-                if (!user) {
-                    this.$router.push("/")
-                }
-            })
-   },
-  destroyed(){
-    var user=firebase.auth().currentUser
+          firebase.auth().onAuthStateChanged((user) => {
+                      if (!user) {
+                          this.$router.push("/")
+                      } else {
+                        this.email = user.email
+                      }
 
-    var date= new Date();
-    this.eDate.hour=date.getHours()
-    this.eDate.min=date.getMinutes()
-    this.eDate.second=date.getSeconds()
+                  })
+        },
+        destroyed(){
+          var user=firebase.auth().currentUser
 
-    this.diffDate.hour=this.eDate.hour-this.sDate.hour
-    this.diffDate.min=this.eDate.min-this.sDate.min
-    this.diffDate.second=this.eDate.second-this.sDate.second
-    
-    console.log('before')
-    firebase.firestore().collection('Users').add({
-      Email : user.email,
-      Uid : user.uid,
-      Path : '/profile',
-      enterTime : this.sDate,
-      exitTime : this.eDate,
-      diffTime : this.diffDate
-    })
-    console.log('end')
-  }
+          var date= new Date();
+          this.eDate.hour=date.getHours()
+          this.eDate.min=date.getMinutes()
+          this.eDate.second=date.getSeconds()
+
+          this.diffDate.hour=this.eDate.hour-this.sDate.hour
+          this.diffDate.min=this.eDate.min-this.sDate.min
+          this.diffDate.second=this.eDate.second-this.sDate.second
+          
+          console.log('before')
+          firebase.firestore().collection('Users').add({
+            Email : user.email,
+            Uid : user.uid,
+            Path : '/profile',
+            enterTime : this.sDate,
+            exitTime : this.eDate,
+            diffTime : this.diffDate
+          })
+          console.log('end')
+        }
   }
 
 
@@ -340,14 +346,6 @@ import ImgUpload from '../components/ImgUpload'
     color: #757575;
     font-size: 1.25rem;
     font-weight: normal;
-  }
-
-  .container630 {
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 24px;
-    padding-right: 24px;
-    max-width: 654px;
   }
 
   .kicker {
@@ -370,18 +368,17 @@ import ImgUpload from '../components/ImgUpload'
     text-transform: none;
   }
 
-  /* .v-input__slot {
-      min-height: 40px !important;
-    } */
-
-  /* .v-input__slot .v-text-field__slot{
-    height: 40px;
+  .container630 {
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 24px;
+    padding-right: 24px;
+    max-width: 654px;
   }
 
-  .v-input__slot .v-text-field__slot input{
-    margin-top: 0;
-    height: 40px;
-  } */
+  .field label {
+    margin: 0 0 8px;
+  }
 
   .text-fields {
     display: inline-block;
@@ -389,18 +386,25 @@ import ImgUpload from '../components/ImgUpload'
     width: 100%;
   }
 
-  /* .text-fields .field {
+  .text-fields .field {
     margin-bottom: 1.5rem;
-  } */
+  }
 
-  /* .text-fields .field label {
+  .text-fields .field label {
     display: block;
     margin: 0 0 8px;
-    font-size: 0.875rem;
+    font-size: 14px;
+    /* font-size: 0.875rem; */
     line-height: 20px;
     font-weight: 700;
     text-transform: none;
-  } */
+  }
+
+  .container630 .picture-upload label {
+    margin: 0 0 8px;
+    font-weight: 700;
+    /* font-size: 14px; */
+  }
 
   /* .text-fields .field label .fx-input {
     border: 1px;
@@ -410,8 +414,8 @@ import ImgUpload from '../components/ImgUpload'
     height: 2.5rem;
   } */
   
-  .field label {
+  /* .field label {
     font-weight: 500;
     margin-bottom: 0.5rem;
-  }
+  } */
 </style>

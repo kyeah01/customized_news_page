@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <template>
   <div>
     <v-layout column justify-center align-center>
@@ -38,3 +39,32 @@ Vue.use(vuescroll)
     }
   }
 </script>
+=======
+<template lang="html">
+  <v-container>{{ user }}
+    <div><br><br><br><br><br></div>
+  </v-container>
+  
+</template>
+
+<script>
+import firebase from 'firebase'
+
+export default {
+  data(){
+    return {
+      user: ''
+    }
+  },
+  created() {
+    this.user = firebase.auth.importUsers()
+    console.log(this.user)
+  }
+
+
+}
+</script>
+
+<style lang="css" scoped>
+</style>
+>>>>>>> 0c26c747068ac6187842cd32b820e6d589d859d0

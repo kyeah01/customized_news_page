@@ -1,8 +1,8 @@
 <template lang="html">
   <nav>
-  <v-toolbar>
+  <v-toolbar app>
     <v-toolbar-side-icon
-    @click.stop="drawer = !drawer"
+    @click="drawer = !drawer"
     ></v-toolbar-side-icon>
     <v-toolbar-title>Menu</v-toolbar-title>
     <v-spacer></v-spacer>
@@ -86,16 +86,18 @@
     </v-toolbar-items>
   </v-toolbar>
 
-  <v-navigation-drawer app v-model="drawer">
-    <v-toolbar flat>
+  <v-navigation-drawer app v-model="drawer" style="background-color: #d9d9d9;">
+    <!-- <v-toolbar flat> -->
       <v-list>
         <v-list-tile>
-          <v-list-tile-title class="title">
-            Application
-          </v-list-tile-title>
+          <v-list-tile-content>
+            <v-list-tile-title class="title">
+              Application
+            </v-list-tile-title>
+          </v-list-tile-content>
         </v-list-tile>
       </v-list>
-    </v-toolbar>
+    <!-- </v-toolbar> -->
 
     <v-divider></v-divider>
 
@@ -114,6 +116,11 @@
        </v-list-tile-content>
      </v-list-tile>
    </v-list>
+
+    <v-footer class="justify-center pl-0" height="51" inset app style="background-color: #2bb24c">
+        <v-icon class="white--text mr-1">add</v-icon>
+        <span class="white--text" style="font-size: 12px;">ADD CONTENT</span>
+    </v-footer>
   </v-navigation-drawer>
   </nav>
 </template>
