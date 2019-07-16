@@ -5,7 +5,7 @@ export default function(user, path, enterTime, exitTime){
 
     if( user === null ) {
         console.log('no user');
-        
+
     }else{
         firebase.firestore().collection('Users').add({
             Email : user.email,
@@ -15,6 +15,5 @@ export default function(user, path, enterTime, exitTime){
             exitTime : exitTime,
             diffTime : calcDiffOfDates(enterTime, exitTime)
           })
-        
     }
 }

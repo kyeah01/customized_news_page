@@ -1,9 +1,9 @@
 <template>
   <v-layout row>
     <v-flex xs12 sm6 offset-sm3>
-      <v-card height="500px">
+        <v-card>
         <v-list two-line>
-          <template v-for="(item, index) in todayArticle">
+          <template v-for="(item, index) in article">
             <v-subheader 
               v-if="index===0"
               :key="index"
@@ -27,6 +27,7 @@
                   &mdash;
                   {{item.subtitle}}
                 </v-list-tile-sub-title>
+                
               </v-list-tile-content>
             </v-list-tile>
 
@@ -37,14 +38,6 @@
 
           </template>
         </v-list>
-        <div class="text-xs-center">
-          <v-pagination
-            v-model="currentPage"
-            :length="totalPage"
-            :total-visible="totalPage"
-            @click="showPage(currentPage+1)"
-          ></v-pagination>
-        </div>
       </v-card>
     </v-flex>
   </v-layout>
@@ -61,20 +54,32 @@ import { async, Promise } from 'q';
     data () {
       return {
         header : 'Today',
-        todayArticle: [
-         
+        article : [
+
         ],
+        pageNum : 1,
         totalPage : 1,
         currentPage : 1,
-        length : 4,
-        allArticle : [
-
-        ]
       }
     },
     mounted(){
-      this.totalNum()
-      this.showPage(1)
+      //this.todayArticle()
+      //this.showPage(1)
+      this.allArticle()
+      // this.todayArticle()
+
+      $(window).scroll(function(){
+           let $window = $(this);
+           let scrollTop = $window.scrollTop();
+           let windowHeight = $window.height();
+           let documentHeight = $(document).height();
+            // scrollbar의 thumb가 바닥 전 30px까지 도달 하면 리스트를 가져온다.
+           if( scrollTop + windowHeight + 30 > documentHeight ){
+              console.log("bb")
+              this.allArticle()
+            }
+      })
+  
     },
     methods: {
         translater: async function (text) {
@@ -83,12 +88,34 @@ import { async, Promise } from 'q';
             console.log(translation.translatedText);
             });
         },
+        allArticle : function(){
+           firebase.firestore().collection('Article').get()
+            .then((snapshot)=>{
+              snapshot.forEach((doc)=>{
+                this.article.push(doc.data())
+                // console.log(doc.data())
+              })
+            })
+        },
+        todayArticle : async function(){
+          await firebase.firestore().collection('Article').where('registerTime','>=',6).get()
+            .then(querySnapshot=>{
+              if(querySnapshot.empty){
+                console.log("empty")
+              }else{
+                querySnapshot.docs.forEach(doc=>{
+                  // console.log(document.data())
+                  this.article.push(doc.data())
+                })
+              }
+            })
+        },
         totalNum : async function(){
           var tmp=0;
           var db2=await firebase.firestore().collection('Article').get()
             .then((snapshot)=>{
               snapshot.forEach((doc)=>{
-                this.allArticle.push(doc.data())
+                this.article.push(doc.data())
                 // console.log(doc.data())
                 tmp++
               })
@@ -100,9 +127,8 @@ import { async, Promise } from 'q';
             }
             console.log(this.totalPage)
         },
-        showPage : function(num){
+        showPage : function(pageNum){
           // console.log(this.totalPage)
-          this.todayArticle=[]
           console.log(num)
           let tmp=firebase.firestore().collection('Article').orderBy('registerTime').limit(num*this.length)
           tmp.get()
@@ -111,14 +137,11 @@ import { async, Promise } from 'q';
               let next=firebase.firestore().collection('Article').orderBy('registerTime').startAt(first.data().registerTime).limit(this.length)
               next.get().then((snapshot)=>{
                 snapshot.forEach((doc)=>{
-                  this.todayArticle.push(doc.data())
+                  this.article.push(doc.data())
                 })
               })
             })
         }
-      }
-   }
+     }  
+  }
 </script>
-
-<style lang="css" scoped>
-</style>

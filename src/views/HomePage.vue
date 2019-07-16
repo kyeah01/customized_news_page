@@ -16,6 +16,11 @@
             label="Prepend inner"
             prepend-inner-icon="place"
           ></v-text-field>
+
+          <div id="autocomplete" class="autocomplete">
+            <input class="autocomplete-input" placeholder="Search for a country" aria-label="Search for a country">
+            <ul class="autocomplete-result-list"></ul>
+          </div>
         </v-form>
       </v-flex>
     </v-layout>
@@ -42,7 +47,8 @@ export default {
     return {
       sDate : null,
       eDate : null,
-      path : '/'
+      path : '/',
+      words:null
     }
   },
   components: {
@@ -51,6 +57,14 @@ export default {
   created (){
     this.sDate = timeCheck()
    },
+   mounted(){
+     this.loadAutoComplete()
+
+     var filePath = 'https://raw.githubusercontent.com/dwyl/autocomplete/master/words.txt'
+     var words = this.loadFile(filePath)
+     this.words = words.split('\n')
+
+   },
   destroyed(){
     this.eDate = timeCheck()
 
@@ -58,6 +72,31 @@ export default {
     var user=firebase.auth().currentUser
     userLog(user, this.path, this.sDate, this.eDate)
 
+  },
+  methods: {
+    loadAutoComplete: function() {
+      new Autocomplete('#autocomplete', {
+        search: input => {
+          if (input.length < 2) {
+            return []
+          }
+          return this.words.filter(country => {
+            return country.toLowerCase()
+              .startsWith(input.toLowerCase())
+          })
+        }
+      })
+    },
+    loadFile : function(filePath) {
+      var result = null;
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.open("GET", filePath, false);
+      xmlhttp.send();
+      if (xmlhttp.status == 200) {
+        result = xmlhttp.responseText;
+      }
+      return result;
+    }
   }
 
 }
