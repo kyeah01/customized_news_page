@@ -1,3 +1,45 @@
+<<<<<<< HEAD
+<template>
+  <div>
+    <v-layout column justify-center align-center>
+      <v-subheader>Offset Top</v-subheader>
+      {{ offsetTop }}
+    </v-layout>
+    <v-container
+      id="scroll-target"
+      style="max-height: 400px"
+      class="scroll-y"
+    >
+      <v-layout
+        v-scroll:#scroll-target="onScroll"
+        column
+        align-center
+        justify-center
+        style="height: 1000px"
+      >
+      </v-layout>
+    </v-container>
+  </div>
+</template>
+
+<script>
+import Vue from 'vue'
+import vuescroll from 'vue-scroll'
+Vue.use(vuescroll)
+
+  export default {
+    data: () => ({
+      offsetTop: 0
+    }),
+
+    methods: {
+      onScroll (e) {
+        this.offsetTop = e.target.scrollTop
+      }
+    }
+  }
+</script>
+=======
 <template lang="html">
   <v-container>{{ user }}
     <div><br><br><br><br><br></div>
@@ -25,3 +67,4 @@ export default {
 
 <style lang="css" scoped>
 </style>
+>>>>>>> 0c26c747068ac6187842cd32b820e6d589d859d0
