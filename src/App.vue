@@ -3,7 +3,6 @@
     <Navbar></Navbar>
     <LoginCheck/>
     <router-view></router-view>
-    <GitGraph/>
     <Footer/>
   </v-app>
 </template>
@@ -13,7 +12,6 @@ import Navbar from './components/Navbar'
 import LoginCheck from './components/LoginCheck'
 import SignUp from './components/SignUp'
 import Footer from './components/Footer'
-import GitGraph from './components/GitGraph'
 
 export default {
   name: 'App',
@@ -21,7 +19,6 @@ export default {
     Navbar,
     LoginCheck,
     Footer,
-    // GitGraph,
   },
   data () {
     return {
