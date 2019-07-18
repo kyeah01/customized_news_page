@@ -53,27 +53,17 @@ export default {
    },
    mounted(){
      this.loadAutoComplete()
-<<<<<<< HEAD
 
      var filePath = 'https://raw.githubusercontent.com/dwyl/autocomplete/master/words.txt'
      var words = this.loadFile(filePath)
      this.words = words.split('\n')
 
-=======
-     var filePath = 'https://raw.githubusercontent.com/dwyl/autocomplete/master/words.txt'
-     var words = this.loadFile(filePath)
-     this.words = words.split('\n')
->>>>>>> b16ca22c3fc6bb1b9e02d737ac1c48e8d30152cb
    },
   destroyed(){
     this.eDate = timeCheck()
     //save user log on firebase
     var user=firebase.auth().currentUser
     userLog(user, this.path, this.sDate, this.eDate)
-<<<<<<< HEAD
-
-=======
->>>>>>> b16ca22c3fc6bb1b9e02d737ac1c48e8d30152cb
   },
   methods: {
     loadAutoComplete: function() {
