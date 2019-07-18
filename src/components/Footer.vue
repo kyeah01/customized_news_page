@@ -3,7 +3,7 @@
     dark
     class="my-5"
   >
-    <!-- <v-card
+    <v-card
       flat
       tile
       class="indigo lighten-1 white--text text-xs-center"
@@ -33,7 +33,7 @@
       <v-card-text class="white--text">
         &copy;2019.07.08 — <strong>Idle</strong>
       </v-card-text>
-    </v-card> -->
+    </v-card>
   </v-footer>
 </template>
 <script>
