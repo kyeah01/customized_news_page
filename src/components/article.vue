@@ -18,7 +18,7 @@
               v-else
               :key="item.title"
               avatar
-              @click=""
+              @click="translater(item.title)"
             >
               <v-list-tile-avatar>
                 <img :src="item.avatar">
