@@ -21,8 +21,14 @@
               @click="translater(item.title)"
             >
               <v-list-tile-avatar>
-                <img :src="item.avatar">
+                <!-- <img :src="item.avatar"> -->
+                  <!-- <v-switch v-model="item.switch"></v-switch> -->
+                  <v-btn flat icon color="green" @click="translater(index)">
+                    <v-icon>cached</v-icon>
+                  </v-btn>
+
               </v-list-tile-avatar>
+
 
               <v-list-tile-content>
                 <v-list-tile-title v-html="item.title"></v-list-tile-title>
@@ -65,11 +71,16 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
       this.leadMore()
     },
     methods: {
-        translater: async function (text) {
+        translater: function (idx) {
             const googleTranslate = require('google-translate')('AIzaSyCWwcfPvVrgAbrDw6urNwinqawQ6WlE_f4')
-            googleTranslate.translate(text, 'ko', function(err, translation) {
-            console.log(translation.translatedText);
-            });
+
+            googleTranslate.translate(this.article[idx].title, 'ko', (err, translation) => {
+            this.article[idx].title = translation.translatedText
+            })
+
+            googleTranslate.translate(this.article[idx].description, 'ko', (err, translation) =>   {
+            this.article[idx].description = translation.translatedText
+            })
         },
         topheadlinesArticle: function () {
           // 한번에 불러 올 수 있는 최대가 1~100사이의 수이고, 한번에 20개를 호출하기때문에 5번만 호출가능.
@@ -84,6 +95,7 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
             page: this.page
           }).then(res => {
             res.articles.forEach(post => {
+              post.switch = false
               this.article.push(post)
               this.article.push({ divider: true, inset: true })
             })
