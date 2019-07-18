@@ -11,8 +11,8 @@ export default function(user, path, enterTime, exitTime){
             Email : user.email,
             Uid : user.uid,
             Path : path,
-            enterTime : enterTime,
-            exitTime : exitTime,
+            enterTime : enterTime.date,
+            exitTime : exitTime.date,
             diffTime : calcDiffOfDates(enterTime, exitTime)
           })
     }
