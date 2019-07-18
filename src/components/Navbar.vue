@@ -4,7 +4,7 @@
     <v-toolbar-side-icon
     @click="drawer = !drawer"
     ></v-toolbar-side-icon>
-    <v-toolbar-title>Menu</v-toolbar-title>
+    <v-toolbar-title>Idle</v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items class="hidden-sm-and-down">
       

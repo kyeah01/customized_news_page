@@ -10,13 +10,15 @@
       width="100%"
     >
       <v-card-text>
+        
         <v-btn
           v-for="icon in icons"
           :key="icon"
           class="mx-3 white--text"
           icon
         >
-          <v-icon size="24px">{{ icon }}</v-icon>
+          <a v-if="icon == 'fab fa-github'" href="https://lab.ssafy.com/HSx3/webmobile-sub2" target="_blank" style="color:white;"><v-icon size="24px">{{ icon }}</v-icon></a>
+          <a v-else href="#" target="_blank" style="color:white;"><v-icon size="24px">{{ icon }}</v-icon></a>
         </v-btn>
       </v-card-text>
 
@@ -29,7 +31,7 @@
       <v-divider></v-divider>
 
       <v-card-text class="white--text">
-        &copy;2018 — <strong>Vuetify</strong>
+        &copy;2019.07.08 — <strong>Idle</strong>
       </v-card-text>
     </v-card>
   </v-footer>
@@ -65,3 +67,13 @@
     }
   }
 </script>
+
+<style>
+/* .v-card__text button {
+  color: white;
+} */
+a {
+  color: white;
+  text-decoration: none;
+}
+</style>
