@@ -13,7 +13,7 @@
                     </a>
                 </div>
 
-                <v-flex mt-2>
+                <v-flex mt-5>
                     <div>
                         <p class="description">Discover the best sources for any topic</p>
                     </div>
