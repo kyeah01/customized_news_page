@@ -1,12 +1,24 @@
 <template lang="html">
   <nav>
-  <v-toolbar app>
+  <v-toolbar app color="white">
     <v-toolbar-side-icon
     @click="drawer = !drawer"
     ></v-toolbar-side-icon>
-    <v-toolbar-title>Menu</v-toolbar-title>
+    <v-toolbar-title>Idle</v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items class="hidden-sm-and-down">
+      
+      <!-- <v-btn flat input-value disabled> -->
+        <div class="box">
+          <div class="container-1">
+              <br style="height: 20.8px;">
+              <span class="icon"><i class="fa fa-search"></i></span>
+              <input type="search" id="search" placeholder="Search..." />
+          </div>
+        </div>
+        <!-- <v-icon>search</v-icon> -->
+      <!-- </v-btn> -->
+
       <v-btn
         flat
         @click.stop="dialog2 = true"
@@ -211,4 +223,85 @@ export default {
 </script>
 
 <style lang="css" scoped>
+.box{
+  /* margin: 100px auto; */
+  width: 192px;
+  height: 50px;
+}
+
+.container-1{
+  width: 192px;
+  vertical-align: middle;
+  white-space: nowrap;
+  position: relative;
+}
+
+.container-1 input#search{
+  width: 192px;
+  height: 32px;
+  position: absolute;
+  top: 85%;
+  /* background: #2b303b; */
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  font-size: 10pt;
+  float: left;
+  /* color: #63717f; */
+  /* padding-left: 45px; */
+  padding-left: 35px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+
+  -webkit-transition: background .55s ease;
+  -moz-transition: background .55s ease;
+  -ms-transition: background .55s ease;
+  -o-transition: background .55s ease;
+  transition: background .55s ease;
+}
+
+
+
+.container-1 input#search::-webkit-input-placeholder {
+   color: #65737e;
+}
+ 
+.container-1 input#search:-moz-placeholder { /* Firefox 18- */
+   color: #65737e;  
+}
+ 
+.container-1 input#search::-moz-placeholder {  /* Firefox 19+ */
+   color: #65737e;  
+}
+ 
+.container-1 input#search:-ms-input-placeholder {  
+   color: #65737e;  
+}
+
+.container-1 .icon{
+  position: absolute;
+  top: 35%;
+  margin-left: 17px;
+  margin-top: 17px;
+  z-index: 1;
+  color: #4f5b66;
+}
+
+/* .container-1 input#search:hover, .container-1 input#search:focus, .container-1 input#search:active{
+  outline:none;
+  background: #ffffff;
+}
+
+.container-1 input#search:focus, .container-1 input#search:active{
+  outline:none;
+  width: 300px;
+}
+ 
+.container-1:hover input#search{
+width: 300px;
+}
+ 
+.container-1:hover .icon{
+  color: #93a2ad;
+} */
+
 </style>

@@ -38,3 +38,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.theme--light.application {
+  background: #fff;
+}
+</style>
