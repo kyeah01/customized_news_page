@@ -1,37 +1,40 @@
 <template lang="html">
   <v-container>
-    <!-- title -->
-    <v-layout row>
-      <v-flex xs12>
-        Discover the best sources for any topic
-      </v-flex>
-    </v-layout>
     <v-layout>
       <v-flex>
         <v-form>
-          <v-text-field
-            outline
-            label="Prepend inner"
-            prepend-inner-icon="place"
-          ></v-text-field>
+            <div class="discover">
+                <div class="tabs" style="height: 40px;">
+                    <a class="item">
+                        <span style="font-size: 16px;"><v-icon class="grey--text" id="rss">fas fa-rss</v-icon>Websites</span>
+                    </a>
+                    <a class="active item">
+                        <span style="font-size: 16px;"><v-icon class="grey--text" id="google">fab fa-google</v-icon>Keyword alerts</span>
+                    </a>
+                </div>
 
-          <!-- search-box start -->
-          <div id="autocomplete" class="autocomplete">
-            <input class="autocomplete-input" placeholder="Search by topic" aria-label="Search by topic">
-            <ul class="autocomplete-result-list"></ul>
-          </div>
-          <!-- search-box end -->
+                <v-flex mt-2>
+                    <div>
+                        <p class="description">Discover the best sources for any topic</p>
+                    </div>
+                    <!-- search-box start -->
+                    <div id="autocomplete" class="autocomplete">
+                        <input class="autocomplete-input" placeholder="Search by topic" aria-label="Search by topic" autofocus>
+                        <ul class="autocomplete-result-list"></ul>
+                    </div>
+                    <!-- search-box end -->
+                </v-flex>
+            </div>
         </v-form>
       </v-flex>
     </v-layout>
-  <GitGraph/>
   </v-container>
 </template>
 <script>
 import firebase from 'firebase'
 import FirebaseService from '@/services/FirebaseService'
 import 'firebase/firestore'
-import GitGraph from '../components/GitGraph'
+
 //user log
 import timeCheck from '../timeCheck'
 import userLog from '../userLog'
@@ -45,10 +48,13 @@ export default {
     }
   },
   components: {
-    GitGraph
+    // GitGraph
   },
   created (){
     this.sDate = timeCheck()
+    window.onload = function() {
+        var input = document.getElementById("autocomplete").focus();
+    }
    },
    mounted(){
      this.loadAutoComplete()
@@ -91,6 +97,55 @@ export default {
 </script>
 
 <style lang="css" scoped>
+.discover .tabs {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    margin-top: 36px;
+}
+
+.discover .tabs .item {
+    color: #9e9e9e;
+    cursor: pointer;
+    /* display: inline; */
+    display: block;
+    float: left;
+    font-weight: normal;
+    margin-right: 16px;
+    margin-bottom: -1px;
+    border-bottom: 1px solid transparent;
+}
+
+input::-webkit-input-placeholder { 
+    color: #9e9e9e; 
+}
+
+.fa-rss:before {
+    width: 24px;
+    margin-right: 4px;
+}
+
+.discover .description {
+    color: #757575;
+    font-size: 1.25rem;
+    font-weight: 300;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.discover .tabs .active {
+    color: #9e9e9e;
+    cursor: pointer;
+    /* display: inline; */
+    font-weight: normal;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.fa-google:before {
+    width: 24px;
+    margin-right: 4px;
+}
+
 /* #autocomplete {
   width: 100%;
   height: 56px;
@@ -112,7 +167,9 @@ export default {
     line-height:1.5;
     flex:1;
     background-color:#fff;
-    background-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNjY2IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PGNpcmNsZSBjeD0iMTEiIGN5PSIxMSIgcj0iOCIvPjxwYXRoIGQ9Ik0yMSAyMWwtNC00Ii8+PC9zdmc+");
+    /* background-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNjY2IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PGNpcmNsZSBjeD0iMTEiIGN5PSIxMSIgcj0iOCIvPjxwYXRoIGQ9Ik0yMSAyMWwtNC00Ii8+PC9zdmc+"); */
+    background-image:url("../assets/search-solid.svg");
+    
     background-repeat:no-repeat;
     background-position:12px
 }
