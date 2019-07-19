@@ -98,7 +98,7 @@
     </v-toolbar-items>
   </v-toolbar>
 
-  <v-navigation-drawer app v-model="drawer" style="background-color: #d9d9d9;">
+  <v-navigation-drawer app stateless v-model="drawer" style="background-color: #d9d9d9;">
     <!-- <v-toolbar flat> -->
       <v-list>
         <v-list-tile>
