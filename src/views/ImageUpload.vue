@@ -3,12 +3,16 @@
   <!-- <img id="image" :src="photoURL ? imageSrc : 'http://dy.gnch.or.kr/img/no-image.jpg' " /> -->
   <img id="image" :src="imageSrc" />
   <br>
-  <input id="file" @change="upload" type="file" />
+  <input @change="upload" id="hiddenEvent" type="file"/>
+  <v-btn input-value outline small text--grey id="file" @click="call" type="file" style="color: #757575; border: 1px solid rgba(0, 0, 0, 0.15);">choose file</v-btn>
+  <v-btn outline small text--grey @click="remove" style="color: #757575; border: 1px solid rgba(0, 0, 0, 0.15);">remove image</v-btn>
+  <v-btn outline small text--grey @click="delete_account" style="color: #757575; border: 1px solid rgba(0, 0, 0, 0.15);">delete account</v-btn>
 </div>
 </template>
 
 <script>
 import firebase from 'firebase'
+import FirebaseService from '@/services/FirebaseService'
 
 export default {
   data() {
@@ -30,10 +34,9 @@ export default {
     });
   },
   methods: {
-    upload() {
+    upload : function() {
       var file = document.getElementById("file");
       var image = document.getElementById("image");
-      console.log("1");
 
       var target = event.currentTarget;
       // console.log(target.files)
@@ -78,11 +81,42 @@ export default {
         // console.log(target.files[0])
       };
 
+    },
+    remove() {
+      console.log("remove")
+      this.imageSrc = "https://source.unsplash.com/random"
+
+      var userinfo = firebase.auth().currentUser
+      Object.defineProperty(userinfo, 'photoURL', {
+              writable: true
+            });
+      userinfo.updateProfile ({
+              photoURL: this.imageSrc,
+            })
+    },
+    delete_account() {
+      FirebaseService.Delete()
+      
+    },
+    call : async function(){
+      $('#hiddenEvent').click()
     }
   }
 }
 </script>
 
 <style>
+    #image {
+        height: 118px;
+        width: 118px;
+        border-radius: 50%;
+    }
 
+    .picture-upload div button .v-btn__content {
+      color: #757575;
+    } 
+
+    #hiddenEvent{
+      display: none
+    }
 </style>

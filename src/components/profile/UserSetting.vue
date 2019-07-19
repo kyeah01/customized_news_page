@@ -3,6 +3,7 @@
     <div v-if="drawer">
     <v-navigation-drawer
             app
+            stateless
             v-model="drawer"
             right
             style="width:83vw"
@@ -51,6 +52,7 @@
     <div v-else>
           <v-navigation-drawer
             app
+            stateless
             v-model="drawer"
             right
           >
