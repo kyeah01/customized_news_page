@@ -1,4 +1,5 @@
 <template lang="html">
+<div>
   <v-container>
     <!-- title -->
     <v-layout row>
@@ -26,13 +27,19 @@
       </v-flex>
     </v-layout>
   <GitGraph/>
+
   </v-container>
+  <Footer/>
+  </div>
 </template>
+
 <script>
 import firebase from 'firebase'
 import FirebaseService from '@/services/FirebaseService'
 import 'firebase/firestore'
 import GitGraph from '../components/GitGraph'
+import Footer from '../components/Footer'
+
 //user log
 import timeCheck from '../timeCheck'
 import userLog from '../userLog'
@@ -46,7 +53,8 @@ export default {
     }
   },
   components: {
-    GitGraph
+    GitGraph,
+    Footer,
   },
   created (){
     this.sDate = timeCheck()

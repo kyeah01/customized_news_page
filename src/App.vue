@@ -3,7 +3,6 @@
     <Navbar></Navbar>
     <LoginCheck/>
     <router-view></router-view>
-    <Footer/>
   </v-app>
 </template>
 
@@ -11,14 +10,12 @@
 import Navbar from './components/Navbar'
 import LoginCheck from './components/LoginCheck'
 import SignUp from './components/SignUp'
-import Footer from './components/Footer'
 
 export default {
   name: 'App',
   components: {
     Navbar,
     LoginCheck,
-    Footer,
   },
   data () {
     return {
