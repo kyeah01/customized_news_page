@@ -2,6 +2,7 @@
 <div>
   <!-- <img id="image" :src="photoURL ? imageSrc : 'http://dy.gnch.or.kr/img/no-image.jpg' " /> -->
   <img id="image" :src="imageSrc" />
+
   <br>
   <input @change="upload" id="hiddenEvent" type="file"/>
   <v-btn input-value outline small text--grey id="file" @click="call" type="file" style="color: #757575; border: 1px solid rgba(0, 0, 0, 0.15);">choose file</v-btn>
@@ -35,6 +36,7 @@ export default {
   },
   methods: {
     upload : function() {
+      this.imageSrc = 'https://i.gifer.com/embedded/download/KgkV.gif'
       var file = document.getElementById("file");
       var image = document.getElementById("image");
 
