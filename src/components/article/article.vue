@@ -18,7 +18,7 @@
               v-else
               :key="item.title"
               avatar
-              @click="translater(item.title)"
+              @click="call(index,item)"
             >
               <v-list-tile-avatar>
                 <!-- <img :src="item.avatar"> -->
@@ -43,6 +43,14 @@
         </v-list>
       </v-card>
     </v-flex>
+    <div>
+      <ArticleDetail
+       :drawer = parentDrawer
+       :detail = this.parentDetail
+       @right_drawer = "update"
+       >
+      </ArticleDetail>
+    </div>
   </v-layout>
 </template>
 
@@ -50,12 +58,16 @@
 import FirebaseService from '@/services/FirebaseService'
 import 'firebase/firestore'
 import { async, Promise } from 'q';
+import ArticleDetail from '@/components/article/ArticleDetail'
 
 // news api 로드
 const NewsAPI = require('newsapi');
 const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
 
   export default {
+    components : {
+      ArticleDetail
+    },
     data () {
       return {
         article : [{header:'today'}],
@@ -64,7 +76,10 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
         busy: false,
         limit: 20,
         pageSize: 20,
-        page: 0
+        page: 0,
+
+        parentDrawer : false,
+        parentDetail : ''
       }
     },
     created(){
@@ -115,6 +130,14 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
           // 만약 everythig을 사용하는 것이 적절하다면 현재 구현되지 않은 everythigArticle을 구현한 다음 이 부분에서 분기하여주는 것이 적절합니다.
 
           // 또한, topheadlines는 from, to를 통해 날짜 필터링 검색이 가능합니다.
+        },
+        call : function(index,item){
+          alert(index)
+          this.parentDetail=item
+          this.update()
+        },
+        update(){
+        this.parentDrawer = !this.parentDrawer
         }
      }  
   }

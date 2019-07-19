@@ -19,16 +19,16 @@
             </v-btn>
           </v-card-actions>
         </v-container>
-
+        {{event}}
         <div>
           <General v-if="this.dir===1"
             :drawer = parentDrawer
             @right_drawer = "update">
           </General>
-          <!-- <Preview v-if="this.dir===2"
+          <Preview v-else-if="this.dir===2"
             :drawer = parentDrawer
             @right_drawer = "update">
-          </Preview>
+          </Preview><!--
           <Intergrations v-else-if="this.dir===3"
             :drawer = parentDrawer
             @right_drawer = "update">
@@ -53,7 +53,7 @@
 
 <script>
 import General from '@/components/profile/General'
-// import Preview from '@/components/profile/Preview'
+import Preview from '@/components/profile/Preview'
 // import Intergrations from '@/components/profile/Intergrations'
 // import Read from '@/components/profile/Read'
 // import Appearance from '@/components/profile/Appearance'
@@ -62,8 +62,8 @@ export default {
   props : ['title','icon','event'],
   components: {
       General,
+      Preview,
       // UserSetting,
-      // Preview,
       // Read,
       // Appearance,
       UserSetting

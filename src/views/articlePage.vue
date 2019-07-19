@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import articles from '../components/article.vue'
+import articles from '../components/article/article.vue'
 import firebase from 'firebase'
 import FirebaseService from '@/services/FirebaseService'
 import 'firebase/firestore'
