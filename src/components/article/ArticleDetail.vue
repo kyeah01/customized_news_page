@@ -1,0 +1,103 @@
+<template>
+  <div>
+    <div v-if="drawer">
+      <v-navigation-drawer
+            app
+            stateless
+            v-model="drawer"
+            right
+            style="width:83vw"
+      >
+        <section class="container630 centered">
+          <h1>
+            <div class="kicker">ArticleDetail</div>
+            <div class="heading">Example</div>
+          </h1>
+
+          {{detail}}        
+        <v-btn class="green white--text" @click="test">Save changes</v-btn>
+        </section>
+      </v-navigation-drawer>
+    </div>
+    
+    <div v-else>
+          <v-navigation-drawer
+            app
+            stateless
+            v-model="drawer"
+            right
+          >
+          </v-navigation-drawer>
+    </div>
+  </div>
+</template>
+
+<script>
+import('@/assets/profileCss.css')
+export default {
+    props : ['drawer','detail'],
+    methods :{
+        test(){
+          this.$emit('right_drawer')
+        }
+    },
+    data(){
+      return{
+        data2 : true,
+        item :[
+          {title : 'title1', 
+           subtitle : 'subtitle1',
+           checkbox : [
+             {
+               index : 1,
+               content : "test1",
+               value : true
+             },
+              {
+               index : 2,
+               content : "test2",
+               value : false
+             },
+              {
+               index : 3,
+               content : "test3",
+               value : false
+             }
+            ]
+          },
+           {title : 'title2', 
+           subtitle : 'subtitle2',
+           checkbox : [
+             {
+               index : 4,
+               content : "test4",
+               value : true
+             },
+              {
+               index : 5,
+               content : "test5",
+               value : false
+             }
+            ]
+          },
+          {title : 'title3', 
+           subtitle : 'subtitle4',
+           checkbox : [
+             {
+               index : 4,
+               content : "test6",
+               value : false
+             },
+              {
+               index : 5,
+               content : "test7",
+               value : true
+             }
+            ]
+          }
+        ]
+      }
+    }
+    
+}
+</script>
