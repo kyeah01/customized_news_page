@@ -2,7 +2,9 @@
   <v-app>
     <Navbar></Navbar>
     <LoginCheck/>
-    <router-view></router-view>
+    <v-content>
+      <router-view></router-view>
+    </v-content>
   </v-app>
 </template>
 

@@ -10,28 +10,11 @@
       >
         <section class="container630 centered">
           <h1>
-            <div class="kicker">General</div>
+            <div class="kicker">Preview</div>
             <div class="heading">Example</div>
           </h1>
 
-          <v-layout row wrap>
-            <v-flex xs8>
-              <div class="form profile mb-2">
-                    <div class="text-fields">
-                      <v-container fluid>
-                      <v-flex class="field" v-for="i in item" :key=i.num>
-                        <label>{{i.title}}</label>
-                        <span class="grey--text">{{i.subtitle}}</span><br/>
-                        <template v-for="k in i.checkbox">
-                          <v-checkbox v-model="k.value" :label="`${k.content}`"></v-checkbox>
-                        </template>
-                      </v-flex>
-                      </v-container>
-                    </div>
-              </div>
-            </v-flex>
-          </v-layout>
-
+         
         
         <v-btn class="green white--text" @click="test">Save changes</v-btn>
         </section>
@@ -60,6 +43,7 @@ export default {
     },
     data(){
       return{
+        data2 : true,
         item :[
           {title : 'title1', 
            subtitle : 'subtitle1',
@@ -93,25 +77,20 @@ export default {
                index : 5,
                content : "test5",
                value : false
-             },
-              {
-               index : 6,
-               content : "test6",
-               value : false
              }
             ]
           },
-           {title : 'title3', 
-           subtitle : 'subtitle3',
+          {title : 'title3', 
+           subtitle : 'subtitle4',
            checkbox : [
              {
-               index : 7,
-               content : "test7",
+               index : 4,
+               content : "test6",
                value : false
              },
               {
-               index : 8,
-               content : "test8",
+               index : 5,
+               content : "test7",
                value : true
              }
             ]
