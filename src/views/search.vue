@@ -1,92 +1,93 @@
 <template lang="html">
-<div>
-  <v-container>
-    <!-- title -->
-    <v-layout row>
+
+
+  <v-container grid-list-xs>
+    <v-layout row wrap>
       <v-flex xs12>
-        Discover the best sources for any topic
+        <!-- 주석입니다. -->
+        <div id="autocomplete" class="autocomplete">
+          <input id="input-search" 
+                class="autocomplete-input" 
+                placeholder="Search for a country" 
+                aria-label="Search for a country"
+                v-model="inputVal"
+                @keyup.enter="search">
+          <ul class="autocomplete-result-list"></ul>
+        </div>
       </v-flex>
     </v-layout>
-    <v-layout>
-      <v-flex>
-        <v-form>
-          <v-text-field
-            outline
-            label="Prepend inner"
-            prepend-inner-icon="place"
-          ></v-text-field>
-
-
-          <!-- search-box start -->
-          <div id="autocomplete" class="autocomplete">
-            <input class="autocomplete-input" placeholder="Search by topic" aria-label="Search by topic">
-            <ul class="autocomplete-result-list"></ul>
-          </div>
-          <!-- search-box end -->
-        </v-form>
+    <v-layout row wrap>
+      <v-flex xs12>
+         <sourceList :data="resultSearch"></sourceList>
       </v-flex>
     </v-layout>
-  <GitGraph/>
-
+    
   </v-container>
-  <Footer/>
-  </div>
+
+
+
 </template>
 
 <script>
-import firebase from 'firebase'
-import FirebaseService from '@/services/FirebaseService'
-import 'firebase/firestore'
-import GitGraph from '../components/GitGraph'
-import Footer from '../components/Footer'
-
-//user log
-import timeCheck from '../timeCheck'
-import userLog from '../userLog'
+import axios from 'axios'
+import sourceList from '@/components/search/sourceList'
 export default {
-  data(){
+    components:{
+        sourceList
+    },
+  data() {
     return {
-      sDate : null,
-      eDate : null,
-      path : '/',
-      words:null
+      sources:null,
+      sourceNames:null,
+      words:null,
+      inputVal:"", 
+      resultSearch:null,
     }
   },
-  components: {
-    GitGraph,
-    Footer,
-  },
-  created (){
-    this.sDate = timeCheck()
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        this.$router.push('/article')
-      }
-    })
-   },
-   mounted(){
-     this.loadAutoComplete()
+  async mounted() {
+    await axios.get('https://newsapi.org/v2/sources?apiKey=a0be542239a6455995a8cf063ff0f17d')
+      .then( r=> {
+          this.sources = r.data.sources
+          
+          this.sourceNames = []
+          r.forEach(element => {
+          this.sourceNames.push(element.name)
+          });
+        })
 
-     var filePath = 'https://raw.githubusercontent.com/dwyl/autocomplete/master/words.txt'
-     var words = this.loadFile(filePath)
-     this.words = words.split('\n')
+    this.loadAutoComplete()
 
-   },
-  destroyed(){
-    this.eDate = timeCheck()
-    //save user log on firebase
-    var user=firebase.auth().currentUser
-    userLog(user, this.path, this.sDate, this.eDate)
+    var filePath = 'https://raw.githubusercontent.com/dwyl/autocomplete/master/words.txt'
+    var words = this.loadFile(filePath)
+    words = words.split('\n')
+    this.words = words
+    
   },
   methods: {
+    search(){
+      var input = document.getElementById("input-search").value
+      this.resultSearch = []
+      
+      this.sources.forEach(element =>{
+        
+        if( element.name.toLowerCase().indexOf(input.toLowerCase()) != -1 ){
+          this.resultSearch.push(element)
+        }
+      })
+      console.log(this.resultSearch);
+    },
     loadAutoComplete: function() {
       new Autocomplete('#autocomplete', {
         search: input => {
           if (input.length < 2) {
             return []
           }
-          return this.words.filter(country => {
-            return country.toLowerCase()
+
+          var searchable = this.sourceNames.concat(this.words)
+
+
+          return searchable.filter(keyword => {
+            return keyword.toLowerCase()
               .startsWith(input.toLowerCase())
           })
         }
@@ -107,6 +108,61 @@ export default {
 </script>
 
 <style lang="css" scoped>
+.border-green{
+  border : 1px solid #64DD17;
+}
+.margin-30{
+  margin : 10px;
+}
+.discover .tabs {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    margin-top: 36px;
+}
+
+.discover .tabs .item {
+    color: #9e9e9e;
+    cursor: pointer;
+    /* display: inline; */
+    display: block;
+    float: left;
+    font-weight: normal;
+    margin-right: 16px;
+    margin-bottom: -1px;
+    border-bottom: 1px solid transparent;
+}
+
+input::-webkit-input-placeholder { 
+    color: #9e9e9e; 
+}
+
+.fa-rss:before {
+    width: 24px;
+    margin-right: 4px;
+}
+
+.discover .description {
+    color: #757575;
+    font-size: 1.25rem;
+    font-weight: 300;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.discover .tabs .active {
+    color: #9e9e9e;
+    cursor: pointer;
+    /* display: inline; */
+    font-weight: normal;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.fa-google:before {
+    width: 24px;
+    margin-right: 4px;
+}
+
 /* #autocomplete {
   width: 100%;
   height: 56px;
@@ -128,7 +184,9 @@ export default {
     line-height:1.5;
     flex:1;
     background-color:#fff;
-    background-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNjY2IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PGNpcmNsZSBjeD0iMTEiIGN5PSIxMSIgcj0iOCIvPjxwYXRoIGQ9Ik0yMSAyMWwtNC00Ii8+PC9zdmc+");
+    /* background-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNjY2IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PGNpcmNsZSBjeD0iMTEiIGN5PSIxMSIgcj0iOCIvPjxwYXRoIGQ9Ik0yMSAyMWwtNC00Ii8+PC9zdmc+"); */
+    background-image:url("../assets/search-solid.svg");
+    
     background-repeat:no-repeat;
     background-position:12px
 }
@@ -207,3 +265,4 @@ export default {
 
 @keyframes rotate{0%{transform:translateY(-50%) rotate(0deg)}to{transform:translateY(-50%) rotate(359deg)}}
 </style>
+
