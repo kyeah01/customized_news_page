@@ -25,6 +25,7 @@ export default {
   },
   created (){
     this.sDate= timeCheck()
+    FirebaseService.Userstatus()
    },
   destroyed(){
     this.eDate= timeCheck()

@@ -72,8 +72,8 @@
                     <v-card-title class="headline">Sign Up</v-card-title>
 
                     <v-card-text>
-                        <input style="width:100%; height:50px;" type="text" v-model="email" placeholder="Email"><br>
-                        <input style="width:100%; height:50px;" type="password" v-model="password" placeholder="Password"><br>
+                        <input style="width:100%; height:50px;" type="text" v-model="signupemail" placeholder="Email"><br>
+                        <input style="width:100%; height:50px;" type="password" v-model="signuppassword" placeholder="Password"><br>
                     </v-card-text>
 
                     <v-card-actions>
@@ -151,6 +151,8 @@ export default {
   },
   data() {
     return {
+      signupemail: "",
+      signuppassword: "",
       email: "",
       password: "",
       userinfo: "",
@@ -192,18 +194,30 @@ export default {
       this.$router.push('/' + addr)
     },
     Login: function() {
-      firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(() => {
-        alert('Well done ! You are now connected')
-      })
+      firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
+        (user) => {
+          alert('Well done ! You are now connected')
+          this.email = ""
+          this.password = ""
+        },
+        (err) => {
+          alert('Oops, ' + err.message)
+          this.dialog2 = true
+        }  
+      )
     },
     SignUp: function() {
-      firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(
-        function (user) {
+      firebase.auth().createUserWithEmailAndPassword(this.signupemail, this.signuppassword).then(
+        (user) => {
           alert('created!!')
+          this.dialog2 = false
+          this.signupemail = ""
+          this.signuppassword = ""
           },
-          function (err) {
-            alert('Oops, ' + err.message)
-          }
+        (err) => {
+          alert('Oops, ' + err.message)
+          this.dialog1 = true
+        }
       );
     },
     Logout: function() {
@@ -214,8 +228,10 @@ export default {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
           this.userinfo = user
+          console.log(user)
       } else {
         this.userinfo = ""
+        console.log("Logout")
       }
     });
   }
