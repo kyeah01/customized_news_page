@@ -58,6 +58,11 @@ export default {
   },
   created (){
     this.sDate = timeCheck()
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.$router.push('/article')
+      }
+    })
    },
    mounted(){
      this.loadAutoComplete()
