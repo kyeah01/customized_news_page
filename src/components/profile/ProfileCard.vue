@@ -47,6 +47,22 @@
           </UserSetting>
 
         </div>
+        <!-- 스낵바 수정 -->
+        <v-snackbar
+          v-model="snackbar"
+          :bottom="y === 'bottom'"
+          :right="x === 'right'"
+          :timeout="timeout"
+        >
+          {{ text }}
+          <v-btn
+            color="pink"
+            flat
+            @click="snackbar = false"
+          >
+            Close
+          </v-btn>
+        </v-snackbar>
     </v-card>
 
 </template>
@@ -71,7 +87,13 @@ export default {
   data(){
     return{
       parentDrawer:false,
-      dir : this.event
+      dir : this.event,
+      // 스낵바 수정
+      snackbar : false,
+      y: 'bottom',
+      x: 'right',
+      timeout: 3000,
+      text: 'Success Modify'
     }
   },
   methods : {
@@ -80,6 +102,9 @@ export default {
     },
     update(){
       this.parentDrawer = !this.parentDrawer
+      if(!this.parentDrawer){
+        this.snackbar=true
+      }
     }
   }
 }

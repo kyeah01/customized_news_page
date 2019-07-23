@@ -2,7 +2,7 @@
   <v-container fluid :grid-list-md="!$vuetify.breakpoint.xs">
     <v-layout wrap row>
       <!-- 상위 대쉬보드 4개 -->
-      <v-flex xs12 sm6 md3 v-for="i in 4" class="pb-2">
+      <v-flex xs12 sm6 md3 v-for="t in tCards" class="pb-2">
         <v-card>
         <v-container>
           <v-layout wrap now>

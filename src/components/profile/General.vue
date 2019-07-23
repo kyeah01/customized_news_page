@@ -31,9 +31,9 @@
               </div>
             </v-flex>
           </v-layout>
-
         
         <v-btn class="green white--text" @click="test">Save changes</v-btn>
+       
         </section>
       </v-navigation-drawer>
     </div>
@@ -52,10 +52,11 @@
 
 <script>
 export default {
-    props : ['drawer'],
+    props : ['drawer','snackbar'],
     methods :{
         test(){
           this.$emit('right_drawer')
+          console.log('right_drawer')
         }
     },
     data(){
