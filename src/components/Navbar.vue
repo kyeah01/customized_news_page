@@ -2,7 +2,7 @@
   <nav>
   <v-toolbar app color="white">
     <v-toolbar-side-icon
-    @click="drawer = !drawer"
+    @click="drawer=!drawer"
     ></v-toolbar-side-icon>
     <v-toolbar-title>Idle</v-toolbar-title>
     <v-spacer></v-spacer>
@@ -13,11 +13,15 @@
           <div class="container-1">
               <br style="height: 20.8px;">
               <span class="icon"><i class="fa fa-search"></i></span>
-              <input type="search" id="search" placeholder="Search..." />
+              <input 
+                      v-model="searchWord"
+                      type="search" 
+                      id="search" 
+                      placeholder="Search..." 
+                      @keydown.enter="search"/>
           </div>
         </div>
-        <!-- <v-icon>search</v-icon> -->
-      <!-- </v-btn> -->
+
 
       <v-btn
         flat
@@ -128,11 +132,13 @@
        </v-list-tile-content>
      </v-list-tile>
    </v-list>
-
-    <v-footer class="justify-center pl-0" height="51" inset app style="background-color: #2bb24c">
-        <v-icon class="white--text mr-1">add</v-icon>
+    <v-spacer></v-spacer>
+    <!-- <v-footer class="justify-center pl-0" height="51" inset app style="background-color: #2bb24c"> -->
+    <v-btn to="/addcontent" flat color="#2bb24c" class="test">
+      <v-icon class="white--text mr-1">add</v-icon>
         <span class="white--text" style="font-size: 12px;">ADD CONTENT</span>
-    </v-footer>
+    </v-btn>
+    <!-- </v-footer> -->
   </v-navigation-drawer>
   </nav>
 </template>
@@ -142,8 +148,9 @@ import firebase from 'firebase'
 import FirebaseService from '@/services/FirebaseService'
 import GoogleLogin from './GoogleLogin'
 import FacebookLogin from './FacebookLogin'
-
+import eventBus from '../eventBus'
 const axios = require('axios');
+
 export default {
   components: {
     GoogleLogin,
@@ -160,6 +167,8 @@ export default {
       dialog2: false,
       weather: [],
       drawer: false,
+      // navbar search
+      searchWord:"",
       items: [{
           title: 'Home',
           icon: 'dashboard',
@@ -182,6 +191,11 @@ export default {
           routerTo: 'admin'
         },
         {
+          title: 'addContent',
+          icon: 'question_answer',
+          routerTo: 'addcontent'
+        },
+        {
           title: 'Test Space',
           icon: 'question_answer',
           routerTo: 'test'
@@ -190,6 +204,9 @@ export default {
     }
   },
   methods: {
+    search:function(){
+      this.$router.push('/addcontent/' + this.searchWord)
+    },
     goto: function(addr) {
       this.$router.push('/' + addr)
     },
@@ -227,7 +244,7 @@ export default {
     },
     Logout: function() {
       FirebaseService.Logout()
-    },
+    }
   },
   created() {
     firebase.auth().onAuthStateChanged((user) => {
@@ -238,12 +255,25 @@ export default {
         this.userinfo = ""
         console.log("Logout")
       }
-    });
+    })
+  },
+  watch : {
+    drawer : function(drawer){
+    eventBus.$on("leftDrawer", navSign=>{
+      if(navSign){
+        this.drawer=false
+      }
+    })
+    }
   }
 }
 </script>
 
 <style lang="css" scoped>
+.test{
+  display: block;
+   width: 100%;
+}
 .box{
   /* margin: 100px auto; */
   width: 192px;

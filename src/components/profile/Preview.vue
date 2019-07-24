@@ -40,72 +40,77 @@
 
 <script>
 export default {
-    props : ['drawer'],
-    methods :{
-        test1(){
-          this.$emit('right_drawer')
-        },
-        test2(){
-          this.$emit('close_drawer')
-        },
-    },
-    data(){
-      return{
-        data2 : true,
-        item :[
-          {title : 'title1', 
-           subtitle : 'subtitle1',
-           checkbox : [
-             {
-               index : 1,
-               content : "test1",
-               value : true
-             },
-              {
-               index : 2,
-               content : "test2",
-               value : false
-             },
-              {
-               index : 3,
-               content : "test3",
-               value : false
-             }
-            ]
-          },
-           {title : 'title2', 
-           subtitle : 'subtitle2',
-           checkbox : [
-             {
-               index : 4,
-               content : "test4",
-               value : true
-             },
-              {
-               index : 5,
-               content : "test5",
-               value : false
-             }
-            ]
-          },
-          {title : 'title3', 
-           subtitle : 'subtitle4',
-           checkbox : [
-             {
-               index : 4,
-               content : "test6",
-               value : false
-             },
-              {
-               index : 5,
-               content : "test7",
-               value : true
-             }
-            ]
-          }
-        ]
-      }
+  props : ['drawer'],
+  computed: {
+    test3: function() {
+      console.log('come')
     }
+  },
+  methods :{
+      test1(){
+        this.$emit('right_drawer')
+      },
+      test2(){
+        this.$emit('close_drawer')
+      },
+  },
+  data(){
+    return{
+      data2 : true,
+      item :[
+        {title : 'title1', 
+          subtitle : 'subtitle1',
+          checkbox : [
+            {
+              index : 1,
+              content : "test1",
+              value : true
+            },
+            {
+              index : 2,
+              content : "test2",
+              value : false
+            },
+            {
+              index : 3,
+              content : "test3",
+              value : false
+            }
+          ]
+        },
+          {title : 'title2', 
+          subtitle : 'subtitle2',
+          checkbox : [
+            {
+              index : 4,
+              content : "test4",
+              value : true
+            },
+            {
+              index : 5,
+              content : "test5",
+              value : false
+            }
+          ]
+        },
+        {title : 'title3', 
+          subtitle : 'subtitle4',
+          checkbox : [
+            {
+              index : 4,
+              content : "test6",
+              value : false
+            },
+            {
+              index : 5,
+              content : "test7",
+              value : true
+            }
+          ]
+        }
+      ]
+    }
+  },
     
 }
 </script>

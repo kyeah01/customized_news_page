@@ -2,8 +2,8 @@
   <v-layout row>
     <v-flex xs12 sm6 offset-sm3>
         <v-card v-infinite-scroll="leadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="limit">
-        <v-list two-line>
-          <template v-for="(item, index) in article">
+        
+        <v-flex xs12 class="margin-30" v-for="(item, index) in article" :key="item.title">
             <v-subheader v-if="item.header" :key="item.header">
               {{ item.header }}
             </v-subheader>
@@ -14,33 +14,26 @@
               :inset="item.inset"
             ></v-divider>
 
-            <v-list-tile
-              v-else
-              :key="item.title"
-              avatar
-              @click="call(index,item)"
-            >
-              <v-list-tile-avatar>
-                <!-- <img :src="item.avatar"> -->
-                  <!-- <v-switch v-model="item.switch"></v-switch> -->
-                  <v-btn flat icon color="green" @click="translater(index)">
-                    <v-icon>cached</v-icon>
-                  </v-btn>
+                <v-card v-else :key="item.title">
+                   <v-card-title primary-title>
+                      <div>
+                        <span class="headline">{{item.title}}</span>
+                      <span>
+                          <v-icon @click="mark_as_read(item)">fas fa-check</v-icon>
+                          <v-icon @click="read_later(item)">far fa-bookmark</v-icon>
+                          <!-- <v-btn class="border-green" flat color="light-green accent-4">Follow</v-btn> -->
+                      </span>
+                        <div>{{item.author}}</div>
+                        <span>{{item.description}}</span>
+                      </div>
+                    </v-card-title>
+                    <v-card-actions>
 
-              </v-list-tile-avatar>
+              </v-card-actions>
+                </v-card>
 
+              </v-flex>
 
-              <v-list-tile-content>
-                <v-list-tile-title v-html="item.title"></v-list-tile-title>
-                <v-list-tile-sub-title>
-                <span class="text--primary">{{item.author}}</span>
-                  &mdash;
-                  {{item.description}}
-                </v-list-tile-sub-title>
-              </v-list-tile-content>
-            </v-list-tile>
-          </template>
-        </v-list>
       </v-card>
     </v-flex>
     <div>
@@ -55,6 +48,7 @@
 </template>
 
 <script>
+import firebase from 'firebase'
 import FirebaseService from '@/services/FirebaseService'
 import 'firebase/firestore'
 import { async, Promise } from 'q';
@@ -84,6 +78,7 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
     },
     created(){
       this.leadMore()
+      console.log('article정보', this.article)
     },
     methods: {
         translater: function (idx) {
@@ -135,10 +130,25 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
           alert(index)
           this.parentDetail=item
           this.update()
+          
         },
         update(){
         this.parentDrawer = !this.parentDrawer
+        },
+        mark_as_read(item) {
+          var user = firebase.auth().currentUser
+          console.log(user.uid)
+          firebase.firestore().collection('Userinfo').doc(user.uid).update({
+            markasread: firebase.firestore.FieldValue.arrayUnion({title: item.title, author: item.author, description: item.description})
+          })
+        },
+        read_later(item) {
+          var user = firebase.auth().currentUser
+          firebase.firestore().collection('Userinfo').doc(user.uid).update({
+            readlater: firebase.firestore.FieldValue.arrayUnion({title: item.title, author: item.author, description: item.description})
+          })
         }
+
      }  
   }
 </script>

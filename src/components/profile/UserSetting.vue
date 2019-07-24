@@ -45,7 +45,9 @@
                 </div>
                 </v-flex>
               </v-layout>
-              <v-btn class="green white--text" @click="test">Save changes</v-btn>
+              <template @loading="setTheimgSrc">{{imageSrc}}</template>
+                <v-btn class="green white--text" @click="saveTheChange">Save changes</v-btn>
+                <v-btn class="red white--text" @click="dontSaveNClose">Close</v-btn>
             </section>
           </v-navigation-drawer>
     </div>
@@ -67,20 +69,40 @@ import FirebaseService from '@/services/FirebaseService'
 import ImgUpload from '@/components/profile/ImgUpload'
 import('@/assets/profileCss.css')
 
+
 export default {
-    props : ['drawer'],
+  props : ['drawer'],
     components : {
-        ImgUpload
+      ImgUpload
     },
     data(){
       return{
-        email : ''
+        email : '',
+        imageSrc: 'default'
       }
     },
     methods :{
-        test(){
+      setTheimgSrc: function (imageSrc) {
+        this.imageSrc = imageSrc
+        console.log(imageSrc)
+        console.log(this.imageSrc)
+      },
+      saveTheChange(){
+        console.log(this.imageSrc)
+        var userinfo = firebase.auth().currentUser
+        // save하는 순간 image 변경하게 하는 코드 작동해야 함.
+          Object.defineProperty(userinfo, 'photoURL', {
+            writable: true
+            })
+          userinfo.updateProfile ({
+            photoURL: this.imageSrc
+            })
+          // drawer 값 전달하여 navigation drawer를 작동하게 함.
+            // this.$emit('right_drawer')
+        },
+        dontSaveNClose (){
           this.$emit('right_drawer')
-        }
+        },
     },
     created(){
        firebase.auth().onAuthStateChanged((user) => {                   

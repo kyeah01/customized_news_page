@@ -75,6 +75,8 @@ import Preview from '@/components/profile/Preview'
 // import Read from '@/components/profile/Read'
 // import Appearance from '@/components/profile/Appearance'
 import UserSetting from '@/components/profile/UserSetting'
+import eventBus from '../../eventBus'
+
 export default {
   props : ['title','icon','event'],
   components: {
@@ -94,13 +96,14 @@ export default {
       y: 'bottom',
       x: 'right',
       timeout: 3000,
-      text: 'Success Modify'
+      text: 'Success Modify',
+      navSign : false
     }
   },
   methods : {
     test(){
-      // this.update()
-      this.parentDrawer = !this.parentDrawer
+      this.update()
+      eventBus.$emit("leftDrawer", !this.navSign)
     },
     update(){
       this.parentDrawer = !this.parentDrawer
