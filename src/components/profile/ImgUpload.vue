@@ -51,19 +51,19 @@ export default {
       xmlHttpRequest.onreadystatechange = () => {
 
         if (xmlHttpRequest.readyState == 4) {
-          console.log("3")
+          // console.log("3")
 
           if (xmlHttpRequest.status == 200) {
-            console.log("4");
+            // console.log("4");
             var result = JSON.parse(xmlHttpRequest.responseText);
             this.imageSrc = result.data.link;
-            console.log(this.imageSrc)
+            // console.log(this.imageSrc)
 
-            var userinfo = firebase.auth().currentUser
+            // var userinfo = firebase.auth().currentUser
 
-            Object.defineProperty(userinfo, 'photoURL', {
-              writable: true
-            });
+            // Object.defineProperty(userinfo, 'photoURL', {
+            //   writable: true
+            // });
 
             this.thumnail = result.data.link;
                         
@@ -72,16 +72,17 @@ export default {
             // console.log(userinfo);
 
             // console.log(firebase.auth().currentUser);
-            userinfo.updateProfile ({
-              photoURL: this.imageSrc,
-            })
+            // userinfo.updateProfile ({
+            //   photoURL: this.imageSrc,
+            // })
+            this.$emit('saveTheChange', this.imageSrc)
           } else {
             alert("업로드 실패");
             this.imageSrc = "http://dy.gnch.or.kr/img/no-image.jpg";
           }
         }
         // console.log(target.files[0])
-      };
+      }
 
     },
     remove() {
