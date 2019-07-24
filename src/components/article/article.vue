@@ -144,6 +144,7 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
         },
         read_later(item) {
           var user = firebase.auth().currentUser
+          console.log(user.uid)
           firebase.firestore().collection('Userinfo').doc(user.uid).update({
             readlater: firebase.firestore.FieldValue.arrayUnion({title: item.title, author: item.author, description: item.description})
           })
