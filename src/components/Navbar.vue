@@ -233,7 +233,9 @@ export default {
           console.log(1)
           console.log(cred)
           firebase.firestore().collection('Userinfo').doc(cred.user.uid).set({
-            keyword: []
+            keyword: [],
+            markasread: [],
+            readlater: [],
           })      
         },
         (err) => {
