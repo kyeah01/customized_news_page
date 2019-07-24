@@ -101,15 +101,15 @@ export default {
   },
   methods : {
     test(){
-      this.update()
+      this.parentDrawer = !this.parentDrawer
       eventBus.$emit("leftDrawer", !this.navSign)
     },
-    update(){
+    update(info) {
       this.parentDrawer = !this.parentDrawer
-      if(!this.parentDrawer){
+      if (info === 'save') {
         this.snackbar=true
       }
-    }
+    },
   }
 }
 </script>
