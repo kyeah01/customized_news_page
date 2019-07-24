@@ -27,8 +27,7 @@
           </General>
           <Preview v-else-if="this.dir===2"
             :drawer = parentDrawer
-            @right_drawer = "update"
-            @close_drawer = "closer">
+            @right_drawer = "update">
           </Preview><!--
           <Intergrations v-else-if="this.dir===3"
             :drawer = parentDrawer
@@ -102,19 +101,14 @@ export default {
   },
   methods : {
     test(){
-      this.update()
+      this.parentDrawer = !this.parentDrawer
       eventBus.$emit("leftDrawer", !this.navSign)
     },
-    update(){
+    update(info) {
       this.parentDrawer = !this.parentDrawer
-      console.log(this.parentDrawer)
-      if(!this.parentDrawer){
+      if (info === 'save') {
         this.snackbar=true
       }
-    },
-    closer() {
-      console.log(1)
-      this.parentDrawer = !this.parentDrawer
     },
   }
 }

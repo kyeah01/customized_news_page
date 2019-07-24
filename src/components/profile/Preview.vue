@@ -41,21 +41,31 @@
 <script>
 export default {
   props : ['drawer'],
-  computed: {
-    test3: function() {
-      console.log('come')
+  watch: {
+    drawer: function() {
+      if (!this.drawer) {
+        console.log(this.val)
+        if (this.val) {
+          this.$emit('right_drawer', 'close')
+        } else {
+          this.$emit('right_drawer', 'save')
+        }
+      }
     }
   },
   methods :{
-      test1(){
-        this.$emit('right_drawer')
+      test1() {
+        this.val = false
+        this.drawer = !this.drawer
       },
       test2(){
-        this.$emit('close_drawer')
+        this.val = true
+        this.drawer = !this.drawer
       },
   },
   data(){
     return{
+      val: true,
       data2 : true,
       item :[
         {title : 'title1', 
