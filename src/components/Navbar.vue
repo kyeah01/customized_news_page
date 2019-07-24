@@ -208,12 +208,17 @@ export default {
     },
     SignUp: function() {
       firebase.auth().createUserWithEmailAndPassword(this.signupemail, this.signuppassword).then(
-        (user) => {
+        (cred, user) => {
           alert('created!!')
           this.dialog2 = false
           this.signupemail = ""
-          this.signuppassword = ""
-          },
+          this.signuppassword = "" 
+          console.log(1)
+          console.log(cred)
+          firebase.firestore().collection('Userinfo').doc(cred.user.uid).set({
+            keyword: []
+          })      
+        },
         (err) => {
           alert('Oops, ' + err.message)
           this.dialog1 = true
