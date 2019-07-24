@@ -34,7 +34,7 @@
     </v-layout>
     <v-layout row wrap>
       <v-flex xs12>
-         <sourceList :data="resultSearch"></sourceList>
+         <sourceList :sourceData="resultSearch"></sourceList>
       </v-flex>
     </v-layout>
   </v-container>
@@ -42,7 +42,6 @@
 
 <script>
 import firebase from 'firebase'
-import FirebaseService from '@/services/FirebaseService'
 import 'firebase/firestore'
 import sourceList from '@/components/search/sourceList'
 
@@ -54,6 +53,7 @@ export default {
   components:{
     sourceList
   },
+  props:['searchWord'],
   data (){
     return {
       sDate : null,
@@ -66,6 +66,13 @@ export default {
       sources:[],
       sourceNames:[],
       resultSearch:[]
+    }
+  },
+  watch:{
+    searchWord:function(newVal){
+      this.search();
+      
+      
     }
   },
   created (){
@@ -81,6 +88,14 @@ export default {
     //  var filePath = 'https://raw.githubusercontent.com/dwyl/autocomplete/master/words.txt'
     //  var words = this.loadFile(filePath)
     //  this.words = words.split('\n')
+
+  //navbar에서 검색했을 때 router url 파라메터로 어떤 입력했는지 받아와서 검색실행
+    this.input = this.searchWord;
+    if( this.searchWord != null){
+      this.search();
+      this.searchWord = null;
+      
+    }
    },
   destroyed(){
     this.eDate = timeCheck()
@@ -101,6 +116,7 @@ export default {
     },
     search(){      
       var input = document.getElementById("input-search").value
+      if( this.searchWord != null ) input = this.searchWord;
       
       this.resultSearch = []
       
