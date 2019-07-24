@@ -2,7 +2,6 @@
   <v-container>
     <v-layout>
       <v-flex>
-        <v-form>
             <div class="discover">
                 <div class="tabs" style="height: 40px;">
                     <a class="item">
@@ -19,36 +18,55 @@
                     </div>
                     <!-- search-box start -->
                     <div id="autocomplete" class="autocomplete">
-                        <input class="autocomplete-input" placeholder="Search by topic" aria-label="Search by topic" autofocus>
+                        <input v-model="input" 
+                              id="input-search"
+                              class="autocomplete-input" 
+                              placeholder="Search by topic" 
+                              aria-label="Search by topic" 
+                              autofocus
+                              @keyup.enter="search">
                         <ul class="autocomplete-result-list"></ul>
                     </div>
                     <!-- search-box end -->
                 </v-flex>
             </div>
-        </v-form>
+      </v-flex>
+    </v-layout>
+    <v-layout row wrap>
+      <v-flex xs12>
+         <sourceList :data="resultSearch"></sourceList>
       </v-flex>
     </v-layout>
   </v-container>
 </template>
+
 <script>
 import firebase from 'firebase'
 import FirebaseService from '@/services/FirebaseService'
 import 'firebase/firestore'
+import sourceList from '@/components/search/sourceList'
+
 
 //user log
 import timeCheck from '../timeCheck'
 import userLog from '../userLog'
 export default {
+  components:{
+    sourceList
+  },
   data (){
     return {
       sDate : null,
       eDate : null,
       path : '/',
-      words:null
+      words:null,
+      
+      // autocomplete
+      input:"",
+      sources:[],
+      sourceNames:[],
+      resultSearch:[]
     }
-  },
-  components: {
-    // GitGraph
   },
   created (){
     this.sDate = timeCheck()
@@ -56,11 +74,13 @@ export default {
         var input = document.getElementById("autocomplete").focus();
     }
    },
-   mounted(){
+   async mounted(){
+      //  신문사 정보 axios로 받아오기
+     await this.getSources()
      this.loadAutoComplete()
-     var filePath = 'https://raw.githubusercontent.com/dwyl/autocomplete/master/words.txt'
-     var words = this.loadFile(filePath)
-     this.words = words.split('\n')
+    //  var filePath = 'https://raw.githubusercontent.com/dwyl/autocomplete/master/words.txt'
+    //  var words = this.loadFile(filePath)
+    //  this.words = words.split('\n')
    },
   destroyed(){
     this.eDate = timeCheck()
@@ -69,14 +89,38 @@ export default {
     userLog(user, this.path, this.sDate, this.eDate)
   },
   methods: {
+    async getSources(){
+    await this.$axios.get('https://newsapi.org/v2/sources?apiKey=a0be542239a6455995a8cf063ff0f17d')
+      .then( r=> {
+        this.sources = r.data.sources           
+        })
+        this.sourceNames = []
+        this.sources.forEach(element => {
+        this.sourceNames.push(element.name)
+        });
+    },
+    search(){      
+      var input = document.getElementById("input-search").value
+      
+      this.resultSearch = []
+      
+      this.sources.forEach(element =>{
+        
+        if( element.name.toLowerCase().indexOf(input.toLowerCase()) != -1 ){
+          this.resultSearch.push(element)
+        }
+      })
+    },
     loadAutoComplete: function() {
+      // console.log(this.sourceNames);
+      
       new Autocomplete('#autocomplete', {
         search: input => {
           if (input.length < 2) {
             return []
           }
-          return this.words.filter(country => {
-            return country.toLowerCase()
+          return this.sourceNames.filter(source => {
+            return source.toLowerCase()
               .startsWith(input.toLowerCase())
           })
         }

@@ -44,7 +44,7 @@ import Footer from '../components/Footer'
 import timeCheck from '../timeCheck'
 import userLog from '../userLog'
 export default {
-  data (){
+  data(){
     return {
       sDate : null,
       eDate : null,
