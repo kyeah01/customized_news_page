@@ -1,7 +1,7 @@
 <template>
      <v-container grid-list-xs>
             <v-layout row wrap>
-              <v-flex xs12 class="margin-30" v-for="source in data" :key="source.id">
+              <v-flex xs12 class="margin-30" v-for="source in sourceData" :key="source.id">
                 
                 <v-card>
                    <v-card-title primary-title>
@@ -15,7 +15,6 @@
                       </div>
                     </v-card-title>
                     <v-card-actions>
-
               </v-card-actions>
                 </v-card>
 
@@ -25,13 +24,10 @@
 </template>
 <script>
 export default {
-    props:['data'],
-    data(){
-        
-    },
+    props:['sourceData'],
     mounted(){
-
       
     }
+
 }
 </script>
