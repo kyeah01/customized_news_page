@@ -2,7 +2,7 @@
   <nav>
   <v-toolbar app color="white">
     <v-toolbar-side-icon
-    @click="drawer = !drawer"
+    @click="drawer=!drawer"
     ></v-toolbar-side-icon>
     <v-toolbar-title>Idle</v-toolbar-title>
     <v-spacer></v-spacer>
@@ -148,8 +148,9 @@ import firebase from 'firebase'
 import FirebaseService from '@/services/FirebaseService'
 import GoogleLogin from './GoogleLogin'
 import FacebookLogin from './FacebookLogin'
-
+import eventBus from '../eventBus'
 const axios = require('axios');
+
 export default {
   components: {
     GoogleLogin,
@@ -243,7 +244,7 @@ export default {
     },
     Logout: function() {
       FirebaseService.Logout()
-    },
+    }
   },
   created() {
     firebase.auth().onAuthStateChanged((user) => {
@@ -254,7 +255,16 @@ export default {
         this.userinfo = ""
         console.log("Logout")
       }
-    });
+    })
+  },
+  watch : {
+    drawer : function(drawer){
+    eventBus.$on("leftDrawer", navSign=>{
+      if(navSign){
+        this.drawer=false
+      }
+    })
+    }
   }
 }
 </script>
