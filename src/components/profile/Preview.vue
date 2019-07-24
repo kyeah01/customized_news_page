@@ -3,11 +3,16 @@
     <div v-if="drawer">
       <v-navigation-drawer
             app
-            stateless
+            temporary
             v-model="drawer"
             right
             style="width:83vw"
       >
+      <v-btn
+      flat
+      @click="test2">
+        X
+      </v-btn>
         <section class="container630 centered">
           <h1>
             <div class="kicker">Preview</div>
@@ -16,7 +21,7 @@
 
          
         
-        <v-btn class="green white--text" @click="test">Save changes</v-btn>
+        <v-btn class="green white--text" @click="test1">Save changes</v-btn>
         </section>
       </v-navigation-drawer>
     </div>
@@ -37,9 +42,12 @@
 export default {
     props : ['drawer'],
     methods :{
-        test(){
+        test1(){
           this.$emit('right_drawer')
-        }
+        },
+        test2(){
+          this.$emit('close_drawer')
+        },
     },
     data(){
       return{
