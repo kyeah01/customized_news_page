@@ -7,7 +7,7 @@
             v-model="drawer"
             right
             style="width:83vw"
-      >
+      > 
       <v-btn
       flat
       @click="test2">
