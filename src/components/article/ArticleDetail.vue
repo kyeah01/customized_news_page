@@ -13,10 +13,37 @@
             <div class="kicker">ArticleDetail</div>
             <div class="heading">Example</div>
           </h1>
+          <!-- <img :src="detail.urlToImage">
+          {{detail}} -->
+          <v-layout>
+    <v-flex>
+      <v-card>
+        <v-img
+          :src="detail.urlToImage"
+          aspect-ratio="2"
+        ></v-img>
 
-          {{detail}}        
+        <v-card-title primary-title>
+          <div>
+            <h3 class="headline mb-0">{{ detail.title }}</h3>
+            <h5 style="color:grey;">{{ detail.source.name }} - {{ detail.author }}</h5>
+            <br>
+            <div> {{ detail.content }} </div>
+          </div>
+        </v-card-title>
+
+        <v-card-actions>
+          <v-btn flat color="orange">Share</v-btn>
+          <v-btn flat color="orange">Explore</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-flex>
+  </v-layout>
         <v-btn class="green white--text" @click="test">Save changes</v-btn>
         </section>
+
+
+
       </v-navigation-drawer>
     </div>
     
@@ -53,16 +80,6 @@ export default {
                content : "test1",
                value : true
              },
-              {
-               index : 2,
-               content : "test2",
-               value : false
-             },
-              {
-               index : 3,
-               content : "test3",
-               value : false
-             }
             ]
           },
            {title : 'title2', 
@@ -73,11 +90,6 @@ export default {
                content : "test4",
                value : true
              },
-              {
-               index : 5,
-               content : "test5",
-               value : false
-             }
             ]
           },
           {title : 'title3', 
@@ -88,11 +100,6 @@ export default {
                content : "test6",
                value : false
              },
-              {
-               index : 5,
-               content : "test7",
-               value : true
-             }
             ]
           }
         ]

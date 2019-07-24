@@ -132,7 +132,6 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
           // 또한, topheadlines는 from, to를 통해 날짜 필터링 검색이 가능합니다.
         },
         call : function(index,item){
-          alert(index)
           this.parentDetail=item
           this.update()
         },
