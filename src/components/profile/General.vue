@@ -7,7 +7,8 @@
             v-model="drawer"
             right
             style="width:83vw"
-      >
+            temporary
+        >
         <section class="container630 centered">
           <h1>
             <div class="kicker">General</div>
