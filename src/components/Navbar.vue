@@ -103,7 +103,7 @@
   </v-toolbar>
 
   <v-navigation-drawer app stateless v-model="drawer" style="background-color: #d9d9d9;">
-    <!-- <v-toolbar flat> -->
+        <!-- <v-toolbar flat> -->
       <v-list>
         <v-list-tile>
           <v-list-tile-content>
@@ -117,13 +117,34 @@
 
     <v-divider></v-divider>
 
+    
     <v-list dense class="pt-0">
-     <v-list-tile
+      <!-- 최상위 1 그룹-->
+      <v-list-group
+      prepend-icon="account_circle"
+      value="true"
+      >
+      <template v-slot:activator>
+        <v-list-item-title>Feeds</v-list-item-title>
+      </template>
+      <!-- 1-1 그룹 시작 -->
+      <v-list-group
+          no-action
+          sub-group
+          value="true"
+        >
+        <template v-slot:activator>
+            <v-list-item-content>
+              <v-list-item-title>original</v-list-item-title>
+            </v-list-item-content>
+        </template>
+        
+      <v-list-tile
        v-for="item in items"
        :key="item.title"
        router :to="{name: item.routerTo}"
-     >
-       <v-list-tile-action>
+         >
+         <v-list-tile-action>
          <v-icon>{{ item.icon }}</v-icon>
        </v-list-tile-action>
 
@@ -131,7 +152,39 @@
          <v-list-tile-title>{{ item.title }}</v-list-tile-title>
        </v-list-tile-content>
      </v-list-tile>
-   </v-list>
+
+      </v-list-group>
+      <!-- 1-1 그룹 끝-->
+      <!-- 1-2 그룹 시작-->
+      <v-list-group
+        no-action
+        sub-group
+        value="true"
+      >
+      <template v-slot:activator>
+            <v-list-item-content>
+              <v-list-item-title>follow</v-list-item-title>
+            </v-list-item-content>
+      </template>
+
+      <v-list-tile
+       v-for="content in contents"
+         >
+         <v-list-tile-action>
+         <v-icon>{{ content.icon }}</v-icon>
+       </v-list-tile-action>
+
+       <v-list-tile-content>
+         <v-list-tile-title>{{ content.title }}</v-list-tile-title>
+       </v-list-tile-content>
+     </v-list-tile>
+
+      </v-list-group>
+      <!-- 1-2 그룹 끝-->
+      </v-list-group>
+      <!-- 최상위 1 그룹 끝-->
+    </v-list>
+
     <v-spacer></v-spacer>
     <!-- <v-footer class="justify-center pl-0" height="51" inset app style="background-color: #2bb24c"> -->
     <v-btn to="/addcontent" flat color="#2bb24c" class="test">
@@ -139,6 +192,8 @@
         <span class="white--text" style="font-size: 12px;">ADD CONTENT</span>
     </v-btn>
     <!-- </v-footer> -->
+   </v-list>
+    <v-spacer></v-spacer>
   </v-navigation-drawer>
   </nav>
 </template>
@@ -167,6 +222,7 @@ export default {
       dialog2: false,
       weather: [],
       drawer: false,
+      write : false,
       // navbar search
       searchWord:"",
       items: [{
@@ -200,6 +256,9 @@ export default {
           icon: 'question_answer',
           routerTo: 'test'
         }
+      ],
+      contents : [ 
+        {icon : 'dashboard', title : 'hojin'}
       ]
     }
   },
@@ -236,6 +295,7 @@ export default {
             keyword: [],
             markasread: [],
             readlater: [],
+            sourceFollow : []
           })      
         },
         (err) => {
@@ -266,6 +326,9 @@ export default {
         this.drawer=false
       }
     })
+    },
+    write : function(source){
+      alert("nav source")
     }
   }
 }
