@@ -100,6 +100,7 @@
    
       <v-btn @click="goto('test')" flat>Test Space</v-btn>
     </v-toolbar-items>
+      <NavbarAvatar v-if="userinfo"/>
   </v-toolbar>
 
   <v-navigation-drawer app stateless v-model="drawer" style="background-color: #d9d9d9;">
@@ -204,12 +205,15 @@ import FirebaseService from '@/services/FirebaseService'
 import GoogleLogin from './GoogleLogin'
 import FacebookLogin from './FacebookLogin'
 import eventBus from '../eventBus'
+import NavbarAvatar from './NavbarAvatar'
+
 const axios = require('axios');
 
 export default {
   components: {
     GoogleLogin,
     FacebookLogin,
+    NavbarAvatar,
   },
   data() {
     return {
@@ -289,8 +293,8 @@ export default {
           this.dialog2 = false
           this.signupemail = ""
           this.signuppassword = "" 
-          console.log(1)
-          console.log(cred)
+          // console.log(1)
+          // console.log(cred)
           firebase.firestore().collection('Userinfo').doc(cred.user.uid).set({
             keyword: [],
             markasread: [],
@@ -312,10 +316,10 @@ export default {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
           this.userinfo = user
-          console.log(user)
+          // console.log(user)
       } else {
         this.userinfo = ""
-        console.log("Logout")
+        // console.log("Logout")
       }
     })
   },
