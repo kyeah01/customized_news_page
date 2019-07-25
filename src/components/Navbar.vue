@@ -170,7 +170,7 @@
 
       <v-list-tile
        v-for="content in contents"
-         >
+       @click="">
          <v-list-tile-action>
          <v-icon>{{ content.icon }}</v-icon>
        </v-list-tile-action>
@@ -299,7 +299,8 @@ export default {
             keyword: [],
             markasread: [],
             readlater: [],
-            sourceFollow : []
+            sourceFollow : [],
+            follow : {}
           })      
         },
         (err) => {

@@ -3,18 +3,14 @@
             <v-layout row wrap>
               <v-flex xs12 class="margin-30" v-for="source in sourceData" :key="source.id">
                 
-                <v-card>
+                <v-card absolute fixed>
                    <v-card-title primary-title>
                       <div>
-                        <span class="headline">{{source.name}}</span>
-                      <span>
-                          <v-btn  
-                                  class="border-green" 
-                                  flat color="light-green accent-4"
-                                  @click="follow(source.id)"
-                                  >Follow</v-btn>
-                          <v-btn class="border-green" flat color="light-green accent-4" @click="call(source)">Follow</v-btn>
-                      </span>
+                        <span class="headline">{{source.name}}
+                          <Follow
+                          :news=source>
+                          </Follow>
+                        </span>
                         <div><a href="source.url">{{source.url}}</a></div>
                         <span>{{source.description}}</span>
                       </div>
@@ -30,25 +26,30 @@
 <script>
 import firebase from 'firebase'
 import FirebaseService from '@/services/FirebaseService'
-import eventBus from '../../eventBus'
+import Follow from '../search/follow'
 export default {
     props:['sourceData'],
+    components : {
+        Follow
+    },
     mounted(){
       
     },
     methods :{
-      call: async function(source){
-        alert(source.name)
-        eventBus.$emit('contents',source)
-        alert("sl end")
+     call: async function(source){
+        var jsonData = {};
+        var jsonKey = source.id;
+        var jsonValue = 'news';
+        jsonData[jsonKey] = jsonValue;
         var user=firebase.auth().currentUser
-        await firebase.firestore().collection('User').doc(user.id).update({
-          sourceFollow : firebase.firestore.FieldValue.arrayUnion({
-            name : source.name,
-            url : source.url,
-            descrip : source.description
+        firebase.firestore().collection('Userinfo').doc(user.uid).get()
+          .then(r=>{
+            jsonData = r.data().follow;
+            jsonData[jsonKey] = jsonValue;
+            firebase.firestore().collection('Userinfo').doc(user.uid).update({
+              follow : jsonData
+            })
           })
-        })
       },
       follow(sourceId){
           // 현재 구독중인 정보를 받아오고 구독할 신문사를 추가하여 db에 update한다.
