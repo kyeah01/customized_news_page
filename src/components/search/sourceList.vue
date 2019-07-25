@@ -8,7 +8,11 @@
                       <div>
                         <span class="headline">{{source.name}}</span>
                       <span>
-                          <v-btn class="border-green" flat color="light-green accent-4">Follow</v-btn>
+                          <v-btn  
+                                  class="border-green" 
+                                  flat color="light-green accent-4"
+                                  @click="follow(source.id)"
+                                  >Follow</v-btn>
                       </span>
                         <div><a href="source.url">{{source.url}}</a></div>
                         <span>{{source.description}}</span>
@@ -23,10 +27,24 @@
           </v-container>
 </template>
 <script>
+import firebase from 'firebase'
+
 export default {
     props:['sourceData'],
-    mounted(){
-      
+    methods:{
+      follow(sourceId){
+          // 현재 구독중인 정보를 받아오고 구독할 신문사를 추가하여 db에 update한다.
+          var userId = firebase.auth().currentUser.email;
+          var userSources = [];
+          firebase.firestore().collection('Userinfo').doc(userId).get()
+          .then(doc=>{
+            userSources = doc.data().sources;
+            userSources.push(sourceId);
+            firebase.firestore().collection('Userinfo').doc(userId).update({
+              sources : userSources
+            })
+          })
+      }
     }
 
 }
