@@ -2,13 +2,12 @@
      <v-container grid-list-xs>
             <v-layout row wrap>
               <v-flex xs12 class="margin-30" v-for="source in sourceData" :key="source.id">
-                
                 <v-card absolute fixed>
                    <v-card-title primary-title>
                       <div>
                         <span class="headline">{{source.name}}
                           <Follow
-                          :news=source>
+                          :news="source">
                           </Follow>
                         </span>
                         <div><a href="source.url">{{source.url}}</a></div>

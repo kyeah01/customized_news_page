@@ -38,7 +38,7 @@
             </v-list-tile-action>
 
             <v-list-tile-content>
-              <v-list-tile-title>{{ item.text }}</v-list-tile-title>
+              <v-list-tile-title>{{item}}</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
 
@@ -76,32 +76,59 @@
   </v-layout>
 </template>
 <script>
+import firebase from 'firebase'
+import FirebaseService from '@/services/FirebaseService'
+import { async } from 'q';
   export default {
     props : ['news'],
     data: () => ({
       expand : false,
       addopen : false,
-      items: [
-        { text: 'Real-Time'},
-        { text: 'Audience'},
-        { text: 'Conversions'}
-   
-      ],
+      items : null
     }),
     methods : {
       open : function(){
-        this.expand=!this.expand
+
+      this.items=this.$store.state.followKeyword
+      this.expand=!this.expand
+        
       },
       addFeed : function(){
         this.addopen=true
-        alert(this.addopen)
       },
       before : function(){
         this.addopen=false
       },
-      create : function(newFeed){
-        alert(newFeed)
-        alert(news)
+      create : async function(newFeed){
+
+        // follow (abc - IT)
+        var jsonData = {};
+        var jsonKey = this.news.id;
+        var jsonValue = newFeed
+        jsonData[jsonKey] = jsonValue;
+        this.$store.state.followSource[jsonKey] = jsonValue
+
+        var user=firebase.auth().currentUser
+
+        if(this.$store.state.followKeyword.includes(newFeed)){
+          this.$store.state.followinfo[newFeed]++
+        }else{
+          this.$store.state.followinfo[newFeed]=1       
+        }
+        
+        await firebase.firestore().collection('Userinfo').doc(user.uid).get()
+          .then(r=>{
+            jsonData = r.data().follow;
+            jsonData[jsonKey] = jsonValue;
+            firebase.firestore().collection('Userinfo').doc(user.uid).update({
+              follow : jsonData,
+              followInfo : this.$store.state.followinfo
+            })
+            this.$store.state.followKeyword = Object.keys(this.$store.state.followinfo)
+            this.$store.commit('loadRes')
+        })
+
+        console.log(this.$store.state)
         this.addopen=false
         this.expand=!this.expand
       }
