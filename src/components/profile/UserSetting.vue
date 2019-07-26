@@ -45,7 +45,6 @@
                 </div>
                 </v-flex>
               </v-layout>
-              <template @loading="setTheimgSrc">{{imageSrc}}</template>
                 <v-btn class="green white--text" @click="saveTheChange">Save changes</v-btn>
                 <v-btn class="red white--text" @click="dontSaveNClose">Close</v-btn>
             </section>
@@ -68,7 +67,7 @@ import firebase from 'firebase'
 import FirebaseService from '@/services/FirebaseService'
 import ImgUpload from '@/components/profile/ImgUpload'
 import('@/assets/profileCss.css')
-
+import eventBus from '../../eventBus'
 
 export default {
   props : ['drawer'],
@@ -78,27 +77,24 @@ export default {
     data(){
       return{
         email : '',
-        imageSrc: 'default'
+        imageSrc: ''
       }
     },
     methods :{
-      setTheimgSrc: function (imageSrc) {
-        this.imageSrc = imageSrc
-        console.log(imageSrc)
-        console.log(this.imageSrc)
-      },
       saveTheChange(){
-        console.log(this.imageSrc)
-        var userinfo = firebase.auth().currentUser
         // save하는 순간 image 변경하게 하는 코드 작동해야 함.
+        eventBus.$on('imgUpdate', this.saveTheImg)
+        // drawer 값 전달하여 navigation drawer를 작동하게 함.
+        this.$emit('right_drawer')
+        },
+        saveTheImg (imgSrc){
+          var userinfo = firebase.auth().currentUser
           Object.defineProperty(userinfo, 'photoURL', {
             writable: true
             })
           userinfo.updateProfile ({
-            photoURL: this.imageSrc
+            photoURL: imgSrc
             })
-          // drawer 값 전달하여 navigation drawer를 작동하게 함.
-            // this.$emit('right_drawer')
         },
         dontSaveNClose (){
           this.$emit('right_drawer')
