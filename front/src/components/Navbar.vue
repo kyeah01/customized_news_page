@@ -118,7 +118,6 @@
 
     <v-divider></v-divider>
 
-    
     <v-list dense class="pt-0">
       <!-- 최상위 1 그룹-->
       <v-list-group
@@ -128,60 +127,36 @@
       <template v-slot:activator>
         <v-list-item-title>Feeds</v-list-item-title>
       </template>
-      <!-- 1-1 그룹 시작 -->
+      
+      <!-- 1-1 그룹 시작-->
+      
       <v-list-group
-          no-action
-          sub-group
-          value="true"
-        >
-        <template v-slot:activator>
+        no-action
+        sub-group
+        value="true"
+        v-for="key in $store.state.followKeyword"
+      >
+      <template v-slot:activator>
             <v-list-item-content>
-              <v-list-item-title>original</v-list-item-title>
+              <v-list-item-title>{{key}}</v-list-item-title>
             </v-list-item-content>
-        </template>
-        
+      </template>
+
       <v-list-tile
-       v-for="item in items"
-       :key="item.title"
-       router :to="{name: item.routerTo}"
-         >
-         <v-list-tile-action>
-         <v-icon>{{ item.icon }}</v-icon>
-       </v-list-tile-action>
+       v-for="j in $store.state.followReturn[key]"
+       @click="">
+         <!-- <v-list-tile-action>
+         <v-icon>{{ content.icon }}</v-icon>
+       </v-list-tile-action> -->
 
        <v-list-tile-content>
-         <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+         <v-list-tile-title>{{j}}</v-list-tile-title>
        </v-list-tile-content>
      </v-list-tile>
 
       </v-list-group>
       <!-- 1-1 그룹 끝-->
-      <!-- 1-2 그룹 시작-->
-      <v-list-group
-        no-action
-        sub-group
-        value="true"
-      >
-      <template v-slot:activator>
-            <v-list-item-content>
-              <v-list-item-title>follow</v-list-item-title>
-            </v-list-item-content>
-      </template>
-
-      <v-list-tile
-       v-for="content in contents"
-       @click="">
-         <v-list-tile-action>
-         <v-icon>{{ content.icon }}</v-icon>
-       </v-list-tile-action>
-
-       <v-list-tile-content>
-         <v-list-tile-title>{{ content.title }}</v-list-tile-title>
-       </v-list-tile-content>
-     </v-list-tile>
-
-      </v-list-group>
-      <!-- 1-2 그룹 끝-->
+      
       </v-list-group>
       <!-- 최상위 1 그룹 끝-->
     </v-list>
@@ -229,41 +204,7 @@ export default {
       write : false,
       // navbar search
       searchWord:"",
-      items: [{
-          title: 'Home',
-          icon: 'dashboard',
-          routerTo: 'home'
-        },
-        {
-          title: 'article',
-          icon: 'question_answer',
-          routerTo: 'article'
-
-        },
-        {
-          title: 'Profile',
-          icon: 'question_answer',
-          routerTo: 'profile'
-        },
-        {
-          title: 'admin',
-          icon: 'question_answer',
-          routerTo: 'admin'
-        },
-        {
-          title: 'addContent',
-          icon: 'question_answer',
-          routerTo: 'addcontent'
-        },
-        {
-          title: 'Test Space',
-          icon: 'question_answer',
-          routerTo: 'test'
-        }
-      ],
-      contents : [ 
-        {icon : 'dashboard', title : 'hojin'}
-      ]
+      items: this.$store.state.followReturn,
     }
   },
   methods: {
@@ -273,19 +214,24 @@ export default {
     goto: function(addr) {
       this.$router.push('/' + addr)
     },
-    Login: function() {
-      firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
+    Login: async function() {
+      await firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
         (user) => {
           alert('Well done ! You are now connected')
           this.email = ""
           this.password = ""
+
+          this.init()
+
         },
         (err) => {
           alert('Oops, ' + err.message)
           this.dialog2 = true
         }  
       )
+
     },
+
     SignUp: function() {
       firebase.auth().createUserWithEmailAndPassword(this.signupemail, this.signuppassword).then(
         (cred, user) => {
@@ -300,7 +246,8 @@ export default {
             markasread: [],
             readlater: [],
             sourceFollow : [],
-            follow : {}
+            follow : {},
+            followInfo : {}
           })      
         },
         (err) => {
@@ -311,18 +258,37 @@ export default {
     },
     Logout: function() {
       FirebaseService.Logout()
+    },
+    init : function(){
+      var user2=firebase.auth().currentUser
+      var tmp=firebase.firestore().collection("Userinfo").doc(user2.uid).get()
+        .then(r=> {tmp = r.data()
+            
+        var followKeyword=Object.keys(tmp.followInfo)
+        var followSource=tmp.follow
+
+        this.$store.commit('loadFollow',followKeyword)
+        this.$store.commit('loadSource',followSource)
+        this.$store.commit('loadFollowInfo',tmp.followInfo)
+        this.$store.commit('loadRes')
+
+       })
     }
   },
   created() {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-          this.userinfo = user
+        this.userinfo = user
+
           // console.log(user)
       } else {
         this.userinfo = ""
         // console.log("Logout")
       }
     })
+  },
+  mounted(){
+    this.init()
   },
   watch : {
     drawer : function(drawer){
