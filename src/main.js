@@ -9,6 +9,8 @@ import Trend from 'vuetrend'
 import VueAnalytics from 'vue-analytics'
 import './axios'
 
+import VueDraggable from "vue-draggable";
+Vue.use(VueDraggable);
 
 
 Vue.config.productionTip = false
