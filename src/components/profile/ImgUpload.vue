@@ -14,6 +14,7 @@
 <script>
 import firebase from 'firebase'
 import FirebaseService from '@/services/FirebaseService'
+import eventBus from '../../eventBus'
 
 export default {
   data() {
@@ -21,16 +22,17 @@ export default {
       files: "",
       file: "",
       image: "",
-      imageSrc: "https://source.unsplash.com/random",
+      imageSrc: "http://image.auction.co.kr/itemimage/16/da/c9/16dac970b6.jpg",
     }
   },
   created() {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        if (user.photoURL != null) this.imageSrc = user.photoURL
-        else this.imageSrc = "https://source.unsplash.com/random"
+        if (user.photoURL != null && user.photoURL != 'default') {
+          this.imageSrc = user.photoURL
+        }
       } else {
-        this.imageSrc = "https://source.unsplash.com/random"
+        this.imageSrc = "http://image.auction.co.kr/itemimage/16/da/c9/16dac970b6.jpg"
       }
     });
   },
@@ -41,61 +43,51 @@ export default {
       var image = document.getElementById("image");
 
       var target = event.currentTarget;
-      // console.log(target.files)
       var xmlHttpRequest = new XMLHttpRequest();
       xmlHttpRequest.open('POST', 'https://api.imgur.com/3/image/', true);
-      // console.log(xmlHttpRequest)
       xmlHttpRequest.setRequestHeader("Authorization", "Client-ID 3c8ae0de8239125");
       xmlHttpRequest.send(target.files[0]);
 
       xmlHttpRequest.onreadystatechange = () => {
 
         if (xmlHttpRequest.readyState == 4) {
-          // console.log("3")
 
           if (xmlHttpRequest.status == 200) {
-            // console.log("4");
             var result = JSON.parse(xmlHttpRequest.responseText);
             this.imageSrc = result.data.link;
-            // console.log(this.imageSrc)
+
+            this.thumnail = result.data.link;
+
+            eventBus.$emit('imgUpdate', this.imageSrc)
 
             // var userinfo = firebase.auth().currentUser
 
             // Object.defineProperty(userinfo, 'photoURL', {
             //   writable: true
-            // });
+            // })
 
-            this.thumnail = result.data.link;
-                        
-
-            // userinfo.photoURL = this.imageSrc
-            // console.log(userinfo);
-
-            // console.log(firebase.auth().currentUser);
             // userinfo.updateProfile ({
             //   photoURL: this.imageSrc,
             // })
-            this.$emit('saveTheChange', this.imageSrc)
+            // this.$emit('saveTheChange', this.imageSrc)
           } else {
             alert("업로드 실패");
             this.imageSrc = "http://dy.gnch.or.kr/img/no-image.jpg";
           }
         }
-        // console.log(target.files[0])
       }
 
     },
     remove() {
-      console.log("remove")
-      this.imageSrc = "https://source.unsplash.com/random"
+      this.imageSrc = "http://image.auction.co.kr/itemimage/16/da/c9/16dac970b6.jpg"
 
       var userinfo = firebase.auth().currentUser
       Object.defineProperty(userinfo, 'photoURL', {
-              writable: true
-            });
+        writable: true
+      });
       userinfo.updateProfile ({
-              photoURL: this.imageSrc,
-            })
+        photoURL: this.imageSrc,
+      })
     },
     delete_account() {
       FirebaseService.Delete()
