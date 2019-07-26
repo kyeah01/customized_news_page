@@ -19,6 +19,7 @@
     "roboto-fontface": "*",
     "vue": "^2.6.10",
     "vue-analytics": "^5.17.0",
+    "vue-draggable": "^2.0.2",
     "vue-infinite-scroll": "^2.0.2",
     "vue-router": "^3.0.3",
     "vue-scroll": "^2.1.12",
