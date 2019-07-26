@@ -8,9 +8,11 @@ import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import Trend from 'vuetrend'
 import VueAnalytics from 'vue-analytics'
 import './axios'
-
 import VueDraggable from "vue-draggable";
+
 Vue.use(VueDraggable);
+
+Vue.prototype.$http = axios
 
 
 Vue.config.productionTip = false
