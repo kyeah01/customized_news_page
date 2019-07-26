@@ -72,7 +72,7 @@ import FirebaseService from '@/services/FirebaseService'
   export default {
     data: () => ({
       menu: false,
-      imgSrc: "https://source.unsplash.com/random",
+      imgSrc: "http://image.auction.co.kr/itemimage/16/da/c9/16dac970b6.jpg",
       user: '',
       items: [
         { name: 'Profile Page', url: '/profile'}, 
@@ -83,9 +83,6 @@ import FirebaseService from '@/services/FirebaseService'
     created () {
       firebase.auth().onAuthStateChanged((user) => {
         if (user) {
-          if (user.photoURL != null) {
-            this.imageSrc = user.photoURL
-          }
           this.user = user
         }
       })
