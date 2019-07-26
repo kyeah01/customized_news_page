@@ -19,9 +19,6 @@
       <v-card>
         <v-list>
           <v-list-tile avatar>
-            <v-list-tile-avatar>
-              <img :src=imgSrc alt="Profile Image Button for some settings">
-            </v-list-tile-avatar>
 
             <v-list-tile-content>
               <v-list-tile-title>{{ user.email }}</v-list-tile-title>
@@ -72,7 +69,7 @@ import FirebaseService from '@/services/FirebaseService'
   export default {
     data: () => ({
       menu: false,
-      imgSrc: "http://image.auction.co.kr/itemimage/16/da/c9/16dac970b6.jpg",
+      imgSrc: "http://1.bp.blogspot.com/-Du37vfsR5RA/VUnNvMwUmEI/AAAAAAAAEJc/9yFnzYYr-lo/s1600/%EC%9D%B4%EB%AF%B8%EC%A7%80%2B2.png",
       user: '',
       items: [
         { name: 'Profile Page', url: '/profile'}, 
