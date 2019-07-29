@@ -10,7 +10,9 @@
                           :news="source">
                           </Follow>
                         </span>
-                        <div><a href="source.url">{{source.url}}</a></div>
+                        <div>
+                          <a href="#newUrl">{{source.url}}</a>
+                        </div>
                         <span>{{source.description}}</span>
                       </div>
                     </v-card-title>

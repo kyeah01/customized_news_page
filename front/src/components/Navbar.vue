@@ -2,7 +2,7 @@
   <nav>
   <v-toolbar app color="white">
     <v-toolbar-side-icon
-    @click="drawer=!drawer"
+    @click="call"
     ></v-toolbar-side-icon>
     <v-toolbar-title>Idle</v-toolbar-title>
     <v-spacer></v-spacer>
@@ -144,7 +144,7 @@
 
       <v-list-tile
        v-for="j in $store.state.followReturn[key]"
-       @click="">
+       @click="moveSourceDetail(j)">
          <!-- <v-list-tile-action>
          <v-icon>{{ content.icon }}</v-icon>
        </v-list-tile-action> -->
@@ -264,9 +264,22 @@ export default {
       var tmp=firebase.firestore().collection("Userinfo").doc(user.uid).get()
         .then(r=> {tmp = r.data()
 
-        this.$store.commit('loadFollowData',tmp)
-        this.$store.commit('loadRes')
-       })
+      this.$store.commit('loadFollowData',tmp)
+      this.$store.commit('loadRes')
+      })
+    },
+    call : function(){
+      if(this.drawer ==false && firebase.auth().currentUser!=null){
+        this.init()
+      }else{
+        this.items=null
+      }
+      this.drawer=!this.drawer
+    },
+    moveSourceDetail : function(j){
+      alert(j)
+      this.$router.push('/SoureceDetail/' + j)
+      eventBus.$emit("data",j)
     }
   },
   created() {
@@ -283,6 +296,7 @@ export default {
   },
   mounted(){
     this.init()
+    this.items=this.$store.state.followReturn
   },
   watch : {
     drawer : function(drawer){

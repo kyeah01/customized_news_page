@@ -31,7 +31,7 @@
               <v-list-tile
               v-for="item in items"
               :key="item.title"
-              @click=""
+              @click="create(item)"
               >
               <v-list-tile-action>
               <v-icon>fas fa-rss</v-icon>
@@ -65,9 +65,6 @@
           <v-btn @click="create(newFeed)">Create</v-btn>
           <v-btn @click="before">Before</v-btn>
         </div>
-
-
-
         </v-card>
       </v-expand-transition>
     </v-flex>
@@ -100,7 +97,7 @@ import firebase from 'firebase'
         this.addopen=false
       },
       create : async function(newFeed){
-
+        
         // follow (abc - IT)
         var newsId = this.news.id;
         this.$store.state.followSource[newsId] = newFeed

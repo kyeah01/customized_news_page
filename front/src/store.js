@@ -25,8 +25,8 @@ export default new Vuex.Store({
       }
       for(var j in state.followSource){
         state.followReturn[state.followSource[j]].push(j)
-       }
-    },
+      }
+    }
   },
   actions: {
 
