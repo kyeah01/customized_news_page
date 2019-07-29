@@ -77,14 +77,14 @@
 </template>
 <script>
 import firebase from 'firebase'
-import FirebaseService from '@/services/FirebaseService'
-import { async } from 'q';
   export default {
     props : ['news'],
     data: () => ({
       expand : false,
       addopen : false,
-      items : null
+      items : null,
+      searchFeed:"",
+      newFeed:""
     }),
     methods : {
       open : function(){
@@ -102,11 +102,8 @@ import { async } from 'q';
       create : async function(newFeed){
 
         // follow (abc - IT)
-        var jsonData = {};
-        var jsonKey = this.news.id;
-        var jsonValue = newFeed
-        jsonData[jsonKey] = jsonValue;
-        this.$store.state.followSource[jsonKey] = jsonValue
+        var newsId = this.news.id;
+        this.$store.state.followSource[newsId] = newFeed
 
         var user=firebase.auth().currentUser
 
@@ -116,19 +113,14 @@ import { async } from 'q';
           this.$store.state.followinfo[newFeed]=1       
         }
         
-        await firebase.firestore().collection('Userinfo').doc(user.uid).get()
-          .then(r=>{
-            jsonData = r.data().follow;
-            jsonData[jsonKey] = jsonValue;
-            firebase.firestore().collection('Userinfo').doc(user.uid).update({
-              follow : jsonData,
-              followInfo : this.$store.state.followinfo
-            })
-            this.$store.state.followKeyword = Object.keys(this.$store.state.followinfo)
-            this.$store.commit('loadRes')
+        firebase.firestore().collection('Userinfo').doc(user.uid).update({
+          follow : this.$store.state.followSource,
+          followInfo : this.$store.state.followinfo
         })
+        this.$store.state.followKeyword = Object.keys(this.$store.state.followinfo)
+        this.$store.commit('loadRes')
 
-        console.log(this.$store.state)
+
         this.addopen=false
         this.expand=!this.expand
       }
