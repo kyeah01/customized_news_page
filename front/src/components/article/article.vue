@@ -1,9 +1,9 @@
 <template>
   <v-layout row>
-    <v-flex xs12 sm6 offset-sm3>
+    <v-flex xs12 sm6 offset-sm2>
         <v-card v-infinite-scroll="leadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="limit">
         
-        <v-flex xs12 class="margin-30" v-for="(item, index) in article" :key="item.title">
+        <v-flex xs12 v-for="(item, index) in article" :key="item.title">
             <v-subheader v-if="item.header" :key="item.header">
               {{ item.header }}
             </v-subheader>
@@ -15,31 +15,51 @@
             ></v-divider>
 
                 <v-card v-else :key="item.title">
-                   <v-card-title primary-title>
-                      <div>
-                        <span class="headline">{{item.title}}</span>
-                      <span>
-                          <v-icon @click="mark_as_read(item)">fas fa-check</v-icon>
-                          <v-icon @click="read_later(item)">far fa-bookmark</v-icon>
-                          <!-- <v-btn class="border-green" flat color="light-green accent-4">Follow</v-btn> -->
-                      </span>
-                        <div>{{item.author}}</div>
-                        <span>{{item.description}}</span>
-                      </div>
-                    </v-card-title>
-                    <v-card-actions>
+                  <v-layout row>
+                    <v-flex>
+                      <img id="image" v-bind:src="item.urlToImage" style="width:130px; height:78px;">
+                    </v-flex>
+                    
+                    <v-flex>
+                      <v-card-title primary-title>
+                          <v-layout row>
+                            <!-- <div> -->
+                              <span class="headline" id="title" @click="call">{{item.title}}</span>
+                            <!-- </div> -->
+                            <v-spacer></v-spacer>
+                            <div>
+                                <v-icon id="check" @click="mark_as_read(item)">fas fa-check</v-icon>
+                                <v-icon id="bookmark" @click="read_later(item)">far fa-bookmark</v-icon>
+                                <!-- <v-icon @click="read_later(item)">far fa-bookmark</v-icon>
+                                <v-icon @click="read_later(item)">far fa-bookmark</v-icon> -->
+                                <!-- <v-btn class="border-green" flat color="light-green accent-4">Follow</v-btn> -->
+                            </div>
+                          </v-layout>
+                          
+                          
+                          
+                            <div id="author">{{item.author}}</div>
+                            <!-- <span id="description">{{item.description}}</span> -->
+                            <span id="description">{{item.content}}</span>
 
-              </v-card-actions>
+                      </v-card-title>
+                    </v-flex>
+                    
+                  </v-layout>
+
+                  <v-card-actions>
+
+                  </v-card-actions>
                 </v-card>
 
               </v-flex>
 
       </v-card>
     </v-flex>
-    <div>
+    <div v-if="parentDrawer===true">
       <ArticleDetail
        :drawer = parentDrawer
-       :detail = this.parentDetail
+       :detail = parentDetail
        @right_drawer = "update"
        >
       </ArticleDetail>
@@ -129,7 +149,8 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
         call : function(index,item){
           alert(index)
           this.parentDetail=item
-          this.update()
+          // this.update()
+          this.parentDrawer = !this.parentDrawer
           
         },
         update(){
@@ -153,3 +174,62 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
      }  
   }
 </script>
+
+<style scoped>
+#title {
+  display: inline-block;
+  font-size: 16px !important;
+  letter-spacing: -.04em !important;
+  line-height: 1.25em !important;
+  margin-bottom: 0.25rem !important;
+  text-decoration: none !important;
+  width: 72% !important;
+}
+
+#author {
+  color: #9e9e9e;
+  font-size: 13px !important;
+  line-height: 18px !important;
+  margin-bottom: 0 !important;
+  margin-top: 0.25rem !important;
+  max-height: 54px !important;
+}
+
+#description {
+  /* font-family: sans-serif; */
+  color: #9e9e9e;
+  font-size: 13px !important;
+  line-height: 18px !important;
+  margin-bottom: 0 !important;
+  margin-top: 0.25rem !important;
+  max-height: 54px !important;
+
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 3 !important; 
+  -webkit-box-orient: vertical !important;
+  word-break: break-word !important;
+  line-height: 1.2em !important;
+  height: 3.6em !important;
+}
+
+#image {
+  margin-top: 24px;
+  margin-left: 16px;
+}
+
+.v-card {
+  width: 65vw;
+}
+
+#check {
+  padding: 0 2px;
+  font-size: 16px;
+}
+
+#bookmark {
+  padding: 0 2px;
+  font-size: 16px;
+}
+</style>
