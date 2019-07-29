@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import firebase from 'firebase'
 
 Vue.use(Vuex)
 
@@ -8,16 +9,15 @@ export default new Vuex.Store({
     followKeyword: [],
     followSource : {},
     followReturn : {},
-    followinfo : {}
+    followinfo : {},
+    imgSrc: '',
+    userInfo: '',
   },
   mutations: {
     loadFollowData(state, fromDB){
       state.followSource = fromDB.follow;
       state.followinfo = fromDB.followInfo;
       state.followKeyword = Object.keys(state.followinfo);
-
-
-      // state.followKeyword=fromDB
     },
     loadRes(state){
       for(var i in state.followKeyword){
@@ -26,7 +26,15 @@ export default new Vuex.Store({
       for(var j in state.followSource){
         state.followReturn[state.followSource[j]].push(j)
       }
-    }
+    },
+    setUserInfo(state) {
+      firebase.auth().onAuthStateChanged((user) => {
+        state.userInfo = user
+      })
+    },
+    logout(state){
+      state.userInfo = ''
+    },
   },
   actions: {
 
