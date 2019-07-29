@@ -260,18 +260,12 @@ export default {
       FirebaseService.Logout()
     },
     init : function(){
-      var user2=firebase.auth().currentUser
-      var tmp=firebase.firestore().collection("Userinfo").doc(user2.uid).get()
+      var user=firebase.auth().currentUser
+      var tmp=firebase.firestore().collection("Userinfo").doc(user.uid).get()
         .then(r=> {tmp = r.data()
-            
-        var followKeyword=Object.keys(tmp.followInfo)
-        var followSource=tmp.follow
 
-        this.$store.commit('loadFollow',followKeyword)
-        this.$store.commit('loadSource',followSource)
-        this.$store.commit('loadFollowInfo',tmp.followInfo)
+        this.$store.commit('loadFollowData',tmp)
         this.$store.commit('loadRes')
-
        })
     }
   },
