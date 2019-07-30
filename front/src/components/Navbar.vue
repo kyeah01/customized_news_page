@@ -22,85 +22,17 @@
           </div>
         </div>
 
-
-      <v-btn
-        flat
-        @click.stop="dialog2 = true"
-        v-if="!userinfo"
-        >
-        Login
-      </v-btn>
+      <v-template v-if="!$store.state.userInfo" style="line-height: 60px;">
+        <Login/>
+      </v-template>
         
       
       <v-btn flat v-on:click="Logout" v-else>Logout</v-btn>
 
-      <v-dialog
-        v-model="dialog2"
-        max-width="400"
-        >
-        <v-card>
-            <v-card-title class="headline">Login</v-card-title>
-
-            <v-card-text>
-                <input style="width:100%; height:50px;" type="text" v-model="email" placeholder="Email"><br>
-                <input style="width:100%; height:50px;" type="password" v-model="password" placeholder="Password"><br>
-            </v-card-text>
-
-            <v-card-actions>
-            <v-spacer></v-spacer>
-
-            <v-btn
-                color="green darken-1"
-                flat="flat"
-                @click="dialog2 = false"
-                v-on:click="Login"
-            >
-                Login
-            </v-btn>
-            </v-card-actions>
-            <v-flex text-xl-center text-lg-center text-md-center text-sm-center text-xs-center>
-              <GoogleLogin/>
-              <FacebookLogin/>
-              You don't have an account? You can 
-              <v-btn
-                flat
-                @click.stop="dialog1 = true"
-                >
-                create one
-              </v-btn>
-              <v-dialog
-              v-model="dialog1"
-              max-width="500"
-              >
-                <v-card>
-                    <v-card-title class="headline">Sign Up</v-card-title>
-
-                    <v-card-text>
-                        <input style="width:100%; height:50px;" type="text" v-model="signupemail" placeholder="Email"><br>
-                        <input style="width:100%; height:50px;" type="password" v-model="signuppassword" placeholder="Password"><br>
-                    </v-card-text>
-
-                    <v-card-actions>
-                    <v-spacer></v-spacer>
-
-                    <v-btn
-                        color="green darken-1"
-                        flat="flat"
-                        @click="dialog1 = false"
-                        v-on:click="SignUp"
-                    >
-                        Sign Up
-                    </v-btn>
-                    </v-card-actions>
-                </v-card>
-              </v-dialog>
-            </v-flex>
-        </v-card>
-      </v-dialog>
    
       <v-btn @click="goto('test')" flat>Test Space</v-btn>
     </v-toolbar-items>
-      <NavbarAvatar v-if="userinfo"/>
+      <NavbarAvatar v-if="$store.state.userInfo"/>
   </v-toolbar>
 
   <v-navigation-drawer app stateless v-model="drawer" style="background-color: #d9d9d9;">
@@ -136,23 +68,23 @@
         value="true"
         v-for="key in $store.state.followKeyword"
       >
-      <template v-slot:activator>
-            <v-list-item-content>
-              <v-list-item-title>{{key}}</v-list-item-title>
-            </v-list-item-content>
-      </template>
+        <template v-slot:activator>
+          <v-list-item-content>
+            <v-list-item-title>{{key}}</v-list-item-title>
+          </v-list-item-content>
+        </template>
 
-      <v-list-tile
-       v-for="j in $store.state.followReturn[key]"
-       @click="moveSourceDetail(j)">
-         <!-- <v-list-tile-action>
-         <v-icon>{{ content.icon }}</v-icon>
-       </v-list-tile-action> -->
+        <v-list-tile
+        v-for="j in $store.state.followReturn[key]"
+        @click="moveSourceDetail(j)">
+          <!-- <v-list-tile-action>
+          <v-icon>{{ content.icon }}</v-icon>
+        </v-list-tile-action> -->
 
-       <v-list-tile-content>
-         <v-list-tile-title>{{j}}</v-list-tile-title>
-       </v-list-tile-content>
-     </v-list-tile>
+        <v-list-tile-content>
+          <v-list-tile-title>{{j}}</v-list-tile-title>
+        </v-list-tile-content>
+      </v-list-tile>
 
       </v-list-group>
       <!-- 1-1 그룹 끝-->
@@ -181,6 +113,7 @@ import GoogleLogin from './GoogleLogin'
 import FacebookLogin from './FacebookLogin'
 import eventBus from '../eventBus'
 import NavbarAvatar from './NavbarAvatar'
+import Login from './Login'
 
 const axios = require('axios');
 
@@ -188,6 +121,7 @@ export default {
   components: {
     GoogleLogin,
     FacebookLogin,
+    Login,
     NavbarAvatar,
   },
   data() {
@@ -196,7 +130,6 @@ export default {
       signuppassword: "",
       email: "",
       password: "",
-      userinfo: "",
       dialog1: false,
       dialog2: false,
       weather: [],
@@ -283,16 +216,6 @@ export default {
     }
   },
   created() {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        this.userinfo = user
-
-          // console.log(user)
-      } else {
-        this.userinfo = ""
-        // console.log("Logout")
-      }
-    })
   },
   mounted(){
     this.init()

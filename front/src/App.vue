@@ -30,11 +30,13 @@ export default {
       // googleTranslate.translate('My name is Brandon', 'ko', function(err, translation) {
       //   console.log(translation.translatedText);
       // });
-    }
+    },
   },
   created () {
     this.translater()
-  }
+  },
+  computed : {
+  },
 }
 </script>
 

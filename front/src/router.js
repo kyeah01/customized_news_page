@@ -5,6 +5,13 @@ import { Script } from 'vm';
 
 Vue.use(Router)
 
+const requireAuth = () => (from, to, next) => {
+  if (this.$store.state.userInfo) return next()
+  next('/')
+}
+
+
+
 export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
