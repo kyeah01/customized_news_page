@@ -10,8 +10,6 @@ export default new Vuex.Store({
     followSource : {},
     followReturn : {},
     followinfo : {},
-    imgSrc: '',
-    userInfo: '',
   },
   mutations: {
     loadFollowData(state, fromDB){
@@ -26,14 +24,6 @@ export default new Vuex.Store({
       for(var j in state.followSource){
         state.followReturn[state.followSource[j]].push(j)
       }
-    },
-    setUserInfo(state) {
-      firebase.auth().onAuthStateChanged((user) => {
-        state.userInfo = user
-      })
-    },
-    logout(state){
-      state.userInfo = ''
     },
   },
   actions: {

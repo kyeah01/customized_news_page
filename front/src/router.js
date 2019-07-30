@@ -5,21 +5,15 @@ import { Script } from 'vm';
 
 Vue.use(Router)
 
-const requireAuth = () => (from, to, next) => {
-  if (this.$store.state.userInfo) return next()
-  next('/')
-}
-
-
-
-export default new Router({
+const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
     {
       path: '/',
       name: 'home',
-      component: Home
+      component: Home,
+      meta: { requiresAuth: false }
     },
     {
       path: '/article',
@@ -27,7 +21,8 @@ export default new Router({
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/articlePage.vue')
+      component: () => import(/* webpackChunkName: "about" */ './views/articlePage.vue'),
+      meta: { requiresAuth: true }
     },
     {
       path: '/test',
@@ -35,7 +30,8 @@ export default new Router({
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/testPage.vue')
+      component: () => import(/* webpackChunkName: "about" */ './views/testPage.vue'),
+      meta: { requiresAuth: false }
     },
     {
       path: '/profile',
@@ -43,7 +39,8 @@ export default new Router({
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/Profile.vue')
+      component: () => import(/* webpackChunkName: "about" */ './views/Profile.vue'),
+      meta: { requiresAuth: true }
     },
     {
       path: '/admin',
@@ -51,7 +48,8 @@ export default new Router({
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/admin.vue')
+      component: () => import(/* webpackChunkName: "about" */ './views/admin.vue'),
+      meta: { requiresAuth: true }
     },
     {
       path: '/imageupload',
@@ -59,7 +57,8 @@ export default new Router({
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/ImageUpload.vue')
+      component: () => import(/* webpackChunkName: "about" */ './views/ImageUpload.vue'),
+      meta: { requiresAuth: true }
     },
     {
       path: '/addcontent',
@@ -67,7 +66,8 @@ export default new Router({
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/AddContent.vue')
+      component: () => import(/* webpackChunkName: "about" */ './views/AddContent.vue'),
+      meta: { requiresAuth: true }
     },
     {
       path: '/addcontent/:searchWord',
@@ -76,7 +76,8 @@ export default new Router({
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/AddContent.vue')
+      component: () => import(/* webpackChunkName: "about" */ './views/AddContent.vue'),
+      meta: { requiresAuth: true }
     },
     {
       path: '/follow',
@@ -84,7 +85,8 @@ export default new Router({
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/Follow.vue')
+      component: () => import(/* webpackChunkName: "about" */ './views/Follow.vue'),
+      meta: { requiresAuth: true }
     },
     {
       path: '/SourceDetail',
@@ -92,9 +94,27 @@ export default new Router({
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/SourceDetail.vue')
+      component: () => import(/* webpackChunkName: "about" */ './views/SourceDetail.vue'),
+      meta: { requiresAuth: true }
     }
   ]
 })
 
+router.beforeEach((to, from, next) => {
+  if (to.meta.requiresAuth) {
+    if (sessionStorage.getItem('userInfo')) {
+      return next()
+    } else {
+      return next('/')
+    }
+  } else {
+    // 필요하지 않은 경우는 home이거나 testpage
+    if (to.name == 'home' && sessionStorage.getItem('userInfo')) {
+      return next('/article')
+    }
+    return next()
+  }
+})
 
+
+export default router

@@ -22,17 +22,11 @@
           </div>
         </div>
 
-      <v-template v-if="!$store.state.userInfo" style="line-height: 60px;">
-        <Login/>
-      </v-template>
-        
-      
-      <v-btn flat v-on:click="Logout" v-else>Logout</v-btn>
-
+      <Login/>
    
       <v-btn @click="goto('test')" flat>Test Space</v-btn>
     </v-toolbar-items>
-      <NavbarAvatar v-if="$store.state.userInfo"/>
+      <NavbarAvatar v-if="userInfo"/>
   </v-toolbar>
 
   <v-navigation-drawer app stateless v-model="drawer" style="background-color: #d9d9d9;">
@@ -126,6 +120,7 @@ export default {
   },
   data() {
     return {
+      userInfo: '',
       signupemail: "",
       signuppassword: "",
       email: "",
@@ -189,9 +184,6 @@ export default {
         }
       );
     },
-    Logout: function() {
-      FirebaseService.Logout()
-    },
     init : function(){
       var user=firebase.auth().currentUser
       var tmp=firebase.firestore().collection("Userinfo").doc(user.uid).get()
@@ -216,6 +208,7 @@ export default {
     }
   },
   created() {
+    this.userInfo = sessionStorage.getItem('userInfo')
   },
   mounted(){
     this.init()
