@@ -1,6 +1,6 @@
 <template>
-  <v-layout row>
-    <v-flex xs12 sm6 offset-sm2>
+  <v-layout row justify-center>
+    <v-flex xs6>
         <v-card v-infinite-scroll="leadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="limit">
         
         <v-flex xs12 v-for="(item, index) in article" :key="item.title">
@@ -24,12 +24,14 @@
                       <v-card-title primary-title>
                           <v-layout row>
                             <!-- <div> -->
-                              <span class="headline" id="title" @click="call">{{item.title}}</span>
+                              <span class="headline" id="title" v-if="!item.mark_as_read" @click="call">{{item.title}}</span>
+                              <span class="headline" id="title" v-else @click="call" style="color:#888888;">{{item.title}}</span>
                             <!-- </div> -->
                             <v-spacer></v-spacer>
                             <div>
                                 <v-icon id="check" @click="mark_as_read(item)">fas fa-check</v-icon>
-                                <v-icon id="bookmark" @click="read_later(item)">far fa-bookmark</v-icon>
+                                <v-icon id="bookmark" v-if="!item.read_later" @click="read_later(item)">far fa-bookmark</v-icon>
+                                <v-icon id="bookmark" v-else @click="read_later(item)" style="color:#2bb24c;">far fa-bookmark</v-icon>
                                 <!-- <v-icon @click="read_later(item)">far fa-bookmark</v-icon>
                                 <v-icon @click="read_later(item)">far fa-bookmark</v-icon> -->
                                 <!-- <v-btn class="border-green" flat color="light-green accent-4">Follow</v-btn> -->
@@ -38,7 +40,11 @@
                           
                           
                           
-                            <div id="author">{{item.author}}</div>
+                            <div id="author">
+                              <span id="read_later" v-if="item.read_later">Read later</span>
+                              <span id="dot" v-if="item.read_later">·</span>
+                              {{item.author}}
+                            </div>
                             <!-- <span id="description">{{item.description}}</span> -->
                             <span id="description">{{item.content}}</span>
 
@@ -92,6 +98,8 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
         pageSize: 20,
         page: 0,
 
+        read_later_value: false,
+
         parentDrawer : false,
         parentDetail : ''
       }
@@ -125,7 +133,8 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
             page: this.page
           }).then(res => {
             res.articles.forEach(post => {
-              post.switch = false
+              post.mark_as_read = false
+              post.read_later = false
               this.article.push(post)
               this.article.push({ divider: true, inset: true })
             })
@@ -158,14 +167,23 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
         },
         mark_as_read(item) {
           var user = firebase.auth().currentUser
-          console.log(user.uid)
+          item.mark_as_read = !item.mark_as_read
+          // console.log('mark_as_read', item.mark_as_read)
+          // console.log(user.uid)
           firebase.firestore().collection('Userinfo').doc(user.uid).update({
             markasread: firebase.firestore.FieldValue.arrayUnion({title: item.title, author: item.author, description: item.description})
           })
         },
         read_later(item) {
           var user = firebase.auth().currentUser
-          console.log(user.uid)
+          // this.read_later_value = !this.read_later_value
+          item.read_later = !item.read_later
+          // console.log('read_later', item.read_later)
+          // console.log('article정보2', this.article)
+          // console.log('read_later_value', this.read_later_value)
+          // console.log('user정보', user)
+          // console.log('userdata', firebase.firestore().collection('Userinfo').doc(user.uid))
+          // console.log(user.uid)
           firebase.firestore().collection('Userinfo').doc(user.uid).update({
             readlater: firebase.firestore.FieldValue.arrayUnion({title: item.title, author: item.author, description: item.description})
           })
@@ -176,6 +194,10 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
 </script>
 
 <style scoped>
+/* .layout.row {
+  margin: auto;
+} */
+
 #title {
   display: inline-block;
   font-size: 16px !important;
@@ -193,6 +215,16 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
   margin-bottom: 0 !important;
   margin-top: 0.25rem !important;
   max-height: 54px !important;
+}
+
+#read_later {
+  margin-right: 8px;
+  color: #2bb24c;
+}
+
+#dot {
+  margin-right: 8px;
+  font-weight: 900px;
 }
 
 #description {
@@ -221,6 +253,7 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
 
 .v-card {
   width: 65vw;
+  max-width: 624px;
 }
 
 #check {
