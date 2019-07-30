@@ -34,11 +34,11 @@ export default {
         // An error happened.
         });
     },
-    Userstatus() {
-        firebase.auth().onAuthStateChanged((user) => {
-            if (!user) {
-                this.$router.push('/')
-            }
-        })
-    }
+    // Userstatus() {
+    //     firebase.auth().onAuthStateChanged((user) => {
+    //         if (!user) {
+    //             this.$router.push('/')
+    //         }
+    //     })
+    // }
 }

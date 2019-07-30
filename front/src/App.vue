@@ -12,6 +12,7 @@
 import Navbar from './components/Navbar'
 import LoginCheck from './components/LoginCheck'
 import SignUp from './components/SignUp'
+import FirebaseService from '@/services/FirebaseService'
 
 export default {
   name: 'App',
@@ -31,9 +32,17 @@ export default {
       //   console.log(translation.translatedText);
       // });
     },
+    isLogin: function () {
+      if (!sessionStorage.getItem('userInfo')) {
+        FirebaseService.logout()
+      }
+    }
   },
   created () {
     this.translater()
+    this.isLogin()
+  },
+  mounted () {
   },
   computed : {
   },
