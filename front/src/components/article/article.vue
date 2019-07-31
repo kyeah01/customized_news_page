@@ -17,15 +17,15 @@
                 <v-card v-else :key="item.title">
                   <v-layout row>
                     <v-flex>
-                      <img id="image" v-bind:src="item.urlToImage" style="width:130px; height:78px;">
+                      <img id="image" v-bind:src="item.urlToImage" style="width:130px; height:78px;" @click="call(item)">
                     </v-flex>
                     
                     <v-flex>
                       <v-card-title primary-title>
                           <v-layout row>
                             <!-- <div> -->
-                              <span class="headline" id="title" v-if="!item.mark_as_read" @click="call">{{item.title}}</span>
-                              <span class="headline" id="title" v-else @click="call" style="color:#888888;">{{item.title}}</span>
+                              <span class="headline" id="title" v-if="!item.mark_as_read" @click="call(item)">{{item.title}}</span>
+                              <span class="headline" id="title" v-else style="color:#888888;" @click="call(item)">{{item.title}}</span>
                             <!-- </div> -->
                             <v-spacer></v-spacer>
                             <div>
@@ -40,13 +40,13 @@
                           
                           
                           
-                            <div id="author">
+                            <div id="author" @click="call(item)">
                               <span id="read_later" v-if="item.read_later">Read later</span>
                               <span id="dot" v-if="item.read_later">·</span>
                               {{item.author}}
                             </div>
                             <!-- <span id="description">{{item.description}}</span> -->
-                            <span id="description">{{item.content}}</span>
+                            <span id="description" @click="call(item)">{{item.content}}</span>
 
                       </v-card-title>
                     </v-flex>
@@ -62,7 +62,7 @@
 
       </v-card>
     </v-flex>
-    <div v-if="parentDrawer===true">
+    <div v-if="this.parentDrawer===true">
       <ArticleDetail
        :drawer = parentDrawer
        :detail = parentDetail
@@ -98,10 +98,8 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
         pageSize: 20,
         page: 0,
 
-        read_later_value: false,
-
         parentDrawer : false,
-        parentDetail : ''
+        parentDetail : null
       }
     },
     created(){
@@ -155,12 +153,10 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
 
           // 또한, topheadlines는 from, to를 통해 날짜 필터링 검색이 가능합니다.
         },
-        call : function(index,item){
-          alert(index)
+        call : function(item){
+          // alert(item)
           this.parentDetail=item
-          // this.update()
           this.parentDrawer = !this.parentDrawer
-          
         },
         update(){
         this.parentDrawer = !this.parentDrawer
