@@ -1,19 +1,17 @@
 <template>
 <v-container grid-list-xs>
     <v-layout column wrap>
-
+        
     </v-layout>
     <v-layout row wrap>
-
+        <v-flex xs12>
+            <span>SORTING BY FEEDLY SCORE</span>
+            <v-icon>expand_more</v-icon>
+        </v-flex>
         <v-flex xs9>
             <v-layout row wrap>
-                <v-flex xs9>
-                    <span>SORTING BY FEEDLY SCORE</span>
-                    <v-icon>expand_more</v-icon>
-                </v-flex>
                 <v-flex xs12 class="margin-30" v-for="source in sourceData" :key="source.id">
-                    <Source :source="source" class="source">
-                    </Source>
+                    <Source :source="source" class="source"></Source>
                 </v-flex>
             </v-layout>
         </v-flex>
@@ -21,16 +19,22 @@
             <topSource></topSource>
         </v-flex>
     </v-layout>
+
+    <div>
+
+    </div>
 </v-container>
 </template>
 
 <script>
 import firebase from 'firebase'
+import Follow from '../search/follow'
 import Source from '../search/Source'
 import topSource from '../search/topSource'
 export default {
     props: ['sourceData'],
     components: {
+        Follow,
         Source,
         topSource
     },
@@ -69,3 +73,11 @@ export default {
     }
 }
 </script>
+
+<style>
+.source {
+    margin-bottom: 10px;
+    max-width: 600px;
+    height: 200px;
+}
+</style>

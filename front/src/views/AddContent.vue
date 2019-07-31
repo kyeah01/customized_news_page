@@ -71,8 +71,6 @@ export default {
   watch:{
     searchWord:function(newVal){
       this.search();
-      
-      
     }
   },
   created (){
