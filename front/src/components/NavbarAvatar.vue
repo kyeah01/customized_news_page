@@ -10,8 +10,8 @@
 
         <v-avatar v-on="on">
             <img
-            :src=imgSrc
-            alt="Profile Image Button for some settings"
+            :src="$store.state.imgSrc"
+            alt="Profile Image"
             >
         </v-avatar>
       </template>
@@ -78,15 +78,13 @@ import FirebaseService from '@/services/FirebaseService'
 
     }),
     created () {
-      firebase.auth().onAuthStateChanged((user) => {
-        if (user) {
-          this.user = user
-        }
-      })
     },
     methods: {
       Logout: function() {
         FirebaseService.Logout()
+        sessionStorage.removeItem('userInfo')
+        this.$store.commit('imageSoruceDestroy')
+        window.location.href = '/'
       },
     }
   }

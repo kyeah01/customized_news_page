@@ -12,6 +12,7 @@
 import Navbar from './components/Navbar'
 import LoginCheck from './components/LoginCheck'
 import SignUp from './components/SignUp'
+import FirebaseService from '@/services/FirebaseService'
 
 export default {
   name: 'App',
@@ -30,11 +31,23 @@ export default {
       // googleTranslate.translate('My name is Brandon', 'ko', function(err, translation) {
       //   console.log(translation.translatedText);
       // });
+    },
+    isLogin: function () {
+      if (!sessionStorage.getItem('userInfo')) {
+        FirebaseService.logout()
+      } else {
+        this.$store.commit('imageSoruceUpdate', JSON.parse(sessionStorage.getItem('userInfo')).user.photoURL)
+      }
     }
   },
   created () {
     this.translater()
-  }
+    this.isLogin()
+  },
+  mounted () {
+  },
+  computed : {
+  },
 }
 </script>
 

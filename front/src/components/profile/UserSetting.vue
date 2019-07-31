@@ -80,25 +80,31 @@ export default {
         imageSrc: ''
       }
     },
+    mounted () {
+      eventBus.$on('imgUpdate', (imgSrc) => {
+        this.imageSrc = imgSrc
+      })
+    },
     methods :{
       saveTheChange(){
-        // save하는 순간 image 변경하게 하는 코드 작동해야 함.
-        eventBus.$on('imgUpdate', this.saveTheImg)
         // drawer 값 전달하여 navigation drawer를 작동하게 함.
+        this.saveTheImg()
         this.$emit('right_drawer')
-        },
-        saveTheImg (imgSrc){
-          var userinfo = firebase.auth().currentUser
-          Object.defineProperty(userinfo, 'photoURL', {
-            writable: true
-            })
-          userinfo.updateProfile ({
-            photoURL: imgSrc
-            })
-        },
-        dontSaveNClose (){
-          this.$emit('right_drawer')
-        },
+      },
+      saveTheImg (){
+        var userinfo = firebase.auth().currentUser
+        Object.defineProperty(userinfo, 'photoURL', {
+          writable: true
+        })
+        userinfo.updateProfile ({
+          photoURL: this.imageSrc
+        })
+        // 업로드는 끝났고, navbar avatar와의 동기화를 위한 코드
+        this.$store.commit('imageSoruceUpdate', this.imageSrc)
+      },
+      dontSaveNClose (){
+        this.$emit('right_drawer')
+      },
     },
     created(){
        firebase.auth().onAuthStateChanged((user) => {                   
