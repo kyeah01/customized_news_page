@@ -35,6 +35,8 @@ export default {
     isLogin: function () {
       if (!sessionStorage.getItem('userInfo')) {
         FirebaseService.logout()
+      } else {
+        this.$store.commit('imageSoruceUpdate', JSON.parse(sessionStorage.getItem('userInfo')).user.photoURL)
       }
     }
   },
