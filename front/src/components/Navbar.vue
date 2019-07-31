@@ -4,12 +4,12 @@
     <v-toolbar-side-icon
     @click="call"
     ></v-toolbar-side-icon>
-    <v-toolbar-title>Idle</v-toolbar-title>
+    <v-toolbar-title @click="goto('')" style="cursor:pointer">Idle</v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items class="hidden-sm-and-down">
       
       <!-- <v-btn flat input-value disabled> -->
-        <div class="box">
+        <div class="box" v-if="user">
           <div class="container-1">
               <br style="height: 20.8px;">
               <span class="icon"><i class="fa fa-search"></i></span>
@@ -22,11 +22,11 @@
           </div>
         </div>
 
-      <Login/>
-   
       <v-btn @click="goto('test')" flat>Test Space</v-btn>
+      <Login/>
+      
+   
     </v-toolbar-items>
-      <NavbarAvatar v-if="userInfo"/>
   </v-toolbar>
 
   <v-navigation-drawer app stateless v-model="drawer" style="background-color: #d9d9d9;">
@@ -106,7 +106,6 @@ import FirebaseService from '@/services/FirebaseService'
 import GoogleLogin from './GoogleLogin'
 import FacebookLogin from './FacebookLogin'
 import eventBus from '../eventBus'
-import NavbarAvatar from './NavbarAvatar'
 import Login from './Login'
 
 const axios = require('axios');
@@ -116,11 +115,10 @@ export default {
     GoogleLogin,
     FacebookLogin,
     Login,
-    NavbarAvatar,
   },
   data() {
     return {
-      userInfo: '',
+      user: '',
       signupemail: "",
       signuppassword: "",
       email: "",
@@ -167,8 +165,6 @@ export default {
           this.dialog2 = false
           this.signupemail = ""
           this.signuppassword = "" 
-          // console.log(1)
-          // console.log(cred)
           firebase.firestore().collection('Userinfo').doc(cred.user.uid).set({
             keyword: [],
             markasread: [],
@@ -208,7 +204,7 @@ export default {
     }
   },
   created() {
-    this.userInfo = sessionStorage.getItem('userInfo')
+    this.user = JSON.parse(sessionStorage.getItem('userInfo')) ? true : false
   },
   mounted(){
     this.init()

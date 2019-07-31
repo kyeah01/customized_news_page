@@ -59,17 +59,7 @@ export default {
             this.thumnail = result.data.link;
 
             eventBus.$emit('imgUpdate', this.imageSrc)
-
-            // var userinfo = firebase.auth().currentUser
-
-            // Object.defineProperty(userinfo, 'photoURL', {
-            //   writable: true
-            // })
-
-            // userinfo.updateProfile ({
-            //   photoURL: this.imageSrc,
-            // })
-            // this.$emit('saveTheChange', this.imageSrc)
+            
           } else {
             alert("업로드 실패");
             this.imageSrc = "http://dy.gnch.or.kr/img/no-image.jpg";

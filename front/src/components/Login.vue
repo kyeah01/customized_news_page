@@ -68,7 +68,9 @@
         </v-card>
       </v-dialog>
     </v-template>
-    <v-btn flat v-on:click="Logout" v-else style="line-height: 60px;">Logout</v-btn>
+    <v-template v-else style="line-height: 60px;">
+      <NavbarAvatar v-if="userInfo"/>
+    </v-template>
   </div>
 </template>
 
@@ -78,11 +80,14 @@ import firebase from 'firebase'
 import FirebaseService from '@/services/FirebaseService'
 import GoogleLogin from './GoogleLogin'
 import FacebookLogin from './FacebookLogin'
+import NavbarAvatar from './NavbarAvatar'
+
 
 export default {
     components: {
       GoogleLogin,
       FacebookLogin,
+      NavbarAvatar,
     },
     data () {
       return {
@@ -94,25 +99,27 @@ export default {
       }
     },
     methods: {
-      Login: function() {
-        firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(() => {
+      Login: async function() {
+        await firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
+          (user) => {
             alert('Well done ! You are now connected')
-        })
-        firebase.auth().onAuthStateChanged((user) => {
-          sessionStorage.setItem('userInfo', user)
-        })
-        window.location.href = '/';
+            sessionStorage.setItem('userInfo', JSON.stringify(user))
+            this.$store.commit('imageSoruceUpdate', user.user.photoURL)
+            this.email = ''
+            this.password = ''
+            window.location.href = '/';
+          },
+          (err) => {
+            alert('Oops, ' + err.message)
+            this.dialog2 = true
+          }
+        )
 
         
       },
-      Logout: function() {
-        FirebaseService.Logout()
-        sessionStorage.removeItem('userInfo')
-        window.location.href = '/';
-      },
     },
     created () {
-      this.userInfo = sessionStorage.getItem('userInfo')
+      this.userInfo = JSON.parse(sessionStorage.getItem('userInfo'))
     }
 }
 </script>
