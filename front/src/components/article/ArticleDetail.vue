@@ -13,8 +13,7 @@
             <div class="kicker">ArticleDetail</div>
             <div class="heading">Example</div>
           </h1>
-          <!-- <img :src="detail.urlToImage">
-          {{detail}} -->
+          <!-- <img :src="detail.urlToImage"> -->
           <v-layout>
     <v-flex>
       <v-card>
@@ -22,6 +21,7 @@
           :src="detail.urlToImage"
           aspect-ratio="2"
         ></v-img>
+       
 
         <v-card-title primary-title>
           <div>
@@ -67,6 +67,9 @@ export default {
         test(){
           this.$emit('right_drawer')
         }
+    },
+    mounted() {
+      console.log('detail', this.detail)
     },
     data(){
       return{
