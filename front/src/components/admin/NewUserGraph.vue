@@ -13,7 +13,7 @@ export default {
                 datasets: [
                 {
                     label: 'Data One',
-                    backgroundColor: '#f87979',
+                    backgroundColor: '#6A5ACD',
                     pointBackgroundColor: 'white',
                     borderWidth: 1,
                     pointBorderColor: '#249EBF',
