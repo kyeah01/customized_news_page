@@ -18,13 +18,12 @@
             <div class="kicker">Preview</div>
             <div class="heading">Mark as read</div>
           </h1>
-          {{items}}
 
 
           
               
               
-              <v-flex xs12 v-for="(item, index) in items" :key="item.title">
+              <v-flex xs12 v-for="(item, index) in deleteKey" :key="item.title">
                       <v-card :key="item.title">
                         <v-layout row>
                           <v-flex>
@@ -99,9 +98,10 @@
 import firebase from 'firebase'
 import FirebaseService from '@/services/FirebaseService'
 import 'firebase/firestore'
+import { watch } from 'fs';
 
 export default {
-  props : ['drawer', 'items', 'dir'],
+  props : ['drawer', 'items'],
   watch: {
     drawer: function() {
       if (!this.drawer) {
@@ -114,7 +114,6 @@ export default {
       }
     }
   },
-  
   methods: {
       test1() {
         this.val = false
@@ -125,46 +124,32 @@ export default {
         this.drawer = !this.drawer
       },
       delete_from_DB(item, index) {
-        console.log(item)
-        console.log(index)
-        // console.log(userid)
 
         firebase.auth().onAuthStateChanged((user) => {
-          console.log(user.uid)
-          // var FieldValue = require('firebase-admin').firestore.FieldValue;
-          const db = firebase.firestore();
-          db.collection('Userinfo').doc(user.uid).update({
-            markasread : FieldValue.delete()
+          firebase.firestore().collection('Userinfo').doc(user.uid).update({
+            markasread : firebase.firestore.FieldValue.arrayRemove(item)
           })
-          // db.collection('Userinfo').doc(user.uid).get()
-          //   .then(doc => {
-          //     console.log(doc.data().markasread)
-          //     console.log(doc.data().markasread[0])
-          //     // doc.data().markasread[index]
-          //     this.items = doc.data().markasread
-          //     console.log('items1', this.items)
-          //     // console.log('length', this.items.length)
-          //   })
-          //   .catch((err) => {
-          //     console.log('Error getting documents', err);
-          //   });
         })
+
+        this.$emit("deleteMark")
+
         // this.markasread_length = this.items.length
         // console.log('markasread_length', this.markasread_length)
       }
+  },
+  computed : {
+    deleteKey(){
+      return this.items
+    }
   },
   data(){
     return{
       val: true,
       data2 : true,
       markasread_length : null,
-      // articles: [123]
+      child : null
     }
-  },
-  // mounted() {
-  //   let _article = this.articles
-  //   _article = this.items
-  //   console.log('this.articles', _article)
-  // }  
+  }
+
 }
 </script>
