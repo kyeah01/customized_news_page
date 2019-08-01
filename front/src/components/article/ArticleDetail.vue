@@ -3,6 +3,52 @@
     <div v-if="drawer">
       <v-navigation-drawer
             app
+            temporary
+            v-model="drawer"
+            right
+            style="width:83vw"
+      > 
+        <section class="container630 centered">
+          <h1 class="grey--text">{{detail.source.name}}</h1>
+          <h1>
+            <div class="heading">{{detail.title}}</div>
+          </h1>
+          <p class="text-lg-right grey--text">{{detail.author}}</p>
+          <p class="text-lg-right grey--text">{{detail.publishedAt}}</p>
+
+          <v-img v-bind:src="detail.urlToImage"
+            width:130px 
+            height:78px>
+          </v-img>
+          <div>
+          {{detail.description}}
+          </div>
+          <br>
+          <div>
+          {{detail.content}}
+          </div>
+          <div>
+            <v-btn dark large><a v-bind:href="detail.url" target="_blank" style="color : white">Visit Website</a></v-btn>
+          </div>
+        </section>
+      </v-navigation-drawer>
+    </div>
+    
+    <div v-else>
+          <v-navigation-drawer
+            app
+            stateless
+            v-model="drawer"
+            right
+          >
+          </v-navigation-drawer>
+    </div>
+  </div>
+  
+  <!--호성 <div>
+    <div v-if="drawer">
+      <v-navigation-drawer
+            app
             stateless
             v-model="drawer"
             right
@@ -13,7 +59,6 @@
             <div class="kicker">ArticleDetail</div>
             <div class="heading">Example</div>
           </h1>
-          <!-- <img :src="detail.urlToImage"> -->
           <v-layout>
     <v-flex>
       <v-card>
@@ -56,58 +101,19 @@
           >
           </v-navigation-drawer>
     </div>
-  </div>
+  </div> -->
 </template>
 
 <script>
 import('@/assets/profileCss.css')
 export default {
-    props : ['drawer','detail'],
-    methods :{
-        test(){
-          this.$emit('right_drawer')
-        }
-    },
-    mounted() {
-      console.log('detail', this.detail)
-    },
-    data(){
-      return{
-        data2 : true,
-        item :[
-          {title : 'title1', 
-           subtitle : 'subtitle1',
-           checkbox : [
-             {
-               index : 1,
-               content : "test1",
-               value : true
-             },
-            ]
-          },
-           {title : 'title2', 
-           subtitle : 'subtitle2',
-           checkbox : [
-             {
-               index : 4,
-               content : "test4",
-               value : true
-             },
-            ]
-          },
-          {title : 'title3', 
-           subtitle : 'subtitle4',
-           checkbox : [
-             {
-               index : 4,
-               content : "test6",
-               value : false
-             },
-            ]
-          }
-        ]
-      }
+  props : ['drawer','detail'],
+  watch: {
+    drawer: function() {
+      this.drawer=!this.drawer
+      this.$emit('right_drawer', 'update')
     }
+  }
     
 }
 </script>

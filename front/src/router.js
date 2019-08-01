@@ -15,7 +15,8 @@ const router = new Router({
       meta: { requiresAuth: false }
     },
     {
-      path: '/article',
+      path: '/article/:find',
+      props : true,
       name: 'article',
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
@@ -87,15 +88,6 @@ const router = new Router({
       component: () => import(/* webpackChunkName: "about" */ './views/Follow.vue'),
       meta: { requiresAuth: true }
     },
-    {
-      path: '/SourceDetail',
-      name: 'SourceDetail',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/SourceDetail.vue'),
-      meta: { requiresAuth: true }
-    }
   ]
 })
 
