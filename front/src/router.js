@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/HomePage.vue'
-import { Script } from 'vm';
 
 Vue.use(Router)
 

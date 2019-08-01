@@ -55,4 +55,7 @@ export default {
 .theme--light.application {
   background: #fff;
 }
+.info-color{
+  color:#757575
+}
 </style>
