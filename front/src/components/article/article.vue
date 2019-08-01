@@ -1,8 +1,22 @@
 <template>
-  <v-layout row justify-center>
-    <v-flex xs6>
-        <v-card v-infinite-scroll="leadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="limit">
-        
+  <v-layout row wrap>
+
+  <!-- <v-layout row id="header"> -->
+    <v-flex xs6 offset-xs3>
+      <div id="sourceName">{{search}}</div>
+      <div id="sourceInfo">info / today {{article.length}} articles</div>
+    </v-flex>
+    <v-flex xs3 id="headerExtra"> 
+      <v-icon>fas fa-redo-alt</v-icon>
+      <v-icon>fas fa-ellipsis-h</v-icon>
+    </v-flex>
+  <!-- </v-layout> -->
+  <!-- <div id="sourceName">{{search}}</div>
+  <div id="sourceInfo">info</div> -->
+
+  <!-- <v-layout row> -->
+    <v-flex xs6 offset-xs3>
+        <v-card v-infinite-scroll="leadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="limit">  
         <v-flex xs12 v-for="(item, index) in article" :key="item.title">
             <v-subheader v-if="item.header" :key="item.header">
               {{ item.header }}
@@ -70,6 +84,7 @@
        >
       </ArticleDetail>
     </div>
+  <!-- </v-layout> -->
   </v-layout>
 </template>
 
@@ -83,14 +98,15 @@ import ArticleDetail from '@/components/article/ArticleDetail'
 
 // news api 로드
 const NewsAPI = require('newsapi');
-// const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9'); // 07/13 16:00
+const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
 // const newsapi = new NewsAPI('2dc4b8b9d26f4a6b97e21a1f282bac9d'); //hojin : 07/31 23:00
-const newsapi = new NewsAPI('a0be542239a6455995a8cf063ff0f17d') //heajae
+// const newsapi = new NewsAPI('a0be542239a6455995a8cf063ff0f17d') //heajae
 
   export default {
     components : {
       ArticleDetail
     },
+    props : ['find'], // 새로 고침 시 url 파라미터 사용하여 api 호출
     data () {
       return {
         article : [{header:'today'}],
@@ -108,10 +124,6 @@ const newsapi = new NewsAPI('a0be542239a6455995a8cf063ff0f17d') //heajae
         beforeTwo : null,
         isSource : true
       }
-    },
-    created(){
-      this.leadMore()
-      console.log('article정보', this.article)
     },
     methods: {
         translater: function (idx) {
@@ -133,13 +145,14 @@ const newsapi = new NewsAPI('a0be542239a6455995a8cf063ff0f17d') //heajae
           newsapi.v2.everything({
             sources: this.search,
             // domains: this.search,
-            from: this.today,
-            to: this.beforeTwo,
             language: 'en',
             pageSize : this.pageSize,
             page : this.page
           }).then(res => {
-            console.log("detail",res)
+            // 날짜 분기 필요함
+            // var now=new Date()
+            // this.today=now.toISOString();
+            // this.beforeTwo=new Date(now.getTime()-1000*60*60*24*2).toDateString();
             res.articles.forEach(post =>{
               post.mark_as_read = false
               post.read_later = false
@@ -193,7 +206,6 @@ const newsapi = new NewsAPI('a0be542239a6455995a8cf063ff0f17d') //heajae
           // 또한, topheadlines는 from, to를 통해 날짜 필터링 검색이 가능합니다.
         },
         call : function(item){
-          // alert(item)
           this.parentDetail=item
           this.parentDrawer = !this.parentDrawer
         },
@@ -226,18 +238,21 @@ const newsapi = new NewsAPI('a0be542239a6455995a8cf063ff0f17d') //heajae
 
       },
       mounted(){
-          eventBus.$on('article', r=>{
-              this.search=r
-          })
+        console.log('this.search?',this.search)
+        if(search!=this.find){
+          this.search=this.find
+        }
+        this.leadMore()
       },
       watch : {
           search : function(){
+            eventBus.$on('article', r=>{
+              this.search=r
+            })
             this.article=[{header : 'today'}]
             this.page=0
             this.busy=false
-            var now=new Date()
-            this.today=now.toISOString();
-            this.beforeTwo=new Date(now.getTime()-1000*60*60*24*2).toDateString();
+           //if 조건 필요 (soruce 냐 키워드냐)
             this.getSource()
           }
       }
@@ -245,10 +260,36 @@ const newsapi = new NewsAPI('a0be542239a6455995a8cf063ff0f17d') //heajae
 </script>
 
 <style scoped>
+/* header */
+#sourceName {
+  color: #333333;
+  font-size: 34px;
+  font-weight: bold;
+}
+
+#sourceInfo {
+  margin-top: 8px;
+  margin-bottom: 3rem;
+  color: #9E9E9E;
+  font-size: 12px;
+  /* font-size: 0.75rem; */
+}
+
+#headerExtra {
+  margin-top: 8px;
+  /* margin-left: 8px; */
+}
+
+#headerExtra .v-icon {
+  padding-right: 4px;
+  font-size: 20px;
+}
+
 /* .layout.row {
   margin: auto;
 } */
 
+/* list */
 #title {
   display: inline-block;
   font-size: 16px !important;

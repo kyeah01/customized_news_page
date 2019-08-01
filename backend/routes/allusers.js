@@ -10,14 +10,13 @@ admin.initializeApp({
   databaseURL: "https://test1-e4911.firebaseio.com"
 });
 
-
 router.get('/', function (req, res, next) {
     function listAllUsers(nextPageToken) {
         // List batch of users, 1000 at a time.
         admin.auth().listUsers(1000, nextPageToken)
           .then(function(listUsersResult) {
             listUsersResult.users.forEach(function(userRecord) {
-              console.log('user', userRecord.toJSON());
+              // console.log('user', userRecord.toJSON());
             });
             // if (listUsersResult.pageToken) {
             //   // List next batch of users.
@@ -33,5 +32,16 @@ router.get('/', function (req, res, next) {
       listAllUsers();
   
 });
+
+router.get('/delete/:uid', function (req, res, next) {
+  var uid = req.params.uid
+  admin.auth().deleteUser(uid)
+  .then(function() {
+    console.log('Successfully deleted user');
+  })
+  .catch(function(error) {
+    console.log('Error deleting user:', error);
+  });
+})
 
 module.exports = router;
