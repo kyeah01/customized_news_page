@@ -13,6 +13,7 @@ import Navbar from './components/Navbar'
 import LoginCheck from './components/LoginCheck'
 import SignUp from './components/SignUp'
 import FirebaseService from '@/services/FirebaseService'
+import { firestore } from 'firebase'
 
 export default {
   name: 'App',
@@ -38,7 +39,7 @@ export default {
       } else {
         this.$store.commit('imageSoruceUpdate', JSON.parse(sessionStorage.getItem('userInfo')).user.photoURL)
       }
-    }
+    },
   },
   created () {
     this.translater()
