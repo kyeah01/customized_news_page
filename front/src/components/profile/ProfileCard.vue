@@ -27,7 +27,10 @@
           </General>
           <Preview v-else-if="this.dir===2"
             :drawer = parentDrawer
-            @right_drawer = "update">
+            :items = items
+            :dir = dir
+            @right_drawer = "update"
+          >
           </Preview><!--
           <Intergrations v-else-if="this.dir===3"
             :drawer = parentDrawer
@@ -68,6 +71,10 @@
 </template>
 
 <script>
+import firebase from 'firebase'
+import FirebaseService from '@/services/FirebaseService'
+import 'firebase/firestore'
+
 import General from '@/components/profile/General'
 import Preview from '@/components/profile/Preview'
 // import Intergrations from '@/components/profile/Intergrations'
@@ -96,13 +103,31 @@ export default {
       x: 'right',
       timeout: 3000,
       text: 'Success Modify',
-      navSign : false
+      navSign : false,
+
+      items: null
     }
   },
   methods : {
     test(){
       this.parentDrawer = !this.parentDrawer
       eventBus.$emit("leftDrawer", !this.navSign)
+      console.log(this.dir)
+      if (this.dir == 2) {
+        firebase.auth().onAuthStateChanged((user) => {
+        console.log(user.uid)
+        const db = firebase.firestore();
+        db.collection('Userinfo').doc(user.uid).get()
+          .then(doc => {
+            console.log(doc.data().markasread)
+            this.items = doc.data().markasread
+            console.log('items', this.items)
+          })
+          .catch((err) => {
+            console.log('Error getting documents', err);
+          });
+        })
+      }
     },
     update(info) {
       this.parentDrawer = !this.parentDrawer
@@ -110,6 +135,22 @@ export default {
         this.snackbar=true
       }
     },
+    // get_markasread() {
+    //   // console.log('1')
+    //   firebase.auth().onAuthStateChanged((user) => {
+    //     console.log(user.uid)
+    //     const db = firebase.firestore();
+    //     db.collection('Userinfo').doc(user.uid).get()
+    //       .then(doc => {
+    //         console.log(doc.data().markasread)
+    //         this.items = doc.data().markasread
+    //         console.log('items', this.items)
+    //       })
+    //       .catch((err) => {
+    //         console.log('Error getting documents', err);
+    //       });
+    //   })
+    // }
   }
 }
 </script>
