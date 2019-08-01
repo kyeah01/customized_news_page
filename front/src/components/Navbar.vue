@@ -130,7 +130,6 @@ export default {
       write : false,
       // navbar search
       searchWord:"",
-      items: this.$store.state.followReturn,
     }
   },
   methods: {
@@ -147,7 +146,7 @@ export default {
           this.email = ""
           this.password = ""
 
-          this.init()
+          // this.init()
 
         },
         (err) => {
@@ -199,16 +198,12 @@ export default {
     },
     moveSourceDetail : function(j){
       alert(j)
-      this.$router.push('/SoureceDetail/' + j)
-      eventBus.$emit("data",j)
+      this.$router.push('/article/' + j)
+      eventBus.$emit("article",j)
     }
   },
   created() {
     this.user = JSON.parse(sessionStorage.getItem('userInfo')) ? true : false
-  },
-  mounted(){
-    this.init()
-    this.items=this.$store.state.followReturn
   },
   watch : {
     drawer : function(drawer){
