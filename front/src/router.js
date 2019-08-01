@@ -16,13 +16,22 @@ const router = new Router({
       meta: { requiresAuth: false }
     },
     {
+      path: '/article/',
+      name: 'article',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "about" */ './views/articlePage.vue'),
+      meta: { requiresAuth: true }
+    },
+    {
       path: '/article/:find',
       props : true,
       name: 'article',
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/articlePage.vue'),
+      component: () => import(/* webpackChunkName: "about" */ './components/article/article.vue'),
       meta: { requiresAuth: true }
     },
     {
