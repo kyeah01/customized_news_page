@@ -48,7 +48,7 @@
 <script>
 import firebase from 'firebase'
 export default {
-    props: ['news'],
+    props: ['news', 'kind'],
     data: () => ({
         expand: false,
         addopen: false,
