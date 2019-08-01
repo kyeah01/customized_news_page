@@ -1,8 +1,22 @@
 <template>
-  <v-layout row justify-center>
-    <v-flex xs6>
-        <v-card v-infinite-scroll="leadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="limit">
-        
+  <v-layout row wrap>
+
+  <!-- <v-layout row id="header"> -->
+    <v-flex xs6 offset-xs3>
+      <div id="sourceName">{{search}}</div>
+      <div id="sourceInfo">info / today {{article.length}} articles</div>
+    </v-flex>
+    <v-flex xs3 id="headerExtra"> 
+      <v-icon>fas fa-redo-alt</v-icon>
+      <v-icon>fas fa-ellipsis-h</v-icon>
+    </v-flex>
+  <!-- </v-layout> -->
+  <!-- <div id="sourceName">{{search}}</div>
+  <div id="sourceInfo">info</div> -->
+
+  <!-- <v-layout row> -->
+    <v-flex xs6 offset-xs3>
+        <v-card v-infinite-scroll="leadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="limit">  
         <v-flex xs12 v-for="(item, index) in article" :key="item.title">
             <v-subheader v-if="item.header" :key="item.header">
               {{ item.header }}
@@ -70,6 +84,7 @@
        >
       </ArticleDetail>
     </div>
+  <!-- </v-layout> -->
   </v-layout>
 </template>
 
@@ -223,6 +238,7 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
 
       },
       mounted(){
+        console.log('this.search?',this.search)
         if(search!=this.find){
           this.search=this.find
         }
@@ -244,10 +260,36 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
 </script>
 
 <style scoped>
+/* header */
+#sourceName {
+  color: #333333;
+  font-size: 34px;
+  font-weight: bold;
+}
+
+#sourceInfo {
+  margin-top: 8px;
+  margin-bottom: 3rem;
+  color: #9E9E9E;
+  font-size: 12px;
+  /* font-size: 0.75rem; */
+}
+
+#headerExtra {
+  margin-top: 8px;
+  /* margin-left: 8px; */
+}
+
+#headerExtra .v-icon {
+  padding-right: 4px;
+  font-size: 20px;
+}
+
 /* .layout.row {
   margin: auto;
 } */
 
+/* list */
 #title {
   display: inline-block;
   font-size: 16px !important;
