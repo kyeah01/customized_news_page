@@ -2,7 +2,7 @@
 <v-container grid-list-xs>
     <v-layout column >
         <v-flex xs12>
-            <v-subheader dark light><strong>Top Source</strong></v-subheader>
+            <v-subheader><strong>Top Source</strong></v-subheader>
         </v-flex>
         <v-layout row wrap>
             <v-flex class="my-1" v-for="item in items" :key="item">

@@ -1,7 +1,7 @@
 <template>
 <v-layout wrap overflow>
     <v-flex shrink>
-        <v-btn class="ma-2" color="primary" @click="open">
+        <v-btn class="test ma-2" color="primary" @click="open">
             Follow
         </v-btn>
 
@@ -90,40 +90,42 @@ export default {
             this.$store.state.followKeyword = Object.keys(this.$store.state.followinfo)
             this.$store.commit('loadRes')
 
-            this.sourcesManage(newsId, user);
+            this.sourcesManage(this.news, user);
 
             this.addopen = false
             this.expand = !this.expand
 
         },
-        async sourcesManage(newsId, user) {
-            firebase.firestore().collection('Sources').where("news_id", "==", newsId).get()
+        async sourcesManage(news, user) {
+            var db = firebase.firestore().collection('Sources');
+            db.where("news_id", "==", news.id).get()
                 .then(querySnapshot => {
-                  if( querySnapshot.empty ){
-                    //doc 생성
-                    
-                    var users = [];
-                    users.push(user.email);
-                    firebase.firestore().collection('Sources').doc(newsId).set({
-                      news_id:newsId,
-                      news_title:this.news.title,
-                      users:users,
-                      users_num:1
-                    })
-                  }else{
-                    console.log(querySnapshot);
-                    
+                    if (querySnapshot.empty) {
+                        //지금 follow 한 신문사가 데이터베이스에 처음 등록되는 지점
+                        var users = [];
+                        users.push(user.email);
+                        db.doc(news.id).set({
+                            news_id: news.id,
+                            news_title: news.name,
+                            users: users,
+                            users_num: 1
+                        })
+                    } else {
+                        // follow하는 신문사가 이미 저장있는 경우
+                        // follow user정보와 follow 수치를 update. 
 
+                        var data = querySnapshot.docs[0].data(); //db에 저장된 source 정보
+                        if (!data.users.includes(user.email)) {
+                            // follw하려는 신문사를 현재 구독중이지 않을 경우
+                            // data.users는 특정뉴스를 구독하고 있는 user목록을 반환
+                            db.doc(news.id).update({
+                                users: firebase.firestore.FieldValue.arrayUnion(user.email),
+                                users_num: firebase.firestore.FieldValue.increment(1)
+                            })
+                        }
 
-                    firebase.firestore().collection('Sources').doc(newsId).update({
-                      users : firebase.firestore.FieldValue.arrayUnion(user.email),
-                      users_num : firebase.firestore.FieldValue.increment(1)
-                    })
-                  }
-                  
-                  
-                  
-                  
+                    }
+
                 })
         }
     }
@@ -153,3 +155,4 @@ export default {
     overflow-y: auto;
 }
 </style>
+
