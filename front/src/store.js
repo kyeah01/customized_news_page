@@ -10,7 +10,7 @@ export default new Vuex.Store({
     followSource : {},
     followReturn : {},
     followinfo : {},
-    imgSrc: '',
+    imgSrc: ''
   },
   mutations: {
     loadFollowData(state, fromDB){
@@ -31,7 +31,7 @@ export default new Vuex.Store({
     },
     imageSoruceDestroy(state) {
       state.imgSrc = ''
-    },
+    }
   },
   actions: {
 

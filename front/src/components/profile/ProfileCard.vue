@@ -28,8 +28,8 @@
           <Preview v-else-if="this.dir===2"
             :drawer = parentDrawer
             :items = items
-            :dir = dir
             @right_drawer = "update"
+            @deleteMark = "dmark"
           >
           </Preview><!--
           <Intergrations v-else-if="this.dir===3"
@@ -112,16 +112,12 @@ export default {
     test(){
       this.parentDrawer = !this.parentDrawer
       eventBus.$emit("leftDrawer", !this.navSign)
-      console.log(this.dir)
       if (this.dir == 2) {
         firebase.auth().onAuthStateChanged((user) => {
-        console.log(user.uid)
         const db = firebase.firestore();
         db.collection('Userinfo').doc(user.uid).get()
           .then(doc => {
-            console.log(doc.data().markasread)
             this.items = doc.data().markasread
-            console.log('items', this.items)
           })
           .catch((err) => {
             console.log('Error getting documents', err);
@@ -135,22 +131,18 @@ export default {
         this.snackbar=true
       }
     },
-    // get_markasread() {
-    //   // console.log('1')
-    //   firebase.auth().onAuthStateChanged((user) => {
-    //     console.log(user.uid)
-    //     const db = firebase.firestore();
-    //     db.collection('Userinfo').doc(user.uid).get()
-    //       .then(doc => {
-    //         console.log(doc.data().markasread)
-    //         this.items = doc.data().markasread
-    //         console.log('items', this.items)
-    //       })
-    //       .catch((err) => {
-    //         console.log('Error getting documents', err);
-    //       });
-    //   })
-    // }
+    dmark(){
+      firebase.auth().onAuthStateChanged((user) => {
+        const db = firebase.firestore();
+        db.collection('Userinfo').doc(user.uid).get()
+          .then(doc => {
+            this.items = doc.data().markasread
+          })
+          .catch((err) => {
+            console.log('Error getting documents', err);
+          });
+        })
+    }
   }
 }
 </script>
