@@ -9,7 +9,11 @@
                 </div>
                 <!-- search-box start -->
                 <div id="autocomplete" class="autocomplete">
-                    <input v-model="input" id="input-search" class="autocomplete-input" placeholder="Search by topic" aria-label="Search by topic" autofocus @keyup.enter="search">
+                    <input v-model="input" id="input-search" class="autocomplete-input" 
+                            placeholder="Search by topic" 
+                            aria-label="Search by topic" 
+                            autofocus 
+                            @keyup.enter="search">
                     <ul class="autocomplete-result-list"></ul>
                 </div>
                 <!-- search-box end -->
@@ -47,7 +51,14 @@ export default {
             // autocomplete
             input: "",
             keywordsName: [],
-            keywordInfo:{},
+            keywordInfo:{
+                users:[],
+                users_num : 0,
+                word:'',
+                apiResponse:{
+                    articles:[],
+                }
+            },
 
         }
     },
@@ -78,7 +89,7 @@ export default {
         },
         async search() {
             // 입력한 키워드 검색결과에 따라 데이터베이스에 키워드 저장하기.
-            await this.$axios.get(`https://newsapi.org/v2/everything?q=${this.input}&apiKey=8b64e14d415f40f2a7d2969321afc5f9`)
+            await this.$axios.get(`https://newsapi.org/v2/everything?q=${this.input}&apiKey=966170e136db43a98338739406d5f48d`)
                 .then(response => {
                     this.keywordInfo['apiResponse'] = response.data;
                     this.keywordInfo['word'] = this.input;
@@ -103,9 +114,9 @@ export default {
                             
                         })
                     }
-                })
+                });
+            console.log(this.keywordInfo);
             
-
         },
         loadAutoComplete: function () {
 

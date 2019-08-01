@@ -3,16 +3,16 @@
     <v-card-title primary-title>
         <v-layout row wrap>
             <v-flex xs12>
-                <span class="headline">{{keywordInfo.word}}</span>
-                <follow class="testFollow" :kind="keyword" :news="source">
-                </follow>
+                <span class="headline">{{keyword}}</span>
+                <keywordFollow class="testFollow" :keyword="keyword">
+                </keywordFollow>
             </v-flex>
             <v-flex xs12>
                 <v-layout column wrap>
                     <v-flex xs12 class="test">
                         Track mentions of cc across the world's top news publications
                         <ul>
-                            <li v-for="news in keywordNews">{{news.title}}</li>
+                            <li v-for="news in keywordNews" :key="news.url">{{news.title}}</li>
                         </ul>
                     </v-flex>
                     <v-flex xs12>
@@ -20,7 +20,7 @@
                             <v-flex xs1>
                                 <v-layout column wrap>
                                     <v-flex xs1>
-                                        {{keywordInfo.users_num}}
+                                        {{users_num}}
                                     </v-flex>
                                     <v-flex xs1>
                                         follower
@@ -29,7 +29,7 @@
                             </v-flex>
                                 <v-layout column wrap>
                                     <v-flex xs1>
-                                        {{keywordInfo.apiResponse.totalResults}}
+                                        {{totalResults}}
                                     </v-flex>
                                     <v-flex xs1>
                                         articles
@@ -49,19 +49,46 @@
 </v-card>    
 </template>
 <script>
+import keywordFollow from '@/components/search/keywordFollow'
 export default {
     props:['keywordInfo'],
+    components:{
+        keywordFollow
+    },
     watch:{
         keywordInfo:function(){
             console.log('watch', this.keywordInfo);
             
         }
     },
+    mounted() {
+        console.log('keywordInfo : ',this.keywordInfo);
+        if( this.keywordInfo != null) console.log('not null');
+        
+        
+    },
     computed:{
+        keyword(){
+            if( this.keywordInfo != null)
+                return this.keywordInfo.word;
+            else return "";
+        },
         keywordNews:function(){
-            console.log('hi',this.keywordInfo.apiResponse.articles);
+            if( this.keywordInfo != null){
+                return this.keywordInfo.apiResponse.articles.slice(0, 3);
+            }
+            else return 3;
             
-            return this.keywordInfo.apiResponse.articles.slice(0, 3);
+        },
+        totalResults(){
+            if( this.keywordInfo != null)
+                return this.keywordInfo.apiResponse.totalResults;
+            else return 0;
+        },
+        users_num(){
+            if( this.keywordInfo != null)
+                return this.keywordInfo.users_num;
+            else return 0;
         }
     }
 }
