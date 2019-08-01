@@ -16,8 +16,64 @@
         <section class="container630 centered">
           <h1>
             <div class="kicker">Preview</div>
-            <div class="heading">Example</div>
+            <div class="heading">Mark as read</div>
           </h1>
+
+
+          
+              
+              
+              <v-flex xs12 v-for="(item, index) in deleteKey" :key="item.title">
+                      <v-card :key="item.title">
+                        <v-layout row>
+                          <v-flex>
+                            <img id="image" v-bind:src="item.urlToImage" style="width:130px; height:78px;" @click="call(item)">
+                          </v-flex>
+                          
+                          <v-flex>
+                            <v-card-title primary-title>
+                                <v-layout row>
+                                  <!-- <div> -->
+                                    <span class="headline" id="title" v-if="!item.mark_as_read" @click="call(item)">{{item.title}}</span>
+                                    <span class="headline" id="title" v-else style="color:#888888;" @click="call(item)">{{item.title}}</span>
+                                  <!-- </div> -->
+                                  <v-spacer></v-spacer>
+                                  <div>
+                                    <v-icon @click="delete_from_DB(item, index)">fas fa-trash-alt</v-icon>
+                                      <!-- <v-icon id="check" @click="mark_as_read(item)">fas fa-check</v-icon> -->
+                                      <!-- <v-icon id="bookmark" v-if="!item.read_later" @click="read_later(item)">far fa-bookmark</v-icon> -->
+                                      <!-- <v-icon id="bookmark" v-else @click="read_later(item)" style="color:#2bb24c;">far fa-bookmark</v-icon> -->
+                                      <!-- <v-icon @click="read_later(item)">far fa-bookmark</v-icon>
+                                      <v-icon @click="read_later(item)">far fa-bookmark</v-icon> -->
+                                      <!-- <v-btn class="border-green" flat color="light-green accent-4">Follow</v-btn> -->
+                                  </div>
+                                </v-layout>
+                                
+                                
+                                
+                                  <div id="author" @click="call(item)">
+                                    <span id="read_later" v-if="item.read_later">Read later</span>
+                                    <span id="dot" v-if="item.read_later">·</span>
+                                    {{item.author}}
+                                  </div>
+                                  <!-- <span id="description">{{item.description}}</span> -->
+                                  <span id="description" @click="call(item)">{{item.description}}</span>
+
+                            </v-card-title>
+                          </v-flex>
+                          
+                        </v-layout>
+
+                        <v-card-actions>
+
+                        </v-card-actions>
+                      </v-card>
+
+                    </v-flex>
+
+            
+          
+
 
          
         
@@ -39,8 +95,13 @@
 </template>
 
 <script>
+import firebase from 'firebase'
+import FirebaseService from '@/services/FirebaseService'
+import 'firebase/firestore'
+import { watch } from 'fs';
+
 export default {
-  props : ['drawer'],
+  props : ['drawer', 'items'],
   watch: {
     drawer: function() {
       if (!this.drawer) {
@@ -53,7 +114,7 @@ export default {
       }
     }
   },
-  methods :{
+  methods: {
       test1() {
         this.val = false
         this.drawer = !this.drawer
@@ -62,65 +123,33 @@ export default {
         this.val = true
         this.drawer = !this.drawer
       },
+      delete_from_DB(item, index) {
+
+        firebase.auth().onAuthStateChanged((user) => {
+          firebase.firestore().collection('Userinfo').doc(user.uid).update({
+            markasread : firebase.firestore.FieldValue.arrayRemove(item)
+          })
+        })
+
+        this.$emit("deleteMark")
+
+        // this.markasread_length = this.items.length
+        // console.log('markasread_length', this.markasread_length)
+      }
+  },
+  computed : {
+    deleteKey(){
+      return this.items
+    }
   },
   data(){
     return{
       val: true,
       data2 : true,
-      item :[
-        {title : 'title1', 
-          subtitle : 'subtitle1',
-          checkbox : [
-            {
-              index : 1,
-              content : "test1",
-              value : true
-            },
-            {
-              index : 2,
-              content : "test2",
-              value : false
-            },
-            {
-              index : 3,
-              content : "test3",
-              value : false
-            }
-          ]
-        },
-          {title : 'title2', 
-          subtitle : 'subtitle2',
-          checkbox : [
-            {
-              index : 4,
-              content : "test4",
-              value : true
-            },
-            {
-              index : 5,
-              content : "test5",
-              value : false
-            }
-          ]
-        },
-        {title : 'title3', 
-          subtitle : 'subtitle4',
-          checkbox : [
-            {
-              index : 4,
-              content : "test6",
-              value : false
-            },
-            {
-              index : 5,
-              content : "test7",
-              value : true
-            }
-          ]
-        }
-      ]
+      markasread_length : null,
+      child : null
     }
-  },
-    
+  }
+
 }
 </script>

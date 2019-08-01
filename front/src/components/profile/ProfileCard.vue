@@ -27,7 +27,10 @@
           </General>
           <Preview v-else-if="this.dir===2"
             :drawer = parentDrawer
-            @right_drawer = "update">
+            :items = items
+            @right_drawer = "update"
+            @deleteMark = "dmark"
+          >
           </Preview><!--
           <Intergrations v-else-if="this.dir===3"
             :drawer = parentDrawer
@@ -68,6 +71,10 @@
 </template>
 
 <script>
+import firebase from 'firebase'
+import FirebaseService from '@/services/FirebaseService'
+import 'firebase/firestore'
+
 import General from '@/components/profile/General'
 import Preview from '@/components/profile/Preview'
 // import Intergrations from '@/components/profile/Intergrations'
@@ -96,13 +103,27 @@ export default {
       x: 'right',
       timeout: 3000,
       text: 'Success Modify',
-      navSign : false
+      navSign : false,
+
+      items: null
     }
   },
   methods : {
     test(){
       this.parentDrawer = !this.parentDrawer
       eventBus.$emit("leftDrawer", !this.navSign)
+      if (this.dir == 2) {
+        firebase.auth().onAuthStateChanged((user) => {
+        const db = firebase.firestore();
+        db.collection('Userinfo').doc(user.uid).get()
+          .then(doc => {
+            this.items = doc.data().markasread
+          })
+          .catch((err) => {
+            console.log('Error getting documents', err);
+          });
+        })
+      }
     },
     update(info) {
       this.parentDrawer = !this.parentDrawer
@@ -110,6 +131,18 @@ export default {
         this.snackbar=true
       }
     },
+    dmark(){
+      firebase.auth().onAuthStateChanged((user) => {
+        const db = firebase.firestore();
+        db.collection('Userinfo').doc(user.uid).get()
+          .then(doc => {
+            this.items = doc.data().markasread
+          })
+          .catch((err) => {
+            console.log('Error getting documents', err);
+          });
+        })
+    }
   }
 }
 </script>

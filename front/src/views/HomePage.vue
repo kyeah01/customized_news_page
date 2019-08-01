@@ -58,11 +58,7 @@ export default {
   },
   created (){
     this.sDate = timeCheck()
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        this.$router.push('/article')
-      }
-    })
+    this.visitorCheck()
    },
    mounted(){
      this.loadAutoComplete()
@@ -101,7 +97,41 @@ export default {
         result = xmlhttp.responseText;
       }
       return result;
-    }
+    },
+    visitorCheck () {
+      if (!sessionStorage.getItem('recentlyVisitor')) {
+        // db에 update
+        const time = new Date()
+        const date = time.getFullYear() + (time.getMonth() > 8 ? time.getMonth()+1 : '0'+(time.getMonth()+1)) + (time.getDate()>9 ? time.getDate() : '0'+time.getDate())
+        
+        firebase.firestore().collection('visitorStat').get().then(res => {
+          var judge = false
+          res.docs.some(doc => {
+            if (doc.id === date) {
+              judge = true
+              return true
+            }
+          })
+
+          if (judge) {
+            firebase.firestore().collection('visitorStat').doc(date).update({
+              totalVisitor: firebase.firestore.FieldValue.increment(1)
+            })
+          } else {
+            firebase.firestore().collection('visitorStat').doc(date).set({
+              newCreatedVisitor: 0,
+              totalNewVisitor: 0,
+              totalVisitor: 1,
+            })
+          }
+
+        })
+
+        // firestore().collection('visitorStat').
+        // 중복을 피하기 위해 session storage에 값 추가
+        sessionStorage.setItem('recentlyVisitor', true)
+      }
+    },
   }
 }
 </script>
