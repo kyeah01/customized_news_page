@@ -12,7 +12,6 @@
 import Navbar from './components/Navbar'
 import LoginCheck from './components/LoginCheck'
 import FirebaseService from '@/services/FirebaseService'
-import { firestore } from 'firebase'
 
 export default {
   name: 'App',

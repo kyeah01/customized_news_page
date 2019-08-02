@@ -31,7 +31,7 @@
 
         <v-list flat>
           <!-- <v-subheader>REPORTS</v-subheader> -->
-          <v-list-item-group color="primary">
+          <v-list-group color="primary">
             <v-list-tile
               v-for="(item, i) in items"
               :key="i"
@@ -49,7 +49,7 @@
                 <v-list-tile-title>Log Out</v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
-          </v-list-item-group>
+          </v-list-group>
         </v-list>
 
         <!-- <v-card-actions>
