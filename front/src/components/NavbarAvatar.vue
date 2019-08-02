@@ -10,7 +10,7 @@
 
         <v-avatar v-on="on">
             <img
-            :src="$store.state.imgSrc"
+            :src="$store.state.imgSrc ? $store.state.imgSrc : 'http://image.auction.co.kr/itemimage/16/da/c9/16dac970b6.jpg'"
             alt="Profile Image"
             >
         </v-avatar>
