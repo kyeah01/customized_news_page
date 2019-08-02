@@ -83,8 +83,9 @@ export default {
   //navbar에서 검색했을 때 router url 파라메터로 어떤 입력했는지 받아와서 검색실행
     this.input = this.searchWord;
     if( this.searchWord != null){
+      console.log('search');
+      
       this.search();
-      this.searchWord = null;
     }
    },
   destroyed(){
@@ -97,7 +98,7 @@ export default {
 // const newsapi = new NewsAPI('2dc4b8b9d26f4a6b97e21a1f282bac9d'); //hojin : 07/31 23:00
   methods: {
     async getSources(){
-    await this.$axios.get('https://newsapi.org/v2/sources?apiKey=8b64e14d415f40f2a7d2969321afc5f9')
+    await this.$axios.get('https://newsapi.org/v2/sources?apiKey=7656fc1833b542c99aa26670752b9088')
       .then( r=> {
         this.sources = r.data.sources           
         })
@@ -108,7 +109,6 @@ export default {
     },
     search(){      
       var input = document.getElementById("input-search").value
-      console.log(input);
       
       if( this.searchWord != null ) input = this.searchWord;
       
