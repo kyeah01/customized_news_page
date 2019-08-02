@@ -16,7 +16,7 @@
         <section class="container630 centered">
           <h1>
             <div class="kicker">Preview</div>
-            <div class="heading">Mark as read</div>
+            <div class="heading">Read later</div>
           </h1>
 
 
@@ -101,7 +101,7 @@ import 'firebase/firestore'
 import { watch } from 'fs';
 
 export default {
-  props : ['drawer', 'items'],
+  props : ['drawer', 'readlaterArticles'],
   watch: {
     drawer: function() {
       if (!this.drawer) {
@@ -127,7 +127,7 @@ export default {
 
         firebase.auth().onAuthStateChanged((user) => {
           firebase.firestore().collection('Userinfo').doc(user.uid).update({
-            markasread : firebase.firestore.FieldValue.arrayRemove(item)
+            readlaterArticles : firebase.firestore.FieldValue.arrayRemove(item)
           })
         })
 
@@ -139,7 +139,7 @@ export default {
   },
   computed : {
     deleteKey(){
-      return this.items
+      return this.readlaterArticles
     }
   },
   data(){

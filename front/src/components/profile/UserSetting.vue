@@ -101,6 +101,9 @@ export default {
         })
         // 업로드는 끝났고, navbar avatar와의 동기화를 위한 코드
         this.$store.commit('imageSoruceUpdate', this.imageSrc)
+        const user = JSON.parse(sessionStorage.getItem('userInfo'))
+        user.user.photoURL = this.imageSrc
+        sessionStorage.setItem('userInfo', JSON.stringify(user))
       },
       dontSaveNClose (){
         this.$emit('right_drawer')

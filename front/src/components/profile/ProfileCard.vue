@@ -25,22 +25,23 @@
             :drawer = parentDrawer
             @right_drawer = "update">
           </General>
-          <Preview v-else-if="this.dir===2"
+          <Markasread v-else-if="this.dir===2"
             :drawer = parentDrawer
-            :items = items
+            :markasreadArticles = markasreadArticles
             @right_drawer = "update"
             @deleteMark = "dmark"
           >
-          </Preview><!--
-          <Intergrations v-else-if="this.dir===3"
+          </Markasread>
+          <Readlater v-else-if="this.dir===3"
+            :drawer = parentDrawer
+            :readlaterArticles = readlaterArticles
+            @right_drawer = "update">
+          </Readlater>
+          <!-- <Read v-else-if="this.dir===4"
             :drawer = parentDrawer
             @right_drawer = "update">
-          </Intergrations>
-          <Read v-else-if="this.dir===4"
-            :drawer = parentDrawer
-            @right_drawer = "update">
-          </Read>
-          <Appearance v-else-if="this.dir===5"
+          </Read> -->
+          <!-- <Appearance v-else-if="this.dir===5"
             :drawer = parentDrawer
             @right_drawer = "update">
           </Appearance> -->
@@ -76,8 +77,8 @@ import FirebaseService from '@/services/FirebaseService'
 import 'firebase/firestore'
 
 import General from '@/components/profile/General'
-import Preview from '@/components/profile/Preview'
-// import Intergrations from '@/components/profile/Intergrations'
+import Markasread from '@/components/profile/Markasread'
+import Readlater from '@/components/profile/Readlater'
 // import Read from '@/components/profile/Read'
 // import Appearance from '@/components/profile/Appearance'
 import UserSetting from '@/components/profile/UserSetting'
@@ -87,7 +88,8 @@ export default {
   props : ['title','icon','event'],
   components: {
       General,
-      Preview,
+      Markasread,
+      Readlater,
       // UserSetting,
       // Read,
       // Appearance,
@@ -105,11 +107,13 @@ export default {
       text: 'Success Modify',
       navSign : false,
 
-      items: null
+      markasreadArticles: null,
+      readlaterArticles: null
     }
   },
   methods : {
     test(){
+      console.log('몇번?',this.dir)
       this.parentDrawer = !this.parentDrawer
       eventBus.$emit("leftDrawer", !this.navSign)
       if (this.dir == 2) {
@@ -117,7 +121,18 @@ export default {
         const db = firebase.firestore();
         db.collection('Userinfo').doc(user.uid).get()
           .then(doc => {
-            this.items = doc.data().markasread
+            this.markasreadArticles = doc.data().markasread
+          })
+          .catch((err) => {
+            console.log('Error getting documents', err);
+          });
+        })
+      } else if (this.dir == 3) {
+        firebase.auth().onAuthStateChanged((user) => {
+        const db = firebase.firestore();
+        db.collection('Userinfo').doc(user.uid).get()
+          .then(doc => {
+            this.readlaterArticles = doc.data().readlater
           })
           .catch((err) => {
             console.log('Error getting documents', err);
@@ -136,7 +151,7 @@ export default {
         const db = firebase.firestore();
         db.collection('Userinfo').doc(user.uid).get()
           .then(doc => {
-            this.items = doc.data().markasread
+            this.markasreadArticles = doc.data().markasread
           })
           .catch((err) => {
             console.log('Error getting documents', err);

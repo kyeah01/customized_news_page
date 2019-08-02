@@ -55,10 +55,9 @@ export default {
     methods: {
         async test() {
             await firebase.firestore().collection('visitorStat').get().then(res => {
-                // console.log(res.docs.reverse())
                 var L = res.docs.reverse()
                 for (var i = 0; i < 7; i++) {
-                    this.datacollection.datasets[0].data.push(L[i].data().newCreatedUser)
+                    this.datacollection.datasets[0].data.push(L[i].data().totalVisitor)
                     this.datacollection.labels.push(L[i].id)
                 }
             })

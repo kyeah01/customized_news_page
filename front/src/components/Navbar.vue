@@ -153,6 +153,7 @@ export default {
 
         },
 
+<<<<<<< HEAD
         SignUp: function () {
             firebase.auth().createUserWithEmailAndPassword(this.signupemail, this.signuppassword).then(
                 (cred, user) => {
@@ -198,6 +199,17 @@ export default {
             this.$router.push('/article/' + j)
             eventBus.$emit("article", j)
         }
+=======
+    },
+    init : function(){
+      var user=firebase.auth().currentUser
+      var tmp=firebase.firestore().collection("Userinfo").doc(user.uid).get()
+        .then(r=> {tmp = r.data()
+
+      this.$store.commit('loadFollowData',tmp)
+      this.$store.commit('loadRes')
+      })
+>>>>>>> 672c9dd733c0ee473b07fce8e498bbbc76406300
     },
     created() {
         this.user = JSON.parse(sessionStorage.getItem('userInfo')) ? true : false

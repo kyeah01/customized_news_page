@@ -1,18 +1,26 @@
 <template>
-  <div>
+  <v-container>
     <h1>Admin Page</h1>
     <h2>신규 가입자 수</h2>
-    <graph/>
-    <h2 v-for="user in users">
-      <p>{{ user.email }}  ------- <v-btn @click="Deleteuser(user.uid)">회원탈퇴</v-btn></p> 
-    </h2>
+    <NewUserGraph/>
+    <h2>전체 사용자 방문 수</h2>
+    <TotalUserGraph/>
+    <h2>전체 방문자 수</h2>
+    <TotalVisitorGraph/>
+    <h2>전체 사용자 :{{ users.length }}명</h2>
+    <p v-for="user in users">{{ user.email }}  ------- <v-btn @click="Deleteuser(user.uid)">회원탈퇴</v-btn></p> 
+ 
+  </v-container>
+    
 
-  </div>
+  
 </template>
 
 <script>
 import firebase from 'firebase'
-import graph from '../components/admin/NewUserGraph'
+import NewUserGraph from '../components/admin/NewUserGraph'
+import TotalUserGraph from '../components/admin/TotalUserGraph'
+import TotalVisitorGraph from '../components/admin/TotalVisitorGraph'
 
 export default {
   data() {
@@ -21,7 +29,10 @@ export default {
     }
   },
   components: {
-    graph
+    NewUserGraph,
+    TotalUserGraph,
+    TotalVisitorGraph,
+
   },
   created() {
     this.$http.get('/api/allusers').then(res => {
@@ -32,6 +43,7 @@ export default {
     Deleteuser(uid) {
       this.$http.get(`/api/allusers/delete/${uid}`)
       alert('회원탈퇴시켰습니다.')
+      window.location.href = '/admin';
     },
   }
 }

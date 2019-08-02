@@ -26,15 +26,15 @@ export default {
     }
   },
   created() {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        if (user.photoURL != null && user.photoURL != 'default') {
-          this.imageSrc = user.photoURL
-        }
-      } else {
-        this.imageSrc = "http://image.auction.co.kr/itemimage/16/da/c9/16dac970b6.jpg"
+    const userInfo = JSON.parse(sessionStorage.getItem('userInfo'))
+
+    if (userInfo) {
+      if (userInfo.user.photoURL != null && userInfo.user.photoURL != 'default') {
+        this.imageSrc = userInfo.user.photoURL
       }
-    });
+    } else {
+      this.imageSrc = "http://image.auction.co.kr/itemimage/16/da/c9/16dac970b6.jpg"
+    }
   },
   methods: {
     upload : function() {
