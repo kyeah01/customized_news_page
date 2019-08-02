@@ -10,13 +10,16 @@ export default new Vuex.Store({
     followSource : {},
     followReturn : {},
     followinfo : {},
+    userKeyword : [],
     imgSrc: ''
   },
   mutations: {
-    loadFollowData(state, fromDB){
+    loadUserinfoData(state, fromDB){
       state.followSource = fromDB.follow;
       state.followinfo = fromDB.followInfo;
       state.followKeyword = Object.keys(state.followinfo);
+      state.userKeyword = fromDB.keyword;
+      
     },
     loadRes(state){
       for(var i in state.followKeyword){

@@ -184,7 +184,7 @@ export default {
       var tmp=firebase.firestore().collection("Userinfo").doc(user.uid).get()
         .then(r=> {tmp = r.data()
 
-      this.$store.commit('loadFollowData',tmp)
+      this.$store.commit('loadUserinfoData',tmp)
       this.$store.commit('loadRes')
       })
     },

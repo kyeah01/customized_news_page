@@ -1,7 +1,7 @@
 <template>
 <v-layout wrap overflow>
     <v-flex shrink>
-        <v-btn class="test ma-2" color="primary" @click="open">
+        <v-btn class="ma-2" color="primary" @click="open">
             Follow
         </v-btn>
 
@@ -71,54 +71,44 @@ export default {
         },
         create: async function (newFeed) {
 
-            // follow (abc - IT)
-            var newsId = this.news.id;
-            this.$store.state.followSource[newsId] = newFeed
+            // follow (abc - IT);
+            var userKeyword = this.$store.state.userKeyword
+            if( !userKeyword.includes(this.keyword))
+                userKeyword.push(this.keyword)
 
             var user = firebase.auth().currentUser
 
-            if (this.$store.state.followKeyword.includes(newFeed)) {
-                this.$store.state.followinfo[newFeed]++
-            } else {
-                this.$store.state.followinfo[newFeed] = 1
-            }
-
             firebase.firestore().collection('Userinfo').doc(user.uid).update({
-                follow: this.$store.state.followSource,
-                followInfo: this.$store.state.followinfo
+                keyword: firebase.firestore.FieldValue.arrayUnion(this.keyword)
             })
-            this.$store.state.followKeyword = Object.keys(this.$store.state.followinfo)
-            this.$store.commit('loadRes')
 
-            this.sourcesManage(this.news, user);
+            this.keywordManage(this.keyword, user);
 
             this.addopen = false
             this.expand = !this.expand
 
         },
-        async sourcesManage(news, user) {
-            var db = firebase.firestore().collection('Sources');
-            db.where("news_id", "==", news.id).get()
+        async keywordManage(keyword, user) {
+            var db = firebase.firestore().collection('Keyword');
+            db.where("word", "==", keyword).get()
                 .then(querySnapshot => {
                     if (querySnapshot.empty) {
-                        //지금 follow 한 신문사가 데이터베이스에 처음 등록되는 지점
+                        //지금 follow 한 키워드가 데이터베이스에 없으면 새로 만들고 등록시킴.
                         var users = [];
                         users.push(user.email);
-                        db.doc(news.id).set({
-                            news_id: news.id,
-                            news_title: news.name,
+                        db.doc(keyword).set({
+                            word: keyword,
                             users: users,
                             users_num: 1
                         })
                     } else {
-                        // follow하는 신문사가 이미 저장있는 경우
+                        // follow하는 키워드가 데이터베이스에 저장되어 있는 경우
                         // follow user정보와 follow 수치를 update. 
-
-                        var data = querySnapshot.docs[0].data(); //db에 저장된 source 정보
+                        var data = querySnapshot.docs[0].data(); //db에 저장된 키워드 정보
                         if (!data.users.includes(user.email)) {
-                            // follw하려는 신문사를 현재 구독중이지 않을 경우
-                            // data.users는 특정뉴스를 구독하고 있는 user목록을 반환
-                            db.doc(news.id).update({
+                            // 해당 키워드를 구독중이지 않을 경우에만!
+                            // data.users는 특정 키워드를 구독하고 있는 user목록을 반환
+                            db.doc(keyword).update({
                                 users: firebase.firestore.FieldValue.arrayUnion(user.email),
                                 users_num: firebase.firestore.FieldValue.increment(1)
                             })
