@@ -25,22 +25,22 @@
             :drawer = parentDrawer
             @right_drawer = "update">
           </General>
-          <Preview v-else-if="this.dir===2"
+          <Markasread v-else-if="this.dir===2"
             :drawer = parentDrawer
-            :items = items
+            :markasreadarticles = markasreadarticles
             @right_drawer = "update"
             @deleteMark = "dmark"
           >
-          </Preview><!--
+          </Markasread>
           <Intergrations v-else-if="this.dir===3"
             :drawer = parentDrawer
             @right_drawer = "update">
           </Intergrations>
-          <Read v-else-if="this.dir===4"
+          <!-- <Read v-else-if="this.dir===4"
             :drawer = parentDrawer
             @right_drawer = "update">
-          </Read>
-          <Appearance v-else-if="this.dir===5"
+          </Read> -->
+          <!-- <Appearance v-else-if="this.dir===5"
             :drawer = parentDrawer
             @right_drawer = "update">
           </Appearance> -->
@@ -76,7 +76,7 @@ import FirebaseService from '@/services/FirebaseService'
 import 'firebase/firestore'
 
 import General from '@/components/profile/General'
-import Preview from '@/components/profile/Preview'
+import Markasread from '@/components/profile/Markasread'
 // import Intergrations from '@/components/profile/Intergrations'
 // import Read from '@/components/profile/Read'
 // import Appearance from '@/components/profile/Appearance'
@@ -87,7 +87,7 @@ export default {
   props : ['title','icon','event'],
   components: {
       General,
-      Preview,
+      Markasread,
       // UserSetting,
       // Read,
       // Appearance,
@@ -105,7 +105,7 @@ export default {
       text: 'Success Modify',
       navSign : false,
 
-      items: null
+      markasreadarticles: null
     }
   },
   methods : {
@@ -117,7 +117,7 @@ export default {
         const db = firebase.firestore();
         db.collection('Userinfo').doc(user.uid).get()
           .then(doc => {
-            this.items = doc.data().markasread
+            this.markasreadarticles = doc.data().markasread
           })
           .catch((err) => {
             console.log('Error getting documents', err);
@@ -136,7 +136,7 @@ export default {
         const db = firebase.firestore();
         db.collection('Userinfo').doc(user.uid).get()
           .then(doc => {
-            this.items = doc.data().markasread
+            this.markasreadarticles = doc.data().markasread
           })
           .catch((err) => {
             console.log('Error getting documents', err);
