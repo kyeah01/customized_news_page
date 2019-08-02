@@ -6,7 +6,7 @@
         </v-flex>
         <v-layout row wrap>
             <v-flex class="my-1" v-for="item in items" :key="item">
-                <span class="topsource-item px-2 py-1"
+                <span class="topsource-item px-2 py-1 mouse"
                     @click="topSourceOnClick(item)">{{item}}
                 </span>
             </v-flex>

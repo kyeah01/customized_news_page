@@ -1,5 +1,5 @@
 <template>
-<v-card absolute fixed>
+<v-card absolute outlined class="test">
     <v-card-title primary-title>
         <v-layout row wrap>
             <v-flex xs12>
@@ -7,9 +7,9 @@
                 <keywordFollow class="follow" :keyword="keyword">
                 </keywordFollow>
             </v-flex>
-            <v-flex xs12>
+            <v-flex xs12 class="search-content-color">
                 <v-layout column wrap>
-                    <v-flex xs12 class="test">
+                    <v-flex xs12 class="mb-3">
                         Track mentions of cc across the world's top news publications
                         <ul>
                             <li v-for="news in keywordNews" :key="news.url">{{news.title}}</li>
@@ -17,7 +17,7 @@
                     </v-flex>
                     <v-flex xs12>
                         <v-layout row wrap>
-                            <v-flex xs1>
+                            <v-flex xs2>
                                 <v-layout column wrap>
                                     <v-flex xs1>
                                         {{users_num}}
@@ -27,6 +27,7 @@
                                     </v-flex>
                                 </v-layout>
                             </v-flex>
+                            <v-flex xs2>
                             <v-layout column wrap>
                                 <v-flex xs1>
                                     {{totalResults}}
@@ -35,8 +36,6 @@
                                     articles
                                 </v-flex>
                             </v-layout>
-                            <v-flex xs1>
-
                             </v-flex>
                         </v-layout>
                     </v-flex>
@@ -44,8 +43,6 @@
             </v-flex>
         </v-layout>
     </v-card-title>
-    <v-card-actions>
-    </v-card-actions>
 </v-card>
 </template>
 
@@ -58,13 +55,11 @@ export default {
     },
     watch: {
         keywordInfo: function () {
-            console.log('watch', this.keywordInfo);
+            // console.log('watch', this.keywordInfo);
         }
     },
     mounted() {
         console.log('keywordInfo : ', this.keywordInfo);
-        if (this.keywordInfo != null) console.log('not null');
-
     },
     computed: {
         keyword() {
@@ -93,7 +88,10 @@ export default {
 </script>
 
 <style>
-.test {
+.search-content-color {
     color: #757575;
+}
+.test{
+    border-color: blue;
 }
 </style>
