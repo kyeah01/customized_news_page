@@ -3,6 +3,8 @@
     <h1>Admin Page</h1>
     <h2>신규 가입자 수</h2>
     <NewUserGraph/>
+    <h2>전체 사용자 방문 수</h2>
+    <TotalUserGraph/>
     <h2>전체 방문자 수</h2>
     <TotalVisitorGraph/>
 
@@ -17,6 +19,7 @@
 <script>
 import firebase from 'firebase'
 import NewUserGraph from '../components/admin/NewUserGraph'
+import TotalUserGraph from '../components/admin/TotalUserGraph'
 import TotalVisitorGraph from '../components/admin/TotalVisitorGraph'
 
 export default {
@@ -27,6 +30,7 @@ export default {
   },
   components: {
     NewUserGraph,
+    TotalUserGraph,
     TotalVisitorGraph,
 
   },
