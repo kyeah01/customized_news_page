@@ -11,7 +11,7 @@
                     <span>SORTING BY FEEDLY SCORE</span>
                     <v-icon>expand_more</v-icon>
                 </v-flex>
-                <v-flex xs12 class="margin-30" v-for="source in sourceData" :key="source.id">
+                <v-flex xs12 class="my-3" v-for="source in sourceData" :key="source.id">
                     <Source :source="source" class="source">
                     </Source>
                 </v-flex>
@@ -32,7 +32,7 @@ export default {
     props: ['sourceData'],
     components: {
         Source,
-        topSource
+        topSource,
     },
     mounted() {
 

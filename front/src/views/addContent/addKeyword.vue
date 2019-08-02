@@ -3,7 +3,7 @@
     <v-layout>
         <v-flex>
             <searchOptionSelector />
-            <v-flex mt-5>
+            <v-flex my-5>
                 <div>
                     <p class="description">Discover the best sources for any topic</p>
                 </div>
@@ -22,10 +22,10 @@
     </v-layout>
     <v-layout row wrap>
         <v-flex xs9>
-            <keywordView :keywordInfo="keywordInfo"/>
+            <keywordView v-show="keywordInfo.word != ''" :keywordInfo="keywordInfo"/>
         </v-flex>
         <v-flex xs3>
-            
+            <topKeyword/>
         </v-flex>
     </v-layout>
 </v-container>
@@ -35,13 +35,14 @@
 import firebase from 'firebase'
 import searchOptionSelector from '@/components/search/searchOptionSelector'
 import keywordView from '@/components/search/keywordView'
+import topKeyword from '@/components/search/topKeyword'
 
 //user log
 import timeCheck from '@/timeCheck'
 import userLog from '@/userLog'
 export default {
     components: {
-        searchOptionSelector, keywordView
+        searchOptionSelector, keywordView, topKeyword
     },
     data() {
         return {

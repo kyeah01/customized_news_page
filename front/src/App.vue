@@ -52,6 +52,12 @@ export default {
 </script>
 
 <style>
+.mouse{
+    cursor:pointer;
+}
+.search-content-border{
+  border-color: rgba(0,0,0,0.15)
+}
 .theme--light.application {
   background: #fff;
 }

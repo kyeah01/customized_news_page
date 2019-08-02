@@ -6,7 +6,7 @@
         </v-flex>
         <v-layout row wrap>
             <v-flex class="my-1" v-for="item in items" :key="item">
-                <span class="topsource-item px-2 py-1"
+                <span class="topsource-item px-2 py-1 mouse"
                     @click="topSourceOnClick(item)">{{item}}
                 </span>
             </v-flex>
@@ -37,7 +37,8 @@ export default {
             firebase.firestore().collection('Sources').orderBy("users_num", 'desc').limit(10).get()
                 .then(snapshot => {
                     snapshot.forEach(doc => {
-                        this.items.push(doc.id)
+                        
+                        this.items.push(doc.data().news_title)
                     })
                 })
         }

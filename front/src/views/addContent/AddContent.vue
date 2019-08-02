@@ -4,7 +4,7 @@
       <v-flex>
                 <searchOptionSelector/>
 
-                <v-flex mt-5>
+                <v-flex my-5>
                     <div>
                         <p class="description">Discover the best sources for any topic</p>
                     </div>
