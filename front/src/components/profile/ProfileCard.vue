@@ -27,15 +27,16 @@
           </General>
           <Markasread v-else-if="this.dir===2"
             :drawer = parentDrawer
-            :markasreadarticles = markasreadarticles
+            :markasreadArticles = markasreadArticles
             @right_drawer = "update"
             @deleteMark = "dmark"
           >
           </Markasread>
-          <Intergrations v-else-if="this.dir===3"
+          <Readlater v-else-if="this.dir===3"
             :drawer = parentDrawer
+            :readlaterArticles = readlaterArticles
             @right_drawer = "update">
-          </Intergrations>
+          </Readlater>
           <!-- <Read v-else-if="this.dir===4"
             :drawer = parentDrawer
             @right_drawer = "update">
@@ -77,7 +78,7 @@ import 'firebase/firestore'
 
 import General from '@/components/profile/General'
 import Markasread from '@/components/profile/Markasread'
-// import Intergrations from '@/components/profile/Intergrations'
+import Readlater from '@/components/profile/Readlater'
 // import Read from '@/components/profile/Read'
 // import Appearance from '@/components/profile/Appearance'
 import UserSetting from '@/components/profile/UserSetting'
@@ -88,6 +89,7 @@ export default {
   components: {
       General,
       Markasread,
+      Readlater,
       // UserSetting,
       // Read,
       // Appearance,
@@ -105,11 +107,13 @@ export default {
       text: 'Success Modify',
       navSign : false,
 
-      markasreadarticles: null
+      markasreadArticles: null,
+      readlaterArticles: null
     }
   },
   methods : {
     test(){
+      console.log('몇번?',this.dir)
       this.parentDrawer = !this.parentDrawer
       eventBus.$emit("leftDrawer", !this.navSign)
       if (this.dir == 2) {
@@ -117,7 +121,18 @@ export default {
         const db = firebase.firestore();
         db.collection('Userinfo').doc(user.uid).get()
           .then(doc => {
-            this.markasreadarticles = doc.data().markasread
+            this.markasreadArticles = doc.data().markasread
+          })
+          .catch((err) => {
+            console.log('Error getting documents', err);
+          });
+        })
+      } else if (this.dir == 3) {
+        firebase.auth().onAuthStateChanged((user) => {
+        const db = firebase.firestore();
+        db.collection('Userinfo').doc(user.uid).get()
+          .then(doc => {
+            this.readlaterArticles = doc.data().readlater
           })
           .catch((err) => {
             console.log('Error getting documents', err);
@@ -136,7 +151,7 @@ export default {
         const db = firebase.firestore();
         db.collection('Userinfo').doc(user.uid).get()
           .then(doc => {
-            this.markasreadarticles = doc.data().markasread
+            this.markasreadArticles = doc.data().markasread
           })
           .catch((err) => {
             console.log('Error getting documents', err);
