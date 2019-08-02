@@ -59,7 +59,6 @@ export default {
     watch: {
         keywordInfo: function () {
             console.log('watch', this.keywordInfo);
-
         }
     },
     mounted() {

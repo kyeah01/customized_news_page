@@ -18,12 +18,14 @@
                 </div>
                 <!-- search-box end -->
             </v-flex>
-
         </v-flex>
     </v-layout>
     <v-layout row wrap>
-        <v-flex xs12>
+        <v-flex xs9>
             <keywordView :keywordInfo="keywordInfo"/>
+        </v-flex>
+        <v-flex xs3>
+            
         </v-flex>
     </v-layout>
 </v-container>

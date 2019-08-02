@@ -11,7 +11,6 @@
 <script>
 import Navbar from './components/Navbar'
 import LoginCheck from './components/LoginCheck'
-import SignUp from './components/SignUp'
 import FirebaseService from '@/services/FirebaseService'
 import { firestore } from 'firebase'
 
