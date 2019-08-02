@@ -119,8 +119,8 @@ export default {
             })
           } else {
             firebase.firestore().collection('visitorStat').doc(date).set({
-              newCreatedVisitor: 0,
-              totalNewVisitor: 0,
+              newCreatedUser: 0,
+              totalUser: 0,
               totalVisitor: 1,
             })
           }

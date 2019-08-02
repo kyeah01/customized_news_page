@@ -104,6 +104,9 @@ export default {
           (user) => {
             alert('Well done ! You are now connected')
             sessionStorage.setItem('userInfo', JSON.stringify(user))
+            firebase.firestore().collection('visitorStat').doc("20190802").update({
+              totalUser: firebase.firestore.FieldValue.arrayUnion(user.email),
+            })
             this.$store.commit('imageSoruceUpdate', user.user.photoURL)
             this.email = ''
             this.password = ''
