@@ -37,7 +37,8 @@ export default {
             firebase.firestore().collection('Sources').orderBy("users_num", 'desc').limit(10).get()
                 .then(snapshot => {
                     snapshot.forEach(doc => {
-                        this.items.push(doc.id)
+                        
+                        this.items.push(doc.data().news_title)
                     })
                 })
         }
