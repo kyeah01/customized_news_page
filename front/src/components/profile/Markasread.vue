@@ -27,7 +27,7 @@
                       <v-card :key="item.title">
                         <v-layout row>
                           <v-flex>
-                            <img id="image" v-bind:src="item.urlToImage" style="width:130px; height:78px;" @click="call(item)">
+                            <img id="articleImage" v-bind:src="item.urlToImage" style="width:130px; height:78px;" @click="call(item)">
                           </v-flex>
                           
                           <v-flex>

@@ -27,7 +27,7 @@
                       <v-card :key="item.title">
                         <v-layout row>
                           <v-flex>
-                            <img id="image" v-bind:src="item.urlToImage" style="width:130px; height:78px;" @click="call(item)">
+                            <img id="articleImage" v-bind:src="item.urlToImage" style="width:130px; height:78px;" @click="call(item)">
                           </v-flex>
                           
                           <v-flex>
@@ -39,7 +39,7 @@
                                   <!-- </div> -->
                                   <v-spacer></v-spacer>
                                   <div>
-                                    <v-icon @click="delete_from_DB(item, index)">fas fa-trash-alt</v-icon>
+                                    <v-icon id="trash" @click="delete_from_DB(item, index)">fas fa-trash-alt</v-icon>
                                       <!-- <v-icon id="check" @click="mark_as_read(item)">fas fa-check</v-icon> -->
                                       <!-- <v-icon id="bookmark" v-if="!item.read_later" @click="read_later(item)">far fa-bookmark</v-icon> -->
                                       <!-- <v-icon id="bookmark" v-else @click="read_later(item)" style="color:#2bb24c;">far fa-bookmark</v-icon> -->
@@ -51,11 +51,7 @@
                                 
                                 
                                 
-                                  <div id="author" @click="call(item)">
-                                    <span id="read_later" v-if="item.read_later">Read later</span>
-                                    <span id="dot" v-if="item.read_later">·</span>
-                                    {{item.author}}
-                                  </div>
+                                  <div id="author" @click="call(item)">{{item.author}}</div>
                                   <!-- <span id="description">{{item.description}}</span> -->
                                   <span id="description" @click="call(item)">{{item.description}}</span>
 
@@ -76,8 +72,8 @@
 
 
          
-        
-        <v-btn class="green white--text" @click="test1">Save changes</v-btn>
+        <v-btn class="red white--text" @click="test1">Close</v-btn>
+        <!-- <v-btn class="green white--text" @click="test1">Save changes</v-btn> -->
         </section>
       </v-navigation-drawer>
     </div>
@@ -151,3 +147,59 @@ export default {
 
 }
 </script>
+
+<style>
+/* list */
+#articleImage {
+  border-radius: 0.2rem;
+  margin-top: 24px;
+  margin-left: 16px;
+}
+
+#title {
+  display: inline-block;
+  font-size: 16px !important;
+  letter-spacing: -.04em !important;
+  line-height: 1.25em !important;
+  margin-bottom: 0.25rem !important;
+  text-decoration: none !important;
+  width: 72% !important;
+  font-weight: 500;
+}
+
+#author {
+  color: #9e9e9e;
+  font-size: 13px !important;
+  line-height: 18px !important;
+  margin-left: -4px !important;
+  margin-bottom: 0 !important;
+  margin-top: 0.25rem !important;
+  max-height: 54px !important;
+}
+
+#description {
+  color: #9e9e9e;
+  font-size: 13px !important;
+  line-height: 18px !important;
+  margin-left: -4px !important;
+  margin-bottom: 0 !important;
+  margin-top: 0.25rem !important;
+  max-height: 54px !important;
+
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 3 !important; 
+  -webkit-box-orient: vertical !important;
+  word-break: break-word !important;
+  line-height: 1.2em !important;
+  height: 3.6em !important;
+}
+
+#trash {
+    font-size: 16px;
+}
+
+
+
+</style>

@@ -31,7 +31,7 @@
                 <v-card v-else :key="item.title">
                   <v-layout row>
                     <v-flex>
-                      <img id="image" v-bind:src="item.urlToImage" style="width:130px; height:78px;" @click="call(item)">
+                      <img id="articleImage" v-bind:src="item.urlToImage" style="width:130px; height:78px;" @click="call(item)">
                     </v-flex>
                     
                     <v-flex>
@@ -339,7 +339,8 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
   height: 3.6em !important;
 }
 
-#image {
+#articleImage {
+  border-radius: 0.2rem;
   margin-top: 24px;
   margin-left: 16px;
 }
