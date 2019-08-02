@@ -39,17 +39,22 @@
         <v-list dense class="pt-0">
             <!-- 최상위 1 그룹-->
             <v-list-group prepend-icon="account_circle" value="true">
+
                 <template v-slot:activator>
-                    <v-list-item-title>Feeds</v-list-item-title>
+                    <v-list-tile>
+                        <v-list-tile-content>
+                            <v-list-tile-title>Feeds</v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile>
                 </template>
 
                 <!-- 1-1 그룹 시작-->
 
                 <v-list-group no-action sub-group value="true" v-for="(key, index) in $store.state.followKeyword" :key="index">
                     <template v-slot:activator>
-                        <v-list-item-content>
-                            <v-list-item-title>{{key}}</v-list-item-title>
-                        </v-list-item-content>
+                        <v-list-tile-content>
+                            <v-list-tile-title>{{key}}</v-list-tile-title>
+                        </v-list-tile-content>
                     </template>
 
                     <v-list-tile v-for="(key, index) in $store.state.followReturn[key]" :key="index" @click="moveSourceDetail(key)">
@@ -61,27 +66,25 @@
 
                 </v-list-group> <!-- 1-1 그룹 끝-->
             </v-list-group> <!-- 최상위 1 그룹 끝-->
-
-                        <!-- 최상위 1 그룹-->
-            <v-list-group prepend-icon="account_circle" value="true">
+            
+            <v-list-group
+                prepend-icon="account_circle"
+            >
                 <template v-slot:activator>
-                    <v-list-item-title>Keywords</v-list-item-title>
-                </template>
-
-                <!-- 1-1 그룹 시작-->
-
-                
-
-                    <v-list-tile v-for="(keyword, index) in $store.state.userKeyword" :key="index" @click="somefunction(keyword)">
-
+                    <v-list-tile>
                         <v-list-tile-content>
-                            <v-list-tile-title>{{keyword}}</v-list-tile-title>
+                            <v-list-tile-title>Keyword</v-list-tile-title>
                         </v-list-tile-content>
                     </v-list-tile>
+                </template>
 
-                </v-list-group> <!-- 1-1 그룹 끝-->
+                <v-list-tile avatar v-for="(keyword, index) in $store.state.userKeyword" :key="index" @click="">
+                    <v-list-tile-content>
+                        <v-list-tile-title>{{keyword}}</v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+            </v-list-group>
 
-            
         </v-list>
 
         <v-spacer></v-spacer>
@@ -141,16 +144,12 @@ export default {
                     alert('Well done ! You are now connected')
                     this.email = ""
                     this.password = ""
-
-                    // this.init()
-
                 },
                 (err) => {
                     alert('Oops, ' + err.message)
                     this.dialog2 = true
                 }
             )
-
         },
 
         init: function () {
