@@ -218,7 +218,8 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
           // console.log('mark_as_read', item.mark_as_read)
           // console.log(user.uid)
           firebase.firestore().collection('Userinfo').doc(user.uid).update({
-            markasread: firebase.firestore.FieldValue.arrayUnion({title: item.title, author: item.author, description: item.description})
+            markasread: firebase.firestore.FieldValue.arrayUnion(item)
+            // markasread: firebase.firestore.FieldValue.arrayUnion({title: item.title, author: item.author, description: item.description})
           })
         },
         read_later(item) {
@@ -232,7 +233,7 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
           // console.log('userdata', firebase.firestore().collection('Userinfo').doc(user.uid))
           // console.log(user.uid)
           firebase.firestore().collection('Userinfo').doc(user.uid).update({
-            readlater: firebase.firestore.FieldValue.arrayUnion({title: item.title, author: item.author, description: item.description})
+            readlater: firebase.firestore.FieldValue.arrayUnion(item)
           })
         }
 

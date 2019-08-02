@@ -35,7 +35,9 @@
           <Readlater v-else-if="this.dir===3"
             :drawer = parentDrawer
             :readlaterArticles = readlaterArticles
-            @right_drawer = "update">
+            @right_drawer = "update"
+            @deleteReadlater = "dread"
+          >
           </Readlater>
           <!-- <Read v-else-if="this.dir===4"
             :drawer = parentDrawer
@@ -152,6 +154,18 @@ export default {
         db.collection('Userinfo').doc(user.uid).get()
           .then(doc => {
             this.markasreadArticles = doc.data().markasread
+          })
+          .catch((err) => {
+            console.log('Error getting documents', err);
+          });
+        })
+    },
+    dread(){
+      firebase.auth().onAuthStateChanged((user) => {
+        const db = firebase.firestore();
+        db.collection('Userinfo').doc(user.uid).get()
+          .then(doc => {
+            this.readlaterArticles = doc.data().readlater
           })
           .catch((err) => {
             console.log('Error getting documents', err);

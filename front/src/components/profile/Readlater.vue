@@ -127,18 +127,16 @@ export default {
 
         firebase.auth().onAuthStateChanged((user) => {
           firebase.firestore().collection('Userinfo').doc(user.uid).update({
-            readlaterArticles : firebase.firestore.FieldValue.arrayRemove(item)
+            readlater : firebase.firestore.FieldValue.arrayRemove(item)
           })
         })
 
-        this.$emit("deleteMark")
-
-        // this.markasread_length = this.items.length
-        // console.log('markasread_length', this.markasread_length)
+        this.$emit("deleteReadlater")
       }
   },
   computed : {
     deleteKey(){
+        console.log(this.readlaterArticles)
       return this.readlaterArticles
     }
   },
