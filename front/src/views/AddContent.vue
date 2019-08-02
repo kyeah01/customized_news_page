@@ -103,7 +103,7 @@ export default {
   },
   methods: {
     async getSources(){
-    await this.$axios.get('https://newsapi.org/v2/sources?apiKey=8b64e14d415f40f2a7d2969321afc5f9')
+    await this.$axios.get('https://newsapi.org/v2/sources?apiKey=2dc4b8b9d26f4a6b97e21a1f282bac9d')
       .then( r=> {
         this.sources = r.data.sources           
         })
