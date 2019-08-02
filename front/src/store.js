@@ -20,6 +20,7 @@ export default new Vuex.Store({
       state.followKeyword = Object.keys(state.followinfo);
       state.userKeyword = fromDB.keyword;
       
+      
     },
     loadRes(state){
       for(var i in state.followKeyword){

@@ -77,7 +77,6 @@
 
 <script>
 import firebase from 'firebase'
-import FirebaseService from '@/services/FirebaseService'
 import GoogleLogin from './GoogleLogin'
 import FacebookLogin from './FacebookLogin'
 import NavbarAvatar from './NavbarAvatar'

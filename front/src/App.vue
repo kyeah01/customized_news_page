@@ -60,7 +60,9 @@ export default {
   color:#757575
 }
 
-
+.follow {
+    float: right;
+}
 
 .autocomplete-input{
     border:1px solid #eee;

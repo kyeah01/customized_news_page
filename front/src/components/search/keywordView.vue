@@ -1,10 +1,10 @@
 <template>
-    <v-card absolute fixed>
+<v-card absolute fixed>
     <v-card-title primary-title>
         <v-layout row wrap>
             <v-flex xs12>
                 <span class="headline">{{keyword}}</span>
-                <keywordFollow class="testFollow" :keyword="keyword">
+                <keywordFollow class="follow" :keyword="keyword">
                 </keywordFollow>
             </v-flex>
             <v-flex xs12>
@@ -27,16 +27,16 @@
                                     </v-flex>
                                 </v-layout>
                             </v-flex>
-                                <v-layout column wrap>
-                                    <v-flex xs1>
-                                        {{totalResults}}
-                                    </v-flex>
-                                    <v-flex xs1>
-                                        articles
-                                    </v-flex>
-                                </v-layout>
+                            <v-layout column wrap>
+                                <v-flex xs1>
+                                    {{totalResults}}
+                                </v-flex>
+                                <v-flex xs1>
+                                    articles
+                                </v-flex>
+                            </v-layout>
                             <v-flex xs1>
-                                
+
                             </v-flex>
                         </v-layout>
                     </v-flex>
@@ -46,55 +46,55 @@
     </v-card-title>
     <v-card-actions>
     </v-card-actions>
-</v-card>    
+</v-card>
 </template>
+
 <script>
 import keywordFollow from '@/components/search/keywordFollow'
 export default {
-    props:['keywordInfo'],
-    components:{
+    props: ['keywordInfo'],
+    components: {
         keywordFollow
     },
-    watch:{
-        keywordInfo:function(){
+    watch: {
+        keywordInfo: function () {
             console.log('watch', this.keywordInfo);
-            
+
         }
     },
     mounted() {
-        console.log('keywordInfo : ',this.keywordInfo);
-        if( this.keywordInfo != null) console.log('not null');
-        
-        
+        console.log('keywordInfo : ', this.keywordInfo);
+        if (this.keywordInfo != null) console.log('not null');
+
     },
-    computed:{
-        keyword(){
-            if( this.keywordInfo != null)
+    computed: {
+        keyword() {
+            if (this.keywordInfo != null)
                 return this.keywordInfo.word;
             else return "";
         },
-        keywordNews:function(){
-            if( this.keywordInfo != null){
+        keywordNews: function () {
+            if (this.keywordInfo != null) {
                 return this.keywordInfo.apiResponse.articles.slice(0, 3);
-            }
-            else return 3;
-            
+            } else return 3;
+
         },
-        totalResults(){
-            if( this.keywordInfo != null)
+        totalResults() {
+            if (this.keywordInfo != null)
                 return this.keywordInfo.apiResponse.totalResults;
             else return 0;
         },
-        users_num(){
-            if( this.keywordInfo != null)
+        users_num() {
+            if (this.keywordInfo != null)
                 return this.keywordInfo.users_num;
             else return 0;
         }
     }
 }
 </script>
+
 <style>
-.test{
+.test {
     color: #757575;
 }
 </style>

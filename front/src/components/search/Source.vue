@@ -4,7 +4,7 @@
         <v-layout row wrap>
             <v-flex xs12>
                 <span class="headline">{{source.name}}</span>
-                <follow class="testFollow" :news="source">
+                <follow class="follow" :news="source">
                 </follow>
             </v-flex>
             <v-flex xs12>
@@ -35,7 +35,5 @@ export default {
 </script>
 
 <style>
-.testFollow {
-    float: right;
-}
+
 </style>
