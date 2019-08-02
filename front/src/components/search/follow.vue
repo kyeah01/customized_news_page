@@ -1,7 +1,7 @@
 <template>
 <v-layout wrap overflow>
     <v-flex shrink>
-        <v-btn class="test ma-2" color="primary" @click="open">
+        <v-btn class="test ma-2" color="success" @click="open">
             Follow
         </v-btn>
 

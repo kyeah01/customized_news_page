@@ -75,7 +75,16 @@ const router = new Router({
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/AddContent.vue'),
+      component: () => import(/* webpackChunkName: "about" */ './views/addContent/AddContent.vue'),
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/addKeyword',
+      name: 'addKeyword',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "about" */ './views/addContent/addKeyword.vue'),
       meta: { requiresAuth: true }
     },
     {
@@ -85,7 +94,7 @@ const router = new Router({
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/AddContent.vue'),
+      component: () => import(/* webpackChunkName: "about" */ './views/addContent/AddContent.vue'),
       meta: { requiresAuth: true }
     },
     {
