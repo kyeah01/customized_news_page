@@ -95,7 +95,7 @@ import { watch } from 'fs';
 import ArticleDetail from '@/components/article/ArticleDetail'
 
 export default {
-  props : ['drawer', 'markasreadarticles'],
+  props : ['drawer', 'markasreadArticles'],
   components : {
     ArticleDetail
   },
