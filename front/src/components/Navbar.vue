@@ -88,12 +88,14 @@
     </v-list>
 
     <v-spacer></v-spacer>
-    <v-footer class="justify-center pl-0" height="51" inset app style="background-color: #2bb24c">
+    <!-- addContent 버튼 -->
+    <v-footer class="justify-center pl-0" height="51" inset app style="background-color: #2bb24c" absolute>
       <v-btn to="/addcontent" block flat color="#2bb24c">
         <v-icon class="white--text mr-1">add</v-icon>
           <span class="white--text" style="font-size: 12px;">ADD CONTENT</span>
       </v-btn>
     </v-footer>
+    
    </v-list>
     <v-spacer></v-spacer>
   </v-navigation-drawer>
