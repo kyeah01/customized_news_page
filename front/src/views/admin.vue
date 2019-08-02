@@ -7,7 +7,7 @@
     <TotalUserGraph/>
     <h2>전체 방문자 수</h2>
     <TotalVisitorGraph/>
-
+    <h2>전체 사용자 :{{ users.length }}명</h2>
     <p v-for="user in users">{{ user.email }}  ------- <v-btn @click="Deleteuser(user.uid)">회원탈퇴</v-btn></p> 
  
   </v-container>
@@ -43,9 +43,7 @@ export default {
     Deleteuser(uid) {
       this.$http.get(`/api/allusers/delete/${uid}`)
       alert('회원탈퇴시켰습니다.')
-      this.$http.get('/api/allusers').then(res => {
-        this.users = res.data
-      })
+      window.location.href = '/admin';
     },
   }
 }
