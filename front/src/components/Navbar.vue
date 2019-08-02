@@ -156,29 +156,6 @@ export default {
       )
 
     },
-
-    SignUp: function() {
-      firebase.auth().createUserWithEmailAndPassword(this.signupemail, this.signuppassword).then(
-        (cred, user) => {
-          alert('created!!')
-          this.dialog2 = false
-          this.signupemail = ""
-          this.signuppassword = "" 
-          firebase.firestore().collection('Userinfo').doc(cred.user.uid).set({
-            keyword: [],
-            markasread: [],
-            readlater: [],
-            sourceFollow : [],
-            follow : {},
-            followInfo : {}
-          })      
-        },
-        (err) => {
-          alert('Oops, ' + err.message)
-          this.dialog1 = true
-        }
-      );
-    },
     init : function(){
       var user=firebase.auth().currentUser
       var tmp=firebase.firestore().collection("Userinfo").doc(user.uid).get()
