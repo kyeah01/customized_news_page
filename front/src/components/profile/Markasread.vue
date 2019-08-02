@@ -3,14 +3,13 @@
     <div v-if="drawer">
       <v-navigation-drawer
             app
-            temporary
             v-model="drawer"
             right
             style="width:83vw"
       > 
       <v-btn
       flat
-      @click="test2">
+      @click="close">
         X
       </v-btn>
         <section class="container630 centered">
@@ -18,24 +17,20 @@
             <div class="kicker">Preview</div>
             <div class="heading">Mark as read</div>
           </h1>
-
-
-          
-              
               
               <v-flex xs12 v-for="(item, index) in deleteKey" :key="item.title">
                       <v-card :key="item.title">
                         <v-layout row>
                           <v-flex>
-                            <img id="articleImage" v-bind:src="item.urlToImage" style="width:130px; height:78px;" @click="call(item)">
+                            <img id="articleImage" v-bind:src="item.urlToImage" style="width:130px; height:78px;" @click="open_Detaildrawer(item)">
                           </v-flex>
                           
                           <v-flex>
                             <v-card-title primary-title>
                                 <v-layout row>
                                   <!-- <div> -->
-                                    <span class="headline" id="title" v-if="!item.mark_as_read" @click="call(item)">{{item.title}}</span>
-                                    <span class="headline" id="title" v-else style="color:#888888;" @click="call(item)">{{item.title}}</span>
+                                    <span class="headline" id="title" v-if="!item.mark_as_read" @click="open_Detaildrawer(item)">{{item.title}}</span>
+                                    <span class="headline" id="title" v-else style="color:#888888;" @click="open_Detaildrawer(item)">{{item.title}}</span>
                                   <!-- </div> -->
                                   <v-spacer></v-spacer>
                                   <div>
@@ -49,15 +44,13 @@
                                   </div>
                                 </v-layout>
                                 
-                                
-                                
-                                  <div id="author" @click="call(item)">
+                                  <div id="author" @click="open_Detaildrawer(item)">
                                     <span id="read_later" v-if="item.read_later">Read later</span>
                                     <span id="dot" v-if="item.read_later">·</span>
                                     {{item.author}}
                                   </div>
                                   <!-- <span id="description">{{item.description}}</span> -->
-                                  <span id="description" @click="call(item)">{{item.description}}</span>
+                                  <span id="description" @click="open_Detaildrawer(item)">{{item.description}}</span>
 
                             </v-card-title>
                           </v-flex>
@@ -68,16 +61,9 @@
 
                         </v-card-actions>
                       </v-card>
-
+                    
                     </v-flex>
-
-            
-          
-
-
-         
         
-        <v-btn class="green white--text" @click="test1">Save changes</v-btn>
         </section>
       </v-navigation-drawer>
     </div>
@@ -91,6 +77,13 @@
           >
           </v-navigation-drawer>
     </div>
+    <ArticleDetail 
+      v-if="detailDrawer === true"
+      :drawer = detailDrawer
+      :detail = detailItem
+      @right_drawer = "closeDetail"
+    >
+    </ArticleDetail>
   </div>
 </template>
 
@@ -99,55 +92,52 @@ import firebase from 'firebase'
 import FirebaseService from '@/services/FirebaseService'
 import 'firebase/firestore'
 import { watch } from 'fs';
+import ArticleDetail from '@/components/article/ArticleDetail'
 
 export default {
-  props : ['drawer', 'markasreadArticles'],
+  props : ['drawer', 'markasreadarticles'],
+  components : {
+    ArticleDetail
+  },
+  data(){
+    return{
+      detailDrawer : false,
+      detailItem : null
+    }
+  },
   watch: {
-    drawer: function() {
+    drawer : function() {
       if (!this.drawer) {
-        console.log(this.val)
-        if (this.val) {
-          this.$emit('right_drawer', 'close')
-        } else {
-          this.$emit('right_drawer', 'save')
-        }
+          this.$emit('right_drawer', 'update')
       }
     }
   },
   methods: {
-      test1() {
-        this.val = false
-        this.drawer = !this.drawer
-      },
-      test2(){
-        this.val = true
-        this.drawer = !this.drawer
-      },
-      delete_from_DB(item, index) {
-
-        firebase.auth().onAuthStateChanged((user) => {
-          firebase.firestore().collection('Userinfo').doc(user.uid).update({
-            markasread : firebase.firestore.FieldValue.arrayRemove(item)
+    delete_from_DB(item, index) {
+      firebase.auth().onAuthStateChanged((user) => {
+        firebase.firestore().collection('Userinfo').doc(user.uid).update({
+          markasread : firebase.firestore.FieldValue.arrayRemove(item)
           })
         })
-
         this.$emit("deleteMark")
-
-        // this.markasread_length = this.items.length
-        // console.log('markasread_length', this.markasread_length)
-      }
+      },
+      open_Detaildrawer(item){
+        this.detailItem=item
+        this.detailDrawer=!this.detailDrawer
+      },
+      close(){
+        this.drawer = !this.drawer
+        if(this.detailDrawer){
+          this.closeDetail()
+        }
+      },
+      closeDetail(){
+        this.detailDrawer=!this.detailDrawer
+      },
   },
   computed : {
     deleteKey(){
       return this.markasreadArticles
-    }
-  },
-  data(){
-    return{
-      val: true,
-      data2 : true,
-      markasread_length : null,
-      child : null
     }
   }
 

@@ -1,13 +1,18 @@
 <template>
   <div>
     <div v-if="drawer">
-      <v-navigation-drawer
-            app
-            temporary
-            v-model="drawer"
-            right
-            style="width:83vw"
-      > 
+      <v-navigation-drawer 
+        app
+        v-model="drawer"
+        temporary
+        right
+        style="width:83vw"
+      >
+      <v-btn
+      flat
+      @click="close">
+        X
+      </v-btn>
         <section class="container630 centered">
           <h1 class="grey--text">{{detail.source.name}}</h1>
           <h1>
@@ -108,10 +113,10 @@
 import('@/assets/profileCss.css')
 export default {
   props : ['drawer','detail'],
-  watch: {
-    drawer: function() {
+  methods : {
+    close(){
       this.drawer=!this.drawer
-      this.$emit('right_drawer', 'update')
+      this.$emit('right_drawer', 'closeDetail')
     }
   }
     
