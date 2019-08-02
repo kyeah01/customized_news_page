@@ -101,7 +101,7 @@ import 'firebase/firestore'
 import { watch } from 'fs';
 
 export default {
-  props : ['drawer', 'items'],
+  props : ['drawer', 'markasreadarticles'],
   watch: {
     drawer: function() {
       if (!this.drawer) {
@@ -139,7 +139,7 @@ export default {
   },
   computed : {
     deleteKey(){
-      return this.items
+      return this.markasreadarticles
     }
   },
   data(){
