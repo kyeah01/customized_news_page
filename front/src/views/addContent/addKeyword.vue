@@ -9,11 +9,7 @@
                 </div>
                 <!-- search-box start -->
                 <div id="autocomplete" class="autocomplete">
-                    <input v-model="input" id="input-search" class="autocomplete-input" 
-                            placeholder="Search by topic" 
-                            aria-label="Search by topic" 
-                            autofocus 
-                            @keyup.enter="search">
+                    <input v-model="input" id="input-search" class="autocomplete-input" placeholder="Search by topic" aria-label="Search by topic" autofocus @keyup.enter="search">
                     <ul class="autocomplete-result-list"></ul>
                 </div>
                 <!-- search-box end -->
@@ -22,10 +18,10 @@
     </v-layout>
     <v-layout row wrap>
         <v-flex xs9>
-            <keywordView v-show="keywordInfo.word != ''" :keywordInfo="keywordInfo"/>
+            <keywordView v-show="keywordInfo.word != ''" :keywordInfo="keywordInfo" />
         </v-flex>
         <v-flex xs3>
-            <topKeyword/>
+            <topKeyword />
         </v-flex>
     </v-layout>
 </v-container>
@@ -42,8 +38,11 @@ import timeCheck from '@/timeCheck'
 import userLog from '@/userLog'
 export default {
     components: {
-        searchOptionSelector, keywordView, topKeyword
+        searchOptionSelector,
+        keywordView,
+        topKeyword
     },
+    props: ['searchWord'],
     data() {
         return {
             sDate: null,
@@ -54,20 +53,32 @@ export default {
             // autocomplete
             input: "",
             keywordsName: [],
-            keywordInfo:{
-                users:[],
-                users_num : 0,
-                word:'',
-                apiResponse:{
-                    articles:[],
+            keywordInfo: {
+                users: [],
+                users_num: 0,
+                word: '',
+                apiResponse: {
+                    articles: [],
                 }
             },
 
         }
     },
     mounted() {
+        //db에서 keyword list load
         this.getKeywords();
         this.loadAutoComplete();
+
+        this.input = this.searchWord;
+        if (this.searchWord != null) this.search();
+
+    },
+    watch: {
+        //top10 keyword 클릭시 url 바뀜 -> props 변수 searchWord 변함 -> 검색 실행
+        searchWord: function (newVal) {
+            this.input = newVal;
+            this.search();
+        }
     },
     created() {
         this.sDate = timeCheck()
@@ -97,29 +108,27 @@ export default {
                     this.keywordInfo['apiResponse'] = response.data;
                     this.keywordInfo['word'] = this.input;
                     var db = firebase.firestore().collection('Keyword');
-                    if( response.data.totalResults >= 5) {
-                        db.doc(this.input).get().then(doc=>{
-                            if( !doc.exists){
+                    if (response.data.totalResults >= 5) {
+                        db.doc(this.input).get().then(doc => {
+                            if (!doc.exists) {
                                 // keyword 생성
                                 db.doc(this.input).set({
                                     word: this.input,
-                                    users:[],
-                                    users_num : 0
+                                    users: [],
+                                    users_num: 0
                                 })
                                 this.keywordInfo['users'] = [];
                                 this.keywordInfo['users_num'] = 0;
-                            }else{
+                            } else {
                                 var docData = doc.data();
                                 this.keywordInfo['users'] = docData.users;
-                                this.keywordInfo['users_num'] = docData.users_num 
+                                this.keywordInfo['users_num'] = docData.users_num
                             }
 
-                            
                         })
                     }
                 });
-            console.log(this.keywordInfo);
-            
+
         },
         loadAutoComplete: function () {
 
