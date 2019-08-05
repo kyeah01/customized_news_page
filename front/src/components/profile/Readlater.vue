@@ -3,14 +3,13 @@
     <div v-if="drawer">
       <v-navigation-drawer
             app
-            temporary
             v-model="drawer"
             right
             style="width:83vw"
       > 
       <v-btn
       flat
-      @click="test2">
+      @click="close">
         X
       </v-btn>
         <section class="container630 centered">
@@ -19,10 +18,6 @@
             <div class="heading">Read later</div>
           </h1>
 
-
-          
-              
-              
               <v-flex xs12 v-for="(item, index) in deleteKey" :key="item.title">
                       <v-card :key="item.title">
                         <v-layout row>
@@ -34,8 +29,8 @@
                             <v-card-title primary-title>
                                 <v-layout row>
                                   <!-- <div> -->
-                                    <span class="headline" id="title" v-if="!item.mark_as_read" @click="call(item)">{{item.title}}</span>
-                                    <span class="headline" id="title" v-else style="color:#888888;" @click="call(item)">{{item.title}}</span>
+                                    <span class="headline" id="title" v-if="!item.mark_as_read" @click="open_Detaildrawer(item)">{{item.title}}</span>
+                                    <span class="headline" id="title" v-else style="color:#888888;"@click="open_Detaildrawer(item)">{{item.title}}</span>
                                   <!-- </div> -->
                                   <v-spacer></v-spacer>
                                   <div>
@@ -51,9 +46,9 @@
                                 
                                 
                                 
-                                  <div id="author" @click="call(item)">{{item.author}}</div>
+                                  <div id="author" @click="open_Detaildrawer(item)">{{item.author}}</div>
                                   <!-- <span id="description">{{item.description}}</span> -->
-                                  <span id="description" @click="call(item)">{{item.description}}</span>
+                                  <span id="description" @click="open_Detaildrawer(item)">{{item.description}}</span>
 
                             </v-card-title>
                           </v-flex>
@@ -87,6 +82,13 @@
           >
           </v-navigation-drawer>
     </div>
+    <ArticleDetail 
+      v-if="detailDrawer === true"
+      :drawer = detailDrawer
+      :detail = detailItem
+      @right_drawer = "closeDetail"
+    >
+    </ArticleDetail>
   </div>
 </template>
 
@@ -95,9 +97,20 @@ import firebase from 'firebase'
 import FirebaseService from '@/services/FirebaseService'
 import 'firebase/firestore'
 import { watch } from 'fs';
+import ArticleDetail from '@/components/article/ArticleDetail'
 
 export default {
   props : ['drawer', 'readlaterArticles'],
+  components : {
+    ArticleDetail
+  },
+  data(){
+    return{
+      val: true,
+      detailDrawer : false,
+      detailItem : null
+    }
+  },
   watch: {
     drawer: function() {
       if (!this.drawer) {
@@ -126,25 +139,31 @@ export default {
             readlater : firebase.firestore.FieldValue.arrayRemove(item)
           })
         })
-
+        if(this.detailDrawer){
+          this.closeDetail()
+        }
         this.$emit("deleteReadlater")
-      }
+      },
+      open_Detaildrawer(item){
+        this.detailItem=item
+        this.detailDrawer=!this.detailDrawer
+      },
+      close(){
+        this.drawer = !this.drawer
+        if(this.detailDrawer){
+          this.closeDetail()
+        }
+      },
+      closeDetail(){
+        this.detailDrawer=!this.detailDrawer
+      },
   },
   computed : {
     deleteKey(){
         console.log(this.readlaterArticles)
       return this.readlaterArticles
     }
-  },
-  data(){
-    return{
-      val: true,
-      data2 : true,
-      markasread_length : null,
-      child : null
-    }
   }
-
 }
 </script>
 
@@ -199,7 +218,4 @@ export default {
 #trash {
     font-size: 16px;
 }
-
-
-
 </style>
