@@ -85,7 +85,7 @@
 
         </v-list>
     </v-navigation-drawer>
-    <div class="btn-addContent" :class="[drawer ? 'btn-addContent-open' : 'btn-addContent-close']">
+    <div class="addContent" :class="[drawer ? 'btn-addContent-open' : 'btn-addContent-close']">
         <v-btn to="/btn-addContent" block flat color="#2bb24c">
             <v-icon class="white--text mr-1">add</v-icon>
             <span class="white--text" style="font-size: 12px;">ADD CONTENT</span>
