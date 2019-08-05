@@ -85,14 +85,12 @@
 
         </v-list>
     </v-navigation-drawer>
-
     <div class="btn-addContent" :class="[drawer ? 'btn-addContent-open' : 'btn-addContent-close']">
-        <v-btn to="/addContent" block flat color="#2bb24c">
+        <v-btn to="/btn-addContent" block flat color="#2bb24c">
             <v-icon class="white--text mr-1">add</v-icon>
             <span class="white--text" style="font-size: 12px;">ADD CONTENT</span>
         </v-btn>
     </div>
-
 </nav>
 </template>
 
@@ -190,8 +188,8 @@ export default {
 </script>
 
 <style lang="css" scoped>
-.btn-addContent {
-    width: 300px;
+.btn-addContent{
+width: 300px;
     position: fixed;
     bottom: 0px;
     left: 0px;
@@ -199,12 +197,10 @@ export default {
     height: 8vh;
     transition: all 0.2s;
 }
-
-.btn-addContent-open {
+.btn-addContent-open{
     transform: translateX(0px);
 }
-
-.btn-addContent-close {
+.btn-addContent-close{
     transform: translateX(-300px);
 }
 

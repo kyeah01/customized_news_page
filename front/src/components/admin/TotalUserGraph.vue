@@ -50,10 +50,10 @@ export default {
     created() {
         },
     mounted() {
-        this.test()
+        this.TotalUser()
     },
     methods: {
-        async test() {
+        async TotalUser() {
             await firebase.firestore().collection('visitorStat').get().then(res => {
                 // console.log(res.docs.reverse())
                 var L = res.docs.reverse()
