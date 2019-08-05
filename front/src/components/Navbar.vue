@@ -21,7 +21,7 @@
         </v-toolbar-items>
     </v-toolbar>
 
-    <v-navigation-drawer app stateless v-model="drawer" style="background-color: #d9d9d9;">
+    <v-navigation-drawer height="92vh" app stateless v-model="drawer" style="background-color: #d9d9d9;">
         <!-- <v-toolbar flat> -->
         <v-list>
             <v-list-tile>
@@ -66,10 +66,8 @@
 
                 </v-list-group> <!-- 1-1 그룹 끝-->
             </v-list-group> <!-- 최상위 1 그룹 끝-->
-            
-            <v-list-group
-                prepend-icon="account_circle"
-            >
+
+            <v-list-group prepend-icon="account_circle">
                 <template v-slot:activator>
                     <v-list-tile>
                         <v-list-tile-content>
@@ -86,17 +84,15 @@
             </v-list-group>
 
         </v-list>
-
-        <v-spacer></v-spacer>
-        <v-footer class="justify-center pl-0" height="51" inset app style="background-color: #2bb24c">
-            <v-btn to="/addcontent" block flat color="#2bb24c">
-                <v-icon class="white--text mr-1">add</v-icon>
-                <span class="white--text" style="font-size: 12px;">ADD CONTENT</span>
-            </v-btn>
-        </v-footer>
-        </v-list>
-        <v-spacer></v-spacer>
     </v-navigation-drawer>
+
+    <div class="btn-addContent" :class="[drawer ? 'btn-addContent-open' : 'btn-addContent-close']">
+        <v-btn to="/addContent" block flat color="#2bb24c">
+            <v-icon class="white--text mr-1">add</v-icon>
+            <span class="white--text" style="font-size: 12px;">ADD CONTENT</span>
+        </v-btn>
+    </div>
+
 </nav>
 </template>
 
@@ -106,8 +102,6 @@ import GoogleLogin from './GoogleLogin'
 import FacebookLogin from './FacebookLogin'
 import eventBus from '../eventBus'
 import Login from './Login'
-
-const axios = require('axios');
 
 export default {
     components: {
@@ -169,6 +163,7 @@ export default {
                 this.items = null
             }
             this.drawer = !this.drawer
+
         },
         moveSourceDetail: function (j) {
             alert(j)
@@ -195,6 +190,24 @@ export default {
 </script>
 
 <style lang="css" scoped>
+.btn-addContent {
+    width: 300px;
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    background-color: #2bb24c;
+    height: 8vh;
+    transition: all 0.2s;
+}
+
+.btn-addContent-open {
+    transform: translateX(0px);
+}
+
+.btn-addContent-close {
+    transform: translateX(-300px);
+}
+
 .test {
     display: block;
     width: 100%;
