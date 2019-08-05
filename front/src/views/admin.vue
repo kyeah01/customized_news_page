@@ -1,19 +1,33 @@
 <template>
   <v-container>
     <h1>Admin Page</h1>
-    <h2>신규 가입자 수</h2>
-    <NewUserGraph/>
-    <h2>전체 사용자 방문 수</h2>
-    <TotalUserGraph/>
-    <h2>전체 방문자 수</h2>
-    <TotalVisitorGraph/>
-    <h2>전체 사용자 :{{ users.length }}명</h2>
-    <p v-for="user in users">{{ user.email }}  ------- <v-btn @click="Deleteuser(user.uid)">회원탈퇴</v-btn></p> 
- 
-  </v-container>
-    
+    <v-layout wrap>
+      <v-flex xs4 sm4 md4 lg4 xl4>
+        <h2>신규 가입자 수</h2>
+        <NewUserGraph/>
+      </v-flex>
+      <v-flex xs4 sm4 md4 lg4 xl4>
+        <h2>전체 사용자 방문 수</h2>
+        <TotalUserGraph/>
+      </v-flex>
+      <v-flex xs4 sm4 md4 lg4 xl4>
+        <h2>전체 방문자 수</h2>
+        <TotalVisitorGraph/>
+      </v-flex>
+    </v-layout>
 
-  
+    <h2>전체 사용자 :{{ users.length }}명</h2>
+
+    <v-layout wrap>
+      <v-flex v-for="user in users" xs3 sm3 md3 lg3 xl3>
+        <v-card>
+          <!-- <v-img :src="user.photoURL"></v-img> -->
+          <v-card-title>{{ user.email }}</v-card-title>
+          <v-card-text><v-btn @click="Deleteuser(user.uid)">회원탈퇴</v-btn></v-card-text>
+        </v-card> 
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>

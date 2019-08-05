@@ -10,7 +10,7 @@
 <script>
 import Navbar from './components/Navbar'
 import FirebaseService from '@/services/FirebaseService'
-import firebase, { firestore, functions } from 'firebase'
+import firebase, { firestore, functions, auth } from 'firebase'
 
 export default {
   name: 'App',
@@ -32,6 +32,21 @@ export default {
     isLogin: function () {
       if (sessionStorage.hasOwnProperty('userInfo')) {
         this.userInfo = JSON.parse(sessionStorage.getItem('userInfo'))
+        // admin인지 확인하는 과정을 거치고나서
+        auth().onAuthStateChanged(function(user) {
+          user.getIdTokenResult().then(idTokenResult => {
+            if (idTokenResult.claims.admin === true) {
+              sessionStorage.setItem('IsAdmin', true)
+            } else {
+              sessionStorage.setItem('IsAdmin', false)
+            }
+          })
+        })
+
+
+        // session storage는 하나의 딕셔너리
+        // 값이 존재하는지 아닌지 확인하는거는 hasOwnProperty
+        // 값이 어떻게 존재하는지 아는거는 getItem
         this.$store.commit('imageSoruceUpdate', this.userInfo.user.photoURL)
         this.followCheck()
       } else {

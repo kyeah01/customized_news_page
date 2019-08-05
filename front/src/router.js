@@ -120,7 +120,15 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.meta.requiresAuth) {
+  if (to.name == 'admin') {
+    if (sessionStorage.getItem('IsAdmin') === 'true') {
+      console.log('hi')
+      next()
+    } else {
+      console.log('bye')
+      next('/')
+    }
+  } else if (to.meta.requiresAuth) {
     if (sessionStorage.hasOwnProperty('userInfo')) {
       return next()
     } else {
