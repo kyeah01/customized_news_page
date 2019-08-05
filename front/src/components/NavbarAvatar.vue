@@ -21,8 +21,8 @@
           <v-list-tile avatar>
 
             <v-list-tile-content>
-              <v-list-tile-title>{{ user.email }}</v-list-tile-title>
-              <v-list-tile-sub-title>welcome! {{user.displayName}}</v-list-tile-sub-title>
+              <v-list-tile-title>{{ user.user.email }}</v-list-tile-title>
+              <v-list-tile-sub-title>welcome! {{user.user.displayName}}</v-list-tile-sub-title>
             </v-list-tile-content>
           </v-list-tile>
         </v-list>
@@ -31,7 +31,7 @@
 
         <v-list flat>
           <!-- <v-subheader>REPORTS</v-subheader> -->
-          <v-list-group color="primary">
+          <div color="primary">
             <v-list-tile
               v-for="(item, i) in items"
               :key="i"
@@ -49,7 +49,7 @@
                 <v-list-tile-title>Log Out</v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
-          </v-list-group>
+          </div>
         </v-list>
 
         <!-- <v-card-actions>
@@ -78,6 +78,7 @@ import FirebaseService from '@/services/FirebaseService'
 
     }),
     created () {
+      this.user = JSON.parse(sessionStorage.getItem('userInfo'))
     },
     methods: {
       Logout: function() {
