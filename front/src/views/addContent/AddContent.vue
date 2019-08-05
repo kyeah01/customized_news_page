@@ -63,6 +63,8 @@ export default {
   },
   watch:{
     searchWord:function(newVal){
+      this.input = newVal;
+      
       this.search();
     }
   },
@@ -73,18 +75,13 @@ export default {
     }
    },
    async mounted(){
-      //  신문사 정보 axios로 받아오기
+  //  신문사 정보 axios로 받아오기
      await this.getSources()
      this.loadAutoComplete()
-    //  var filePath = 'https://raw.githubusercontent.com/dwyl/autocomplete/master/words.txt'
-    //  var words = this.loadFile(filePath)
-    //  this.words = words.split('\n')
-
+  
   //navbar에서 검색했을 때 router url 파라메터로 어떤 입력했는지 받아와서 검색실행
     this.input = this.searchWord;
     if( this.searchWord != null){
-      console.log('search');
-      
       this.search();
     }
    },
@@ -108,13 +105,13 @@ export default {
         });
     },
     search(){      
-      var input = document.getElementById("input-search").value
+      // var input = document.getElementById("input-search").value
       
-      if( this.searchWord != null ) input = this.searchWord;
+      // if( this.searchWord != null ) input = this.searchWord;
       
       this.resultSearch = []
       this.sources.forEach(element =>{
-        if( element.name.toLowerCase().indexOf(input.toLowerCase()) != -1 ){
+        if( element.name.toLowerCase().indexOf(this.input.toLowerCase()) != -1 ){
           this.resultSearch.push(element)
         }
       })
@@ -133,16 +130,6 @@ export default {
           })
         }
       })
-    },
-    loadFile : function(filePath) {
-      var result = null;
-      var xmlhttp = new XMLHttpRequest();
-      xmlhttp.open("GET", filePath, false);
-      xmlhttp.send();
-      if (xmlhttp.status == 200) {
-        result = xmlhttp.responseText;
-      }
-      return result;
     }
   }
 }
