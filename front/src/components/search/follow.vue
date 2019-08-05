@@ -1,45 +1,48 @@
 <template>
 <v-layout wrap overflow>
     <v-flex shrink>
-        <v-btn class="test ma-2" color="success" @click="open">
+        <div>
+        <v-btn class="white green--text" @click="open">
             Follow
         </v-btn>
-
+        </div>
+        <div class="followContent">
         <v-expand-transition>
-            <v-card v-show="expand" height="200" width="300" class="scroll">
+            <v-card v-show="expand" class="scroll">
                 <div v-if="addopen===false">
-                    <input v-model="searchFeed" class="autocomplete-input" placeholder="Search by topic" aria-label="Search by topic" autofocus>
-                    <v-list flat>
-                        <v-list-tile v-for="item in items" :key="item.title" @click="create(item)">
-                            <v-list-tile-action>
-                                <v-icon>fas fa-rss</v-icon>
-                            </v-list-tile-action>
+                        <!-- <input v-model="searchFeed" class="autocomplete-input" placeholder="Search by topic" aria-label="Search by topic" autofocus> -->
+                        <v-list flat>
+                            <v-list-tile v-for="item in items" :key="item.title" @click="create(item)">
+                                <v-list-tile-action>
+                                    <v-icon>fas fa-rss</v-icon>
+                                </v-list-tile-action>
 
-                            <v-list-tile-content>
-                                <v-list-tile-title>{{item}}</v-list-tile-title>
-                            </v-list-tile-content>
-                        </v-list-tile>
+                                <v-list-tile-content>
+                                    <v-list-tile-title>{{item}}</v-list-tile-title>
+                                </v-list-tile-content>
+                            </v-list-tile>
 
-                        <v-divider />
-                        <v-list-tile @click="addFeed">
-                            <v-list-tile-action>
-                                <v-icon>add</v-icon>
-                            </v-list-tile-action>
-                            <v-list-tile-content>
-                                <v-list-tile-title>add New Feed</v-list-tile-title>
-                            </v-list-tile-content>
-                        </v-list-tile>
-                    </v-list>
+                            <v-divider />
+                            <v-list-tile @click="addFeed">
+                                <v-list-tile-action>
+                                    <v-icon>add</v-icon>
+                                </v-list-tile-action>
+                                <v-list-tile-content>
+                                    <v-list-tile-title>add New Feed</v-list-tile-title>
+                                </v-list-tile-content>
+                            </v-list-tile>
+                        </v-list>
                 </div>
 
                 <div v-else>
-                    <span class="grey--text">Feed Name</span>
-                    <input v-model="newFeed" class="autocomplete-input" placeholder="Search by topic" autofocus>
-                    <v-btn @click="create(newFeed)">Create</v-btn>
-                    <v-btn @click="before">Before</v-btn>
+                    <span class="title font-weight-bold.font-italic" >Feed Name</span>
+                    <input v-model="newFeed" class="autocomplete-input" placeholder="New Topic Name" autofocus>
+                    <v-btn @click="create(newFeed)" class="success">Create</v-btn>
+                    <v-btn @click="before" class="normal">Before</v-btn>
                 </div>
             </v-card>
         </v-expand-transition>
+        </div>
     </v-flex>
 
 </v-layout>
@@ -54,14 +57,19 @@ export default {
         addopen: false,
         items: null,
         searchFeed: "",
-        newFeed: ""
+        newFeed: "",
+        isFollowing : false,
+        search: null,
+        caseSensitive: false,
     }),
+    
     methods: {
         open: function () {
-
+            if(this.addopen==true){
+                this.addopen=false
+            }
             this.items = this.$store.state.followKeyword
             this.expand = !this.expand
-
         },
         addFeed: function () {
             this.addopen = true
@@ -139,7 +147,7 @@ export default {
     width: 100%;
     padding: 12px 12px 12px 48px;
     box-sizing: border-box;
-    position: relative;
+    position: static;
     font-size: 16px;
     line-height: 1.5;
     flex: 1;
@@ -153,6 +161,14 @@ export default {
 
 .scroll {
     overflow-y: auto;
+    height : 200px;
+    width : 300px;
+    z-index : 1; 
 }
+
+.followContent{
+    width : 200px;
+}
+
 </style>
 
