@@ -119,6 +119,9 @@ export default {
           markasread : firebase.firestore.FieldValue.arrayRemove(item)
           })
         })
+        if(this.detailDrawer){
+          this.closeDetail()
+        }
         this.$emit("deleteMark")
       },
       open_Detaildrawer(item){

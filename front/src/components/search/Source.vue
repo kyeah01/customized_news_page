@@ -1,13 +1,13 @@
 <template>
-<v-card absolute fixed>
+<v-card>
     <v-card-title primary-title>
         <v-layout row wrap>
-            <v-flex xs12>
+            <v-flex xs12 style="height : 50px">
                 <span class="headline">{{source.name}}</span>
                 <follow class="follow" :news="source">
                 </follow>
             </v-flex>
-            <v-flex xs12>
+            <v-flex xs12 style="height : 50px">
                 <v-layout row wrap>
                     <a href="#newUrl">{{source.url}}</a>
                     <v-flex xs12>
