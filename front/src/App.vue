@@ -1,7 +1,6 @@
 <template>
   <v-app>
     <Navbar></Navbar>
-    <LoginCheck/>
     <v-content>
       <router-view></router-view>
     </v-content>
@@ -10,18 +9,17 @@
 
 <script>
 import Navbar from './components/Navbar'
-import LoginCheck from './components/LoginCheck'
 import FirebaseService from '@/services/FirebaseService'
+import firebase, { firestore, functions } from 'firebase'
 
 export default {
   name: 'App',
   components: {
     Navbar,
-    LoginCheck,
   },
   data () {
     return {
-      //
+      userInfo: {}
     }
   },
   methods: {
@@ -32,11 +30,38 @@ export default {
       // });
     },
     isLogin: function () {
-      if (!sessionStorage.getItem('userInfo')) {
-        FirebaseService.logout()
+      if (sessionStorage.hasOwnProperty('userInfo')) {
+        this.userInfo = JSON.parse(sessionStorage.getItem('userInfo'))
+        this.$store.commit('imageSoruceUpdate', this.userInfo.user.photoURL)
+        this.followCheck()
       } else {
-        this.$store.commit('imageSoruceUpdate', JSON.parse(sessionStorage.getItem('userInfo')).user.photoURL)
+        if (firebase.auth().currentUser) {
+          FirebaseService.logout()
+        }
       }
+    },
+    followCheck: function (userInfo) {
+      if (sessionStorage.hasOwnProperty('followList')) {
+        const followList = JSON.parse(sessionStorage.getItem('followList'))
+        } else {
+      // DB에서 불러와서 object 생성.
+        const followList = {}
+        firestore().collection("Userinfo").doc(this.userInfo.user.uid).get()
+          .then(docs => {
+            const res = docs.data().follow
+            for (const key in res) {
+              if (followList.hasOwnProperty(res[key])) {
+                followList[res[key]].push(key)
+              } else {
+                followList[res[key]] = [key,]
+              }
+            }
+          })
+        // session storage에 값 생성(followList라는 이름으로.)
+        sessionStorage.setItem('followList', JSON.stringify(followList))
+      }
+      // vuex에 넣는 작업 해야함.
+      this.$store.commit('updateFollowList', followList)
     },
   },
   created () {

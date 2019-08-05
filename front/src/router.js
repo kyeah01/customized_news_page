@@ -121,14 +121,14 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth) {
-    if (sessionStorage.getItem('userInfo')) {
+    if (sessionStorage.hasOwnProperty('userInfo')) {
       return next()
     } else {
       return next('/')
     }
   } else {
     // 필요하지 않은 경우는 home이거나 testpage
-    if (to.name == 'home' && sessionStorage.getItem('userInfo')) {
+    if (to.name == 'home' && sessionStorage.hasOwnProperty('userInfo')) {
       return next('/article')
     }
     return next()

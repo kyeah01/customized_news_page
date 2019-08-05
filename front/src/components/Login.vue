@@ -1,6 +1,6 @@
 <template>
   <div>
-    <template v-if="!userInfo" style="line-height: 60px;">
+    <div v-if="!userInfo" style="line-height: 60px;">
       <v-btn
         flat
         @click.stop="dialog2 = true"
@@ -67,10 +67,10 @@
           </v-flex>
         </v-card>
       </v-dialog>
-    </template>
-    <template v-else style="line-height: 60px;">
+    </div>
+    <div v-else style="line-height: 60px;">
       <NavbarAvatar v-if="userInfo"/>
-    </template>
+    </div>
   </div>
 </template>
 
