@@ -155,6 +155,21 @@ export default {
     },
     created () {
       this.userInfo = JSON.parse(sessionStorage.getItem('userInfo'))
+    },
+    watch: {
+      dialog1: function() {
+        if (!this.dialog1) {
+          this.email = ''
+          this.password = ''
+        }
+      },
+      dialog2: function() {
+        if (!this.dialog2) {
+          this.email = ''
+          this.password = ''
+        }
+      }
     }
+
 }
 </script>
