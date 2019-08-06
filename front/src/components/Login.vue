@@ -15,8 +15,8 @@
           <v-card-title class="headline">Login</v-card-title>
 
           <v-card-text>
-            <input style="width:100%; height:50px;" type="text" v-model="email" placeholder="Email"><br>
-            <input style="width:100%; height:50px;" type="password" v-model="password" placeholder="Password"><br>
+            <input style="width:100%; height:50px;" type="text" v-model="email" placeholder="Email" @keyup.enter="Login"><br>
+            <input style="width:100%; height:50px;" type="password" v-model="password" placeholder="Password" @keyup.enter="Login"><br>
           </v-card-text>
 
           <v-card-actions>
@@ -46,8 +46,8 @@
               <v-card>
                 <v-card-title class="headline">Sign Up</v-card-title>
                 <v-card-text>
-                  <input style="width:100%; height:50px;" type="text" v-model="email" placeholder="Email"><br>
-                  <input style="width:100%; height:50px;" type="password" v-model="password" placeholder="Password"><br>
+                  <input style="width:100%; height:50px;" type="text" v-model="email" placeholder="Email" @keyup.enter="SignUp"><br>
+                  <input style="width:100%; height:50px;" type="password" v-model="password" placeholder="Password" @keyup.enter="SignUp"><br>
                 </v-card-text>
 
                 <v-card-actions>
@@ -147,9 +147,29 @@ export default {
           }
         );
       },
+      Enter: function() {
+        if (window.event.keyCode == 13) {
+            Login();
+        }
+      }
     },
     created () {
       this.userInfo = JSON.parse(sessionStorage.getItem('userInfo'))
+    },
+    watch: {
+      dialog1: function() {
+        if (!this.dialog1) {
+          this.email = ''
+          this.password = ''
+        }
+      },
+      dialog2: function() {
+        if (!this.dialog2) {
+          this.email = ''
+          this.password = ''
+        }
+      }
     }
+
 }
 </script>
