@@ -1,22 +1,21 @@
 <template>
 <div class="discover">
-    <div class="tabs" style="height: 40px;">
-        <div class="item" @click="goto('addcontent')">
-            <span style="font-size: 16px;">
-                <v-icon class="grey--text" id="rss">fas fa-rss</v-icon>Websites
-            </span>
-        </div>
-        <div class="active item" @click="goto('addKeyword')">
-            <span style="font-size: 16px;">
-                <v-icon class="grey--text" id="google">fab fa-google</v-icon>Keyword alerts
-            </span>
-        </div>
-    </div>
+    <v-tabs v-model="tabNo">
+        <v-tab @click="goto('addcontent')"><span style="font-size: 16px;"><v-icon class="grey--text" id="rss">fas fa-rss</v-icon>Websites</span></v-tab>
+        <v-tab @click="goto('addKeyword')"><span style="font-size: 16px;"><v-icon class="grey--text" id="google">fab fa-google</v-icon>Keyword alerts</span></v-tab>
+    </v-tabs>
+    
 </div>
 </template>
 
 <script>
 export default {
+    props: ['active_tab'],
+    data() {
+        return {
+            tabNo: this.active_tab
+        }
+    },
     methods: {
         goto: function (addr) {
             this.$router.push('/' + addr)
@@ -26,23 +25,6 @@ export default {
 </script>
 
 <style>
-.discover .tabs {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    margin-top: 36px;
-}
-
-.discover .tabs .item {
-    color: #9e9e9e;
-    cursor: pointer;
-    /* display: inline; */
-    display: block;
-    float: left;
-    font-weight: normal;
-    margin-right: 16px;
-    margin-bottom: -1px;
-    border-bottom: 1px solid transparent;
-}
-
 input::-webkit-input-placeholder {
     color: #9e9e9e;
 }
@@ -52,26 +34,28 @@ input::-webkit-input-placeholder {
     margin-right: 4px;
 }
 
-.discover .description {
-    color: #757575;
-    font-size: 1.25rem;
-    font-weight: 300;
-    line-height: 1.5;
-    margin-bottom: 1.5rem;
-    margin-top: 1.5rem;
-}
-
-.discover .tabs .active {
-    color: #9e9e9e;
-    cursor: pointer;
-    /* display: inline; */
-    font-weight: normal;
-    margin-left: 1rem;
-    margin-right: 1rem;
-}
-
 .fa-google:before {
     width: 24px;
     margin-right: 4px;
+}
+
+.accent {
+    background-color: #2bb24c !important;
+    border-color: #2bb24c !important;
+}
+
+.v-tabs__container {
+    margin-top: 36px;
+}
+
+.v-tabs__item {
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-left: 0px;
+    padding-right: 16px;
+}
+
+.v-tabs {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 </style>

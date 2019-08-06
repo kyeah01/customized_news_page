@@ -2,7 +2,10 @@
 <v-container>
     <v-layout>
         <v-flex>
-            <searchOptionSelector />
+            <searchOptionSelector
+             :active_tab = parentActive_tab
+            >
+            </searchOptionSelector>
             <v-flex my-5>
                 <div>
                     <p class="description">Discover the best sources for any topic</p>
@@ -62,6 +65,7 @@ export default {
                 }
             },
 
+            parentActive_tab: 1,
         }
     },
     mounted() {
