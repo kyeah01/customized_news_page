@@ -3,6 +3,8 @@
     <div v-if="drawer">
       <v-navigation-drawer
             app
+            :temporary = controller
+            :touchless="true"
             v-model="drawer"
             right
             style="width:83vw"
@@ -102,7 +104,8 @@ export default {
   data(){
     return{
       detailDrawer : false,
-      detailItem : null
+      detailItem : null,
+      controller : true
     }
   },
   watch: {
@@ -127,6 +130,7 @@ export default {
       open_Detaildrawer(item){
         this.detailItem=item
         this.detailDrawer=!this.detailDrawer
+        this.controller = false
       },
       close(){
         this.drawer = !this.drawer
@@ -136,6 +140,7 @@ export default {
       },
       closeDetail(){
         this.detailDrawer=!this.detailDrawer
+        this.controller = true
       },
   },
   computed : {
