@@ -10,24 +10,144 @@ export default new Vuex.Store({
     followSource : {},
     followReturn : {},
     followinfo : {},
-    userKeyword : [],
-    followList : {},
-    imgSrc: ''
+    imgSrc: '',
+
+    userKeyword : {},
+    userCategorys :[],
+    followList:[],
   },
   mutations: {
     loadUserinfoData(state, fromDB){
       state.followSource = fromDB.follow;
       state.followinfo = fromDB.followInfo;
-      state.followKeyword = Object.keys(state.followinfo);
       state.userKeyword = fromDB.keyword;
+      state.followKeyword = Object.keys(state.followinfo);
+
     },
     loadRes(state){
-      for(var i in state.followKeyword){
-        state.followReturn[state.followKeyword[i]]=[]
-      }
-      for(var j in state.followSource){
-        state.followReturn[state.followSource[j]].push(j)
-      }
+      console.log('loadRes start');
+      
+      state.userCategorys = [];
+      let followList = [];
+        // firebase.firestore().collection('Userinfo').doc(this.userInfo.user.uid).get()
+        //   .then(docs => {
+          let res = state.followSource
+            for (let key in res) {
+              // 여기서 받는 key는 source의 name들임
+              // name들에 category있는지 확인해야함.
+              let judge = -1;
+              followList.find((v, i) => {
+                console.log('check user category', v.name);
+                console.log('check user category', res[key]);
+
+                if (v.name == res[key]) {
+                  judge = i
+                }
+                })
+              
+              if (judge == -1) {
+                // 카테고리가 없는 경우
+                followList.push({
+                  name: res[key],
+                  children: [
+                    {
+                    name: 'source',
+                    children: [
+                      {
+                        name: key,
+                        type: 'source'
+                      }
+                    ]
+                  },
+                  {
+                    name: 'keyword',
+                    children: [
+
+                    ]
+                  },
+                ]
+              })
+                state.userCategorys.push(res[key])
+                
+              } else {
+                // 카테고리가 있는 경우
+                console.log('hey');
+                
+                followList[judge].children[0].children.push({
+                  name: key,
+                  type: 'source'
+                })
+              }
+            }
+            let resK = state.userKeyword
+            for (let key in resK) {
+              // 여기서 받는 key는 source의 name들임
+              // name들에 category있는지 확인해야함.
+              let judge = -1;
+              followList.find((v, i) => {
+                if (v.name == resK[key]) {judge = i}
+                })
+              if (judge == -1) {
+                // 카테고리가 없는 경우
+                followList.push({
+                  name: resK[key],
+                  children: [
+                    {
+                      name: 'source',
+                    children: [
+                      
+                    ]
+                    },
+                    {
+                    name: 'keyword',
+                    children: [
+                      {
+                        name: key,
+                        type: 'keyword'
+                      }
+                    ]
+                  }]
+                })
+                state.userCategorys.push(resK[key])
+              } else {
+                // 카테고리가 있는 경우
+                // if (folliwList[judge].children.find((v,i)=> {
+                //   if (v.name == 'key')
+                // })
+                followList[judge].children[1].children.push({
+                  name: key,
+                  type: 'keyword'
+                })
+              }
+            }
+        //   })
+        state.followList = followList
+
+        //followList
+            console.log(followList);
+            
+        console.log('loadRes end');
+        
+        
+      // state.userCategorys = [];
+      // var userCategorys = state.userCategorys;
+
+      // state.followKeyword.forEach(element=>{
+      //   userCategorys.push(element);
+      // })
+
+      // Object.values(state.userKeyword).forEach(element=>{
+      //   if( !state.userCategorys.includes(element))
+      //     userCategorys.push(element)
+      // })
+
+
+      // for(var i in state.followKeyword){
+      //   state.followReturn[state.followKeyword[i]]=[]
+      // }
+      // for(var j in state.followSource){
+      //   state.followReturn[state.followSource[j]].push(j)
+      // }
     },
     updateFollowList(state, data) {
       state.followList = data
