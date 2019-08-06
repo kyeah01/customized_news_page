@@ -133,7 +133,7 @@ export default {
             this.dialog2 = false
             this.Login()
             firebase.firestore().collection('Userinfo').doc(cred.user.uid).set({
-              keyword: [],
+              keyword: {},
               markasread: [],
               readlater: [],
               sourceFollow : [],

@@ -36,14 +36,24 @@
 
         <v-divider></v-divider>
 
-        <v-treeview :items="vuexItemList"
-                    :active.sync="selectedItems"
-                    activatable
-                    transition
-                    open-all
-                    item-key="name"
-                    return-object=item
-        ></v-treeview>
+        <v-treeview
+        :items="vuexItemList"
+        :active.sync="selectedItems"
+        :open="open"
+        activatable
+        transition
+        open-all
+        open-on-click
+        item-key='"name"+"type"'
+        return-object = true
+    >
+    <template v-slot:prepend="{ item, open }">
+      <v-icon v-if="!item.file">
+        {{ open ? 'fas fa-folder-open' : 'fas fa-rss' }}
+      </v-icon>
+      <v-icon v-else>{{adb}}</v-icon>
+    </template>
+    </v-treeview>
 
     </v-navigation-drawer>
     <div class="btn-addContent" :class="[drawer ? 'btn-addContent-open' : 'btn-addContent-close']">
@@ -162,7 +172,12 @@ export default {
             alert("nav source")
         },
         selectedItems :function(){
-            console.log(this.selectedItems)
+          var follow=this.selectedItems[0].name
+          var type=this.selectedItems[0].type
+          console.log(follow, type);
+          
+          this.$router.push('/article/' + type + '/ '+ follow)
+          // eventBus.$emit("article", this.selectedItems)
         }
     }
 }
