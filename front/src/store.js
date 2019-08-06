@@ -35,11 +35,17 @@ export default new Vuex.Store({
             for (let key in res) {
               // 여기서 받는 key는 source의 name들임
               // name들에 category있는지 확인해야함.
-              let judge = false
+              let judge = -1;
               followList.find((v, i) => {
-                if (v.name == res[key]) {judge = i}
+                console.log('check user category', v.name);
+                console.log('check user category', res[key]);
+
+                if (v.name == res[key]) {
+                  judge = i
+                }
                 })
-              if (!judge) {
+              
+              if (judge == -1) {
                 // 카테고리가 없는 경우
                 followList.push({
                   name: res[key],
@@ -61,11 +67,12 @@ export default new Vuex.Store({
                   },
                 ]
               })
-                console.log('followList',followList);
-                
                 state.userCategorys.push(res[key])
+                
               } else {
                 // 카테고리가 있는 경우
+                console.log('hey');
+                
                 followList[judge].children[0].children.push({
                   name: key,
                   type: 'source'
@@ -76,11 +83,11 @@ export default new Vuex.Store({
             for (let key in resK) {
               // 여기서 받는 key는 source의 name들임
               // name들에 category있는지 확인해야함.
-              let judge = false
+              let judge = -1;
               followList.find((v, i) => {
                 if (v.name == resK[key]) {judge = i}
                 })
-              if (!judge) {
+              if (judge == -1) {
                 // 카테고리가 없는 경우
                 followList.push({
                   name: resK[key],
@@ -117,12 +124,8 @@ export default new Vuex.Store({
         state.followList = followList
 
         //followList
-
-
-        console.log('folliwList result',state.followList);
-
-
-        console.log('items',state.userCategorys);
+            console.log(followList);
+            
         console.log('loadRes end');
         
         
