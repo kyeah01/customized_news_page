@@ -59,8 +59,8 @@ export default {
       if (sessionStorage.hasOwnProperty('followList')) {
         const followList = JSON.parse(sessionStorage.getItem('followList'))
         } else {
+          const followList = {}
       // DB에서 불러와서 object 생성.
-        const followList = {}
         firestore().collection("Userinfo").doc(this.userInfo.user.uid).get()
           .then(docs => {
             const res = docs.data().follow

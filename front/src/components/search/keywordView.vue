@@ -59,7 +59,7 @@ export default {
         }
     },
     mounted() {
-        console.log('keywordInfo : ', this.keywordInfo);
+        // console.log('keywordInfo : ', this.keywordInfo);
     },
     computed: {
         keyword() {

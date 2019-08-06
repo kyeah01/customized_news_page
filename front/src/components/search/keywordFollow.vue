@@ -1,31 +1,96 @@
 <template>
+<v-layout wrap overflow>
     <v-flex shrink>
-        <v-btn class="ma-2" color="success" @click="create">
-            Follow
-        </v-btn>
+        <div>
+            <v-btn class="white green--text" @click="open">
+                Follow
+            </v-btn>
+        </div>
+        <div class="followContent">
+            <v-expand-transition>
+                <v-card v-show="expand" class="scroll">
+                    <div v-if="addopen===false">
+                        <v-list flat>
+                            <v-list-tile v-for="item in items" :key="item" @click="create(item)">
+                                <v-list-tile-action>
+                                    <v-icon>fas fa-rss</v-icon>
+                                </v-list-tile-action>
+
+                                <v-list-tile-content>
+                                    <v-list-tile-title>{{item}}</v-list-tile-title>
+                                </v-list-tile-content>
+                            </v-list-tile>
+
+                            <v-divider />
+                            <v-list-tile @click="addFeed">
+                                <v-list-tile-action>
+                                    <v-icon>add</v-icon>
+                                </v-list-tile-action>
+                                <v-list-tile-content>
+                                    <v-list-tile-title>add New Feed</v-list-tile-title>
+                                </v-list-tile-content>
+                            </v-list-tile>
+                        </v-list>
+                    </div>
+
+                    <div v-else>
+                        <span class="title font-weight-bold.font-italic">Feed Name</span>
+                        <input v-model="newFeed" class="autocomplete-input" placeholder="New Topic Name" autofocus>
+                        <v-btn @click="create(newFeed)" class="success">Create</v-btn>
+                        <v-btn @click="before" class="normal">Before</v-btn>
+                    </div>
+                </v-card>
+            </v-expand-transition>
+        </div>
     </v-flex>
+
+</v-layout>
 </template>
 
 <script>
 import firebase from 'firebase'
 export default {
     props: ['keyword'],
+    data: () => ({
+        expand: false,
+        addopen: false,
+        items: null,
+        searchFeed: "",
+        newFeed: "",
+        isFollowing: false,
+        search: null,
+        caseSensitive: false,
+    }),
     methods: {
-        create: async function () {
+        open: function () {
+            if (this.addopen == true) {
+                this.addopen = false
+            }
+            this.items = this.$store.state.userCategorys
+            this.expand = !this.expand
+        },
+        addFeed: function () {
+            this.addopen = true
+        },
+        before: function () {
+            this.addopen = false
+        },
+        create: async function (category) {
 
             // follow (abc - IT);
             var userKeyword = this.$store.state.userKeyword
-            if( !userKeyword.includes(this.keyword))
-                userKeyword.push(this.keyword)
+
+            userKeyword[this.keyword] = category
 
             var user = firebase.auth().currentUser
 
             firebase.firestore().collection('Userinfo').doc(user.uid).update({
-                keyword: firebase.firestore.FieldValue.arrayUnion(this.keyword)
+                keyword: userKeyword
             })
 
             this.keywordManage(this.keyword, user);
 
+            this.$store.commit('loadRes')
             this.addopen = false
             this.expand = !this.expand
 
@@ -66,4 +131,3 @@ export default {
 
 <style>
 </style>
-

@@ -12,7 +12,7 @@
                 <div v-if="addopen===false">
                         <!-- <input v-model="searchFeed" class="autocomplete-input" placeholder="Search by topic" aria-label="Search by topic" autofocus> -->
                         <v-list flat>
-                            <v-list-tile v-for="item in items" :key="item.title" @click="create(item)">
+                            <v-list-tile v-for="item in items" :key="item" @click="create(item)">
                                 <v-list-tile-action>
                                     <v-icon>fas fa-rss</v-icon>
                                 </v-list-tile-action>
@@ -68,7 +68,7 @@ export default {
             if(this.addopen==true){
                 this.addopen=false
             }
-            this.items = this.$store.state.followKeyword
+            this.items = this.$store.state.userCategorys
             this.expand = !this.expand
         },
         addFeed: function () {
@@ -85,11 +85,11 @@ export default {
 
             var user = firebase.auth().currentUser
 
-            if (this.$store.state.followKeyword.includes(newFeed)) {
-                this.$store.state.followinfo[newFeed]++
-            } else {
-                this.$store.state.followinfo[newFeed] = 1
-            }
+            // if (this.$store.state.followKeyword.includes(newFeed)) {
+            //     this.$store.state.followinfo[newFeed]++
+            // } else {
+            //     this.$store.state.followinfo[newFeed] = 1
+            // }
 
             firebase.firestore().collection('Userinfo').doc(user.uid).update({
                 follow: this.$store.state.followSource,
@@ -102,6 +102,9 @@ export default {
 
             this.addopen = false
             this.expand = !this.expand
+
+        },
+        getFollowKeyword(){
 
         },
         async sourcesManage(news, user) {
