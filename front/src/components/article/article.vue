@@ -95,15 +95,15 @@ import ArticleDetail from '@/components/article/ArticleDetail'
 
 // news api 로드
 const NewsAPI = require('newsapi');
-const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
-// const newsapi = new NewsAPI('2dc4b8b9d26f4a6b97e21a1f282bac9d'); //hojin : 07/31 23:00
+// const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
+const newsapi = new NewsAPI('2dc4b8b9d26f4a6b97e21a1f282bac9d'); //hojin : 07/31 23:00
 // const newsapi = new NewsAPI('a0be542239a6455995a8cf063ff0f17d') //heajae
 
   export default {
     components : {
       ArticleDetail
     },
-    props : ['find'], // 새로 고침 시 url 파라미터 사용하여 api 호출
+    props : ['type','follow'], // 새로 고침 시 url 파라미터 사용하여 api 호출
     data () {
       return {
         article : [{header:'today'}],
@@ -119,8 +119,9 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
         search : null,
         today : null,
         beforeTwo : null,
-        // isSource : true
-        isSource: false
+
+        Dfollow_q : null,
+        Dfollow_s : null
       }
     },
     methods: {
@@ -135,44 +136,17 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
             this.article[idx].description = translation.translatedText
             })
         },
-        getSource : function(){
-          if(this.page<5){
-            this.page++
-            this.busy = true
-          
-          newsapi.v2.everything({
-            sources: this.search,
-            // domains: this,. .search,
-            language: 'en', 
-            pageSize : this .pageSize,
-            page : this.page
-          }).then(res => {
-            // 날짜 분기 필요함
-            // var now=new Date()
-            // this.today=now.toISOString();
-            // this.beforeTwo=new Date(now.getTime()-1000*60*60*24*2).toDateString();
-            res.articles.forEach(post =>{
-              post.mark_as_read = false
-              post.read_later = false
-              this.article.push(post)
-              this.article.push({divider : true , inset : true})
-            })
-            this.busy = false
-          }).catch(err=>{
-            this.busy =false
-            console.log(err)
-          })
-          }
-        },
         topheadlinesArticle: function () {
           // 한번에 불러 올 수 있는 최대가 1~100사이의 수이고, 한번에 20개를 호출하기때문에 5번만 호출가능.
           if (this.page<5){
           this.page += 1
           this.busy = true
 
-          newsapi.v2.topHeadlines({
-            country: this.country,
-            // category: this.category,
+          newsapi.v2.everything({
+            // country: this.country,
+            category: this.category,
+            sources : this.Dfollow_s,
+            q : this.Dfollow_q,
             pageSize: this.pageSize,
             page: this.page
           }).then(res => {
@@ -181,6 +155,7 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
               post.read_later = false
               this.article.push(post)
               this.article.push({ divider: true, inset: true })
+              console.log("length",this.article.length)
             })
             this.busy = false
           }).catch(err=> {
@@ -190,11 +165,7 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
           }
         },
         leadMore: function () {
-          if(this.isSource){
-            this.getSource()
-          }else{
             this.topheadlinesArticle()
-          }
           // 어떤 검색방법을 사용할 것인지 결정하는 함수가 들어가야 합니다.
           // topheadlines를 사용할 것인지, everythig을 사용할 것인지,
           // 어떤 카테고리, 어떤 키워드를 골랐는지에 따라 다른 method를 사용해야 합니다.
@@ -235,13 +206,28 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
         }
 
       },
+      //navbar 클릭 X , 새로고침 시 url get
       mounted(){
         console.log('this.search?',this.search)
-        if(search!=this.find){
-          this.search=this.find
+        console.log(this.$route.params)
+
+        if(this.$route.params.type === "source"){
+          this.Dfollow_s=this.$route.params.follow
+        }else{
+          this.Dfollow_q=this.$route.params.follow
         }
+
+        this.search=this.$route.params.follow
+
+        console.log("Dfollow_s",this.Dfollow_s)
+        console.log("Dfollow_q",this.Dfollow_q)
+
+        // if(search!=this.find){
+        //   this.search=this.find
+        // }
         this.leadMore()
       },
+      //navbar 클릭으로 article 정보 변환시(eventbus)
       watch : {
           search : function(){
             eventBus.$on('article', r=>{
@@ -251,7 +237,7 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
             this.page=0
             this.busy=false
            //if 조건 필요 (soruce 냐 키워드냐)
-            this.getSource()
+            this.topheadlinesArticle()
           }
       }
   }
