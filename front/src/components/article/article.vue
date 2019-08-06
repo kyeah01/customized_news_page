@@ -1,7 +1,6 @@
 <template>
   <v-layout row wrap>
 
-  <!-- <v-layout row id="header"> -->
     <v-flex xs6 offset-xs3>
       <div id="sourceName">{{search}}</div>
       <div id="sourceInfo">info / today {{(article.length-1)/2}} articles</div>
@@ -10,9 +9,7 @@
       <v-icon>fas fa-redo-alt</v-icon>
       <v-icon>fas fa-ellipsis-h</v-icon>
     </v-flex>
-  <!-- </v-layout> -->
-  <!-- <div id="sourceName">{{search}}</div>
-  <div id="sourceInfo">info</div> -->
+  
 
   <!-- <v-layout row> -->
     <v-flex xs6 offset-xs3>
@@ -145,9 +142,9 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
           
           newsapi.v2.everything({
             sources: this.search,
-            // domains: this.search,
-            language: 'en',
-            pageSize : this.pageSize,
+            // domains: this,. .search,
+            language: 'en', 
+            pageSize : this .pageSize,
             page : this.page
           }).then(res => {
             // 날짜 분기 필요함

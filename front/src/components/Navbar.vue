@@ -36,54 +36,14 @@
 
         <v-divider></v-divider>
 
-        <v-list dense class="pt-0">
-            <!-- 최상위 1 그룹-->
-            <v-list-group prepend-icon="account_circle" value="true">
-
-                <template v-slot:activator>
-                    <v-list-tile>
-                        <v-list-tile-content>
-                            <v-list-tile-title>Feeds</v-list-tile-title>
-                        </v-list-tile-content>
-                    </v-list-tile>
-                </template>
-
-                <!-- 1-1 그룹 시작-->
-
-                <v-list-group no-action sub-group value="true" v-for="(key, index) in $store.state.followKeyword" :key="index">
-                    <template v-slot:activator>
-                        <v-list-tile-content>
-                            <v-list-tile-title>{{key}}</v-list-tile-title>
-                        </v-list-tile-content>
-                    </template>
-
-                    <v-list-tile v-for="(key, index) in $store.state.followReturn[key]" :key="index" @click="moveSourceDetail(key)">
-
-                        <v-list-tile-content>
-                            <v-list-tile-title>{{key}}</v-list-tile-title>
-                        </v-list-tile-content>
-                    </v-list-tile>
-
-                </v-list-group> <!-- 1-1 그룹 끝-->
-            </v-list-group> <!-- 최상위 1 그룹 끝-->
-
-            <v-list-group prepend-icon="account_circle">
-                <template v-slot:activator>
-                    <v-list-tile>
-                        <v-list-tile-content>
-                            <v-list-tile-title>Keyword</v-list-tile-title>
-                        </v-list-tile-content>
-                    </v-list-tile>
-                </template>
-
-                <v-list-tile avatar v-for="(keyword, index) in $store.state.userKeyword" :key="index" @click="">
-                    <v-list-tile-content>
-                        <v-list-tile-title>{{keyword}}</v-list-tile-title>
-                    </v-list-tile-content>
-                </v-list-tile>
-            </v-list-group>
-
-        </v-list>
+        <v-treeview :items="vuexItemList"
+                    :active.sync="selectedItems"
+                    activatable
+                    transition
+                    open-all
+                    item-key="name"
+                    return-object=item
+        ></v-treeview>
 
     </v-navigation-drawer>
     <div class="btn-addContent" :class="[drawer ? 'btn-addContent-open' : 'btn-addContent-close']">
@@ -98,16 +58,21 @@
 
 <script>
 import firebase from 'firebase'
-import GoogleLogin from './GoogleLogin'
-import FacebookLogin from './FacebookLogin'
+// import GoogleLogin from './GoogleLogin'
+// import FacebookLogin from './FacebookLogin'
 import eventBus from '../eventBus'
-import Login from './Login'
+import Login from '@/components/Login'
 
 export default {
     components: {
-        GoogleLogin,
-        FacebookLogin,
+        // GoogleLogin,
+        // FacebookLogin,
         Login,
+    },
+    computed:{
+        vuexItemList(){
+            return this.$store.state.followList;
+        }
     },
     data() {
         return {
@@ -123,6 +88,10 @@ export default {
             write: false,
             // navbar search
             searchWord: "",
+
+            items:[],
+            userInfo:null,
+            selectedItems: []
         }
     },
     methods: {
@@ -146,7 +115,7 @@ export default {
             )
         },
 
-        init: function () {
+        init: async function () {
             var user = firebase.auth().currentUser
             var tmp = firebase.firestore().collection("Userinfo").doc(user.uid).get()
                 .then(r => {
@@ -154,6 +123,7 @@ export default {
 
                     this.$store.commit('loadUserinfoData', tmp)
                     this.$store.commit('loadRes')
+                    this.items = this.$store.state.followList;
                 })
         },
         call: function () {
@@ -169,10 +139,16 @@ export default {
             alert(j)
             this.$router.push('/article/' + j)
             eventBus.$emit("article", j)
+        },
+        setTheDB(){
+            this.$store.commit('loadRes')
         }
     },
     created() {
         this.user = JSON.parse(sessionStorage.getItem('userInfo')) ? true : false
+
+        this.userInfo = JSON.parse(sessionStorage.getItem('userInfo'))
+        // this.setTheDB()
     },
     watch: {
         drawer: function (drawer) {
@@ -184,6 +160,9 @@ export default {
         },
         write: function (source) {
             alert("nav source")
+        },
+        selectedItems :function(){
+            console.log(this.selectedItems)
         }
     }
 }
