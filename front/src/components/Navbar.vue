@@ -44,7 +44,7 @@
         transition
         open-all
         open-on-click
-        item-key="name"
+        item-key='"name"+"type"'
         return-object = true
     >
     <template v-slot:prepend="{ item, open }">
