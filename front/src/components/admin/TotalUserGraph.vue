@@ -61,6 +61,8 @@ export default {
                     this.datacollection.datasets[0].data.push(L[i].data().totalUser.length)
                     this.datacollection.labels.push(L[i].id)
                 }
+                this.datacollection.datasets[0].data.reverse()
+                this.datacollection.labels.reverse()
             })
             this.renderChart(this.datacollection, this.options)
         }
