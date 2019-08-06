@@ -2,8 +2,10 @@
   <v-container>
     <v-layout>
       <v-flex>
-                <searchOptionSelector/>
-
+            <searchOptionSelector
+             :active_tab = parentActive_tab
+            >
+            </searchOptionSelector>
                 <v-flex my-5>
                     <div>
                         <p class="description">Discover the best sources for any topic</p>
@@ -58,7 +60,9 @@ export default {
       input:"",
       sources:[],
       sourceNames:[],
-      resultSearch:[]
+      resultSearch:[],
+      
+      parentActive_tab: 0
     }
   },
   watch:{
