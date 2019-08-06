@@ -4,7 +4,7 @@
   <!-- <v-layout row id="header"> -->
     <v-flex xs6 offset-xs3>
       <div id="sourceName">{{search}}</div>
-      <div id="sourceInfo">info / today {{article.length}} articles</div>
+      <div id="sourceInfo">info / today {{(article.length-1)/2}} articles</div>
     </v-flex>
     <v-flex xs3 id="headerExtra"> 
       <v-icon>fas fa-redo-alt</v-icon>
@@ -98,8 +98,8 @@ import ArticleDetail from '@/components/article/ArticleDetail'
 
 // news api 로드
 const NewsAPI = require('newsapi');
-// const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
-const newsapi = new NewsAPI('2dc4b8b9d26f4a6b97e21a1f282bac9d'); //hojin : 07/31 23:00
+const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
+// const newsapi = new NewsAPI('2dc4b8b9d26f4a6b97e21a1f282bac9d'); //hojin : 07/31 23:00
 // const newsapi = new NewsAPI('a0be542239a6455995a8cf063ff0f17d') //heajae
 
   export default {
@@ -111,7 +111,7 @@ const newsapi = new NewsAPI('2dc4b8b9d26f4a6b97e21a1f282bac9d'); //hojin : 07/31
       return {
         article : [{header:'today'}],
         country: 'us',
-        category: 'entertainment',
+        // category: 'entertainment',
         busy: false,
         limit: 20,
         pageSize: 20,
@@ -122,7 +122,8 @@ const newsapi = new NewsAPI('2dc4b8b9d26f4a6b97e21a1f282bac9d'); //hojin : 07/31
         search : null,
         today : null,
         beforeTwo : null,
-        isSource : true
+        // isSource : true
+        isSource: false
       }
     },
     methods: {
@@ -174,7 +175,7 @@ const newsapi = new NewsAPI('2dc4b8b9d26f4a6b97e21a1f282bac9d'); //hojin : 07/31
 
           newsapi.v2.topHeadlines({
             country: this.country,
-            category: this.category,
+            // category: this.category,
             pageSize: this.pageSize,
             page: this.page
           }).then(res => {
@@ -262,6 +263,7 @@ const newsapi = new NewsAPI('2dc4b8b9d26f4a6b97e21a1f282bac9d'); //hojin : 07/31
 <style scoped>
 /* header */
 #sourceName {
+  margin-top: 48px;
   color: #333333;
   font-size: 34px;
   font-weight: bold;
@@ -276,7 +278,8 @@ const newsapi = new NewsAPI('2dc4b8b9d26f4a6b97e21a1f282bac9d'); //hojin : 07/31
 }
 
 #headerExtra {
-  margin-top: 8px;
+  margin-top: 48px;
+  /* margin-top: 8px; */
   /* margin-left: 8px; */
 }
 
