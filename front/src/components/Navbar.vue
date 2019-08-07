@@ -55,6 +55,9 @@
     </template>
     </v-treeview>
 
+    <manageArticleInNavbar></manageArticleInNavbar>
+
+
     </v-navigation-drawer>
     <div class="btn-addContent" :class="[drawer ? 'btn-addContent-open' : 'btn-addContent-close']">
         <v-btn to="/addContent" block flat color="#2bb24c">
@@ -72,12 +75,14 @@ import firebase from 'firebase'
 // import FacebookLogin from './FacebookLogin'
 import eventBus from '../eventBus'
 import Login from '@/components/Login'
+import manageArticleInNavbar from '@/components/manageArticleInNavbar'
 
 export default {
     components: {
         // GoogleLogin,
         // FacebookLogin,
         Login,
+        manageArticleInNavbar
     },
     computed:{
         vuexItemList(){

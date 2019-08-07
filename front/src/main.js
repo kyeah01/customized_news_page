@@ -14,10 +14,16 @@ Vue.use(VueDraggable);
 
 Vue.prototype.$http = axios
 
+// vue drag tree
+import VueDragTree from 'vue-drag-tree'
+import 'vue-drag-tree/dist/vue-drag-tree.min.css'
+Vue.use(VueDragTree)
 
 Vue.config.productionTip = false
 
 import infiniteScroll from "vue-infinite-scroll";
+
+
 
 Vue.use(infiniteScroll);
 

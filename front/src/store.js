@@ -15,6 +15,10 @@ export default new Vuex.Store({
     userKeyword : {},
     userCategorys :[],
     followList:[],
+
+    //
+    sourceSubTitle:"source",
+    keywordSubTitle:"keyword"
   },
   mutations: {
     loadUserinfoData(state, fromDB){
@@ -51,19 +55,21 @@ export default new Vuex.Store({
                   id:sequenceId++,
                   children: [
                     {
-                    name: 'source',
+                    name: state.sourceSubTitle,
                     id:sequenceId++,
+                    category:res[key],
                     children: [
                       {
                         name: key,
+                        type: state.sourceSubTitle,
                         id:lowestId--,
-                        type: 'source'
                       }
                     ]
                   },
                   {
-                    name: 'keyword',
+                    name: state.keywordSubTitle,
                     id:sequenceId++,
+                    category:res[key],
                     children: []
                   },
                 ]
@@ -74,8 +80,8 @@ export default new Vuex.Store({
                 // 카테고리가 있는 경우
                 followList[judge].children[0].children.push({
                   name: key,
+                  type: state.sourceSubTitle,
                   id:lowestId--,
-                  type: 'source'
                 })
               }
             }
@@ -94,18 +100,20 @@ export default new Vuex.Store({
                   id:sequenceId++,
                   children: [
                     {
-                      name: 'source',
+                      name: state.sourceSubTitle,
                       id:sequenceId++,
+                      category: resK[key],
                       children: []
                     },
                     {
-                    name: 'keyword',
+                    name: state.keywordSubTitle,
                     id:sequenceId++,
+                    category: resK[key],
                     children: [
                       {
                         name: key,
+                        type: state.keywordSubTitle,
                         id:lowestId--,
-                        type: 'keyword'
                       }
                     ]
                   }]
@@ -118,8 +126,8 @@ export default new Vuex.Store({
                 // })
                 followList[judge].children[1].children.push({
                   name: key,
+                  type: state.keywordSubTitle,
                   id:lowestId--,
-                  type: 'keyword'
                 })
               }
             }
@@ -129,28 +137,7 @@ export default new Vuex.Store({
         //followList
             console.log(followList);
             
-        console.log('loadRes end');
-        
-        
-      // state.userCategorys = [];
-      // var userCategorys = state.userCategorys;
-
-      // state.followKeyword.forEach(element=>{
-      //   userCategorys.push(element);
-      // })
-
-      // Object.values(state.userKeyword).forEach(element=>{
-      //   if( !state.userCategorys.includes(element))
-      //     userCategorys.push(element)
-      // })
-
-
-      // for(var i in state.followKeyword){
-      //   state.followReturn[state.followKeyword[i]]=[]
-      // }
-      // for(var j in state.followSource){
-      //   state.followReturn[state.followSource[j]].push(j)
-      // }
+          console.log('loadRes end');
     },
     updateFollowList(state, data) {
       state.followList = data
