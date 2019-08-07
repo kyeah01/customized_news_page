@@ -15,6 +15,10 @@ export default new Vuex.Store({
     userKeyword : {},
     userCategorys :[],
     followList:[],
+
+    //
+    sourceSubTitle:"source",
+    keywordSubTitle:"keyword"
   },
   mutations: {
     loadUserinfoData(state, fromDB){
@@ -29,6 +33,8 @@ export default new Vuex.Store({
       
       state.userCategorys = [];
       let followList = [];
+      let sequenceId = 0;
+      let lowestId = -1;
         // firebase.firestore().collection('Userinfo').doc(this.userInfo.user.uid).get()
         //   .then(docs => {
           let res = state.followSource
@@ -37,9 +43,6 @@ export default new Vuex.Store({
               // name들에 category있는지 확인해야함.
               let judge = -1;
               followList.find((v, i) => {
-                console.log('check user category', v.name);
-                console.log('check user category', res[key]);
-
                 if (v.name == res[key]) {
                   judge = i
                 }
@@ -49,21 +52,25 @@ export default new Vuex.Store({
                 // 카테고리가 없는 경우
                 followList.push({
                   name: res[key],
+                  id:sequenceId++,
                   children: [
                     {
-                    name: 'source',
+                    name: state.sourceSubTitle,
+                    id:sequenceId++,
+                    category:res[key],
                     children: [
                       {
                         name: key,
-                        type: 'source'
+                        type: state.sourceSubTitle,
+                        id:lowestId--,
                       }
                     ]
                   },
                   {
-                    name: 'keyword',
-                    children: [
-
-                    ]
+                    name: state.keywordSubTitle,
+                    id:sequenceId++,
+                    category:res[key],
+                    children: []
                   },
                 ]
               })
@@ -71,11 +78,10 @@ export default new Vuex.Store({
                 
               } else {
                 // 카테고리가 있는 경우
-                console.log('hey');
-                
                 followList[judge].children[0].children.push({
                   name: key,
-                  type: 'source'
+                  type: state.sourceSubTitle,
+                  id:lowestId--,
                 })
               }
             }
@@ -91,19 +97,23 @@ export default new Vuex.Store({
                 // 카테고리가 없는 경우
                 followList.push({
                   name: resK[key],
+                  id:sequenceId++,
                   children: [
                     {
-                      name: 'source',
-                    children: [
-                      
-                    ]
+                      name: state.sourceSubTitle,
+                      id:sequenceId++,
+                      category: resK[key],
+                      children: []
                     },
                     {
-                    name: 'keyword',
+                    name: state.keywordSubTitle,
+                    id:sequenceId++,
+                    category: resK[key],
                     children: [
                       {
                         name: key,
-                        type: 'keyword'
+                        type: state.keywordSubTitle,
+                        id:lowestId--,
                       }
                     ]
                   }]
@@ -116,7 +126,8 @@ export default new Vuex.Store({
                 // })
                 followList[judge].children[1].children.push({
                   name: key,
-                  type: 'keyword'
+                  type: state.keywordSubTitle,
+                  id:lowestId--,
                 })
               }
             }
@@ -126,28 +137,7 @@ export default new Vuex.Store({
         //followList
             console.log(followList);
             
-        console.log('loadRes end');
-        
-        
-      // state.userCategorys = [];
-      // var userCategorys = state.userCategorys;
-
-      // state.followKeyword.forEach(element=>{
-      //   userCategorys.push(element);
-      // })
-
-      // Object.values(state.userKeyword).forEach(element=>{
-      //   if( !state.userCategorys.includes(element))
-      //     userCategorys.push(element)
-      // })
-
-
-      // for(var i in state.followKeyword){
-      //   state.followReturn[state.followKeyword[i]]=[]
-      // }
-      // for(var j in state.followSource){
-      //   state.followReturn[state.followSource[j]].push(j)
-      // }
+          console.log('loadRes end');
     },
     updateFollowList(state, data) {
       state.followList = data

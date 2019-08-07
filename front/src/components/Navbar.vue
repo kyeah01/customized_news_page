@@ -36,24 +36,28 @@
 
         <v-divider></v-divider>
 
-        <v-treeview
+         <v-treeview
         :items="vuexItemList"
         :active.sync="selectedItems"
-        :open="open"
         activatable
         transition
         open-all
         open-on-click
-        item-key='"name"+"type"'
+        item-key="id"
         return-object = true
     >
     <template v-slot:prepend="{ item, open }">
-      <v-icon v-if="!item.file">
-        {{ open ? 'fas fa-folder-open' : 'fas fa-rss' }}
+      <v-icon v-if="item.id < 0">
+          fas fa-rss
       </v-icon>
-      <v-icon v-else>{{adb}}</v-icon>
+      <v-icon v-else>
+        {{ open ? 'fas fa-folder-open' : 'fas fa-folder' }}
+      </v-icon>
     </template>
     </v-treeview>
+
+    <manageArticleInNavbar></manageArticleInNavbar>
+
 
     </v-navigation-drawer>
     <div class="btn-addContent" :class="[drawer ? 'btn-addContent-open' : 'btn-addContent-close']">
@@ -72,12 +76,14 @@ import firebase from 'firebase'
 // import FacebookLogin from './FacebookLogin'
 import eventBus from '../eventBus'
 import Login from '@/components/Login'
+import manageArticleInNavbar from '@/components/manageArticleInNavbar'
 
 export default {
     components: {
         // GoogleLogin,
         // FacebookLogin,
         Login,
+        manageArticleInNavbar
     },
     computed:{
         vuexItemList(){
@@ -176,8 +182,8 @@ export default {
           var type=this.selectedItems[0].type
           console.log(follow, type);
           
-          this.$router.push('/article/' + type + '/ '+ follow)
-          // eventBus.$emit("article", this.selectedItems)
+          this.$router.push('/article/' + type + '/'+ follow)
+          eventBus.$emit("article", this.selectedItems)
         }
     }
 }
