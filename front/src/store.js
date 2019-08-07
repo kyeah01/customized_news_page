@@ -29,6 +29,7 @@ export default new Vuex.Store({
       
       state.userCategorys = [];
       let followList = [];
+      let sequenceId = 0;
         // firebase.firestore().collection('Userinfo').doc(this.userInfo.user.uid).get()
         //   .then(docs => {
           let res = state.followSource
@@ -37,9 +38,6 @@ export default new Vuex.Store({
               // name들에 category있는지 확인해야함.
               let judge = -1;
               followList.find((v, i) => {
-                console.log('check user category', v.name);
-                console.log('check user category', res[key]);
-
                 if (v.name == res[key]) {
                   judge = i
                 }
@@ -52,18 +50,19 @@ export default new Vuex.Store({
                   children: [
                     {
                     name: 'source',
+                    id:sequenceId++,
                     children: [
                       {
                         name: key,
+                        id:sequenceId++,
                         type: 'source'
                       }
                     ]
                   },
                   {
                     name: 'keyword',
-                    children: [
-
-                    ]
+                    id:sequenceId++,
+                    children: []
                   },
                 ]
               })
@@ -71,10 +70,9 @@ export default new Vuex.Store({
                 
               } else {
                 // 카테고리가 있는 경우
-                console.log('hey');
-                
                 followList[judge].children[0].children.push({
                   name: key,
+                  id:sequenceId++,
                   type: 'source'
                 })
               }
@@ -91,18 +89,20 @@ export default new Vuex.Store({
                 // 카테고리가 없는 경우
                 followList.push({
                   name: resK[key],
+                  id:sequenceId++,
                   children: [
                     {
                       name: 'source',
-                    children: [
-                      
-                    ]
+                      id:sequenceId++,
+                      children: []
                     },
                     {
                     name: 'keyword',
+                    id:sequenceId++,
                     children: [
                       {
                         name: key,
+                        id:sequenceId++,
                         type: 'keyword'
                       }
                     ]
