@@ -37,20 +37,21 @@
         <v-divider></v-divider>
 
          <v-treeview
-        :items="items"
+        :items="vuexItemList"
         :active.sync="selectedItems"
         activatable
         transition
         open-all
-        open-on-click
-        item-key="name"
+        item-key="id"
         return-object = true
     >
     <template v-slot:prepend="{ item, open }">
-      <v-icon v-if="!item.file">
-        {{ open ? 'fas fa-folder-open' : 'fas fa-rss' }}
+      <v-icon v-if="item.id < 0">
+          fas fa-rss
       </v-icon>
-      <v-icon v-else>{{adb}}</v-icon>
+      <v-icon v-else>
+        {{ open ? 'fas fa-folder-open' : 'fas fa-folder' }}
+      </v-icon>
     </template>
     </v-treeview>
 

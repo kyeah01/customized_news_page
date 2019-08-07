@@ -30,6 +30,7 @@ export default new Vuex.Store({
       state.userCategorys = [];
       let followList = [];
       let sequenceId = 0;
+      let lowestId = -1;
         // firebase.firestore().collection('Userinfo').doc(this.userInfo.user.uid).get()
         //   .then(docs => {
           let res = state.followSource
@@ -47,6 +48,7 @@ export default new Vuex.Store({
                 // 카테고리가 없는 경우
                 followList.push({
                   name: res[key],
+                  id:sequenceId++,
                   children: [
                     {
                     name: 'source',
@@ -54,7 +56,7 @@ export default new Vuex.Store({
                     children: [
                       {
                         name: key,
-                        id:sequenceId++,
+                        id:lowestId--,
                         type: 'source'
                       }
                     ]
@@ -72,7 +74,7 @@ export default new Vuex.Store({
                 // 카테고리가 있는 경우
                 followList[judge].children[0].children.push({
                   name: key,
-                  id:sequenceId++,
+                  id:lowestId--,
                   type: 'source'
                 })
               }
@@ -102,7 +104,7 @@ export default new Vuex.Store({
                     children: [
                       {
                         name: key,
-                        id:sequenceId++,
+                        id:lowestId--,
                         type: 'keyword'
                       }
                     ]
@@ -116,6 +118,7 @@ export default new Vuex.Store({
                 // })
                 followList[judge].children[1].children.push({
                   name: key,
+                  id:lowestId--,
                   type: 'keyword'
                 })
               }
