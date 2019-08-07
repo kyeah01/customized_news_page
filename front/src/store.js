@@ -15,6 +15,10 @@ export default new Vuex.Store({
     userKeyword : {},
     userCategorys :[],
     followList:[],
+
+    //
+    sourceSubTitle:"SOURCE",
+    keywordSubTitle:"KEYWORD"
   },
   mutations: {
     loadUserinfoData(state, fromDB){
@@ -47,20 +51,21 @@ export default new Vuex.Store({
                 // 카테고리가 없는 경우
                 followList.push({
                   name: res[key],
+                  id:sequenceId++,
                   children: [
                     {
-                    name: 'source',
+                    name: state.sourceSubTitle,
                     id:sequenceId++,
                     children: [
                       {
                         name: key,
                         id:sequenceId++,
-                        type: 'source'
+                        type: state.sourceSubTitle
                       }
                     ]
                   },
                   {
-                    name: 'keyword',
+                    name: state.keywordSubTitle,
                     id:sequenceId++,
                     children: []
                   },
@@ -73,7 +78,7 @@ export default new Vuex.Store({
                 followList[judge].children[0].children.push({
                   name: key,
                   id:sequenceId++,
-                  type: 'source'
+                  type: state.sourceSubTitle
                 })
               }
             }
@@ -92,18 +97,18 @@ export default new Vuex.Store({
                   id:sequenceId++,
                   children: [
                     {
-                      name: 'source',
+                      name: state.sourceSubTitle,
                       id:sequenceId++,
                       children: []
                     },
                     {
-                    name: 'keyword',
+                    name: state.keywordSubTitle,
                     id:sequenceId++,
                     children: [
                       {
                         name: key,
                         id:sequenceId++,
-                        type: 'keyword'
+                        type: state.keywordSubTitle
                       }
                     ]
                   }]
@@ -116,7 +121,7 @@ export default new Vuex.Store({
                 // })
                 followList[judge].children[1].children.push({
                   name: key,
-                  type: 'keyword'
+                  type: state.keywordSubTitle
                 })
               }
             }
