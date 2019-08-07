@@ -56,6 +56,7 @@ export default new Vuex.Store({
                     {
                     name: state.sourceSubTitle,
                     id:sequenceId++,
+                    category:res[key],
                     children: [
                       {
                         name: key,
@@ -67,6 +68,7 @@ export default new Vuex.Store({
                   {
                     name: state.keywordSubTitle,
                     id:sequenceId++,
+                    category:res[key],
                     children: []
                   },
                 ]
@@ -99,11 +101,13 @@ export default new Vuex.Store({
                     {
                       name: state.sourceSubTitle,
                       id:sequenceId++,
+                      category: resK[key],
                       children: []
                     },
                     {
                     name: state.keywordSubTitle,
                     id:sequenceId++,
+                    category: resK[key],
                     children: [
                       {
                         name: key,
@@ -121,6 +125,7 @@ export default new Vuex.Store({
                 // })
                 followList[judge].children[1].children.push({
                   name: key,
+                  id:sequenceId++,
                   type: state.keywordSubTitle
                 })
               }
