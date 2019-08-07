@@ -5,74 +5,79 @@
       <div id="sourceName">{{search}}</div>
       <div id="sourceInfo">info / today {{(article.length-1)/2}} articles</div>
     </v-flex>
-    <v-flex xs3 id="headerExtra"> 
+    <v-flex xs3 id="headerExtra">
       <v-icon>fas fa-redo-alt</v-icon>
       <v-icon>fas fa-ellipsis-h</v-icon>
     </v-flex>
   
 
   <!-- <v-layout row> -->
-    <v-flex xs6 offset-xs3>
-        <v-card v-infinite-scroll="leadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="limit">  
-        <v-flex xs12 v-for="(item, index) in article" :key="item.title">
-            <v-subheader v-if="item.header" :key="item.header">
-              {{ item.header }}
-            </v-subheader>
+    <v-flex xs6 offset-xs2>
+      <v-card v-infinite-scroll="leadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="limit">  
+      <v-flex xs12 v-for="(item, index) in article" :key="item.title">
+        <v-subheader v-if="item.header" :key="item.header">
+          {{ item.header }}
+        </v-subheader>
 
-            <v-divider
-              v-else-if="item.divider"
-              :key="index"
-              :inset="item.inset"
-            ></v-divider>
+        <v-divider
+          v-else-if="item.divider"
+          :key="index"
+          :inset="item.inset"
+        ></v-divider>
 
-                <v-card v-else :key="item.title">
-                  <v-layout row>
-                    <v-flex>
-                      <img id="articleImage" v-bind:src="item.urlToImage" style="width:130px; height:78px;" @click="call(item)">
-                    </v-flex>
+        <v-card v-else :key="item.title">
+          <v-layout row>
+            <v-flex>
+              <img id="articleImage" v-bind:src="item.urlToImage" style="width:130px; height:78px;" @click="call(item)">
+            </v-flex>
                     
-                    <v-flex>
-                      <v-card-title primary-title>
-                          <v-layout row>
-                            <!-- <div> -->
-                              <span class="headline" id="title" v-if="!item.mark_as_read" @click="call(item)">{{item.title}}</span>
-                              <span class="headline" id="title" v-else style="color:#888888;" @click="call(item)">{{item.title}}</span>
-                            <!-- </div> -->
-                            <v-spacer></v-spacer>
-                            <div>
-                                <v-icon id="check" @click="mark_as_read(item)">fas fa-check</v-icon>
-                                <v-icon id="bookmark" v-if="!item.read_later" @click="read_later(item)">far fa-bookmark</v-icon>
-                                <v-icon id="bookmark" v-else @click="read_later(item)" style="color:#2bb24c;">far fa-bookmark</v-icon>
-                                <!-- <v-icon @click="read_later(item)">far fa-bookmark</v-icon>
-                                <v-icon @click="read_later(item)">far fa-bookmark</v-icon> -->
-                                <!-- <v-btn class="border-green" flat color="light-green accent-4">Follow</v-btn> -->
-                            </div>
-                          </v-layout>
+            <v-flex>
+              <v-card-title primary-title>
+              <v-layout row>
+                <!-- <div> -->
+                  <span class="headline" id="title" v-if="!item.mark_as_read" @click="call(item)">{{item.title}}</span>
+                  <span class="headline" id="title" v-else style="color:#888888;" @click="call(item)">{{item.title}}</span>
+                <!-- </div> -->
+              <v-spacer></v-spacer>
+                <div>
+                  <v-icon id="check" @click="mark_as_read(item)">fas fa-check</v-icon>
+                  <v-icon id="bookmark" v-if="!item.read_later" @click="read_later(item)">far fa-bookmark</v-icon>
+                  <v-icon id="bookmark" v-else @click="read_later(item)" style="color:#2bb24c;">far fa-bookmark</v-icon>
+                  <!-- <v-icon @click="read_later(item)">far fa-bookmark</v-icon>
+                  <v-icon @click="read_later(item)">far fa-bookmark</v-icon> -->
+                  <!-- <v-btn class="border-green" flat color="light-green accent-4">Follow</v-btn> -->
+                </div>
+              </v-layout>
                           
                           
                           
-                            <div id="author" @click="call(item)">
-                              <span id="read_later" v-if="item.read_later">Read later</span>
-                              <span id="dot" v-if="item.read_later">·</span>
-                              {{item.author}}
-                            </div>
+              <div id="author" @click="call(item)">
+                <span id="read_later" v-if="item.read_later">Read later</span>
+                <span id="dot" v-if="item.read_later">·</span>
+                {{item.author}}
+              </div>
                             <!-- <span id="description">{{item.description}}</span> -->
-                            <span id="description" @click="call(item)">{{item.content}}</span>
+              <span id="description" @click="call(item)">{{item.content}}</span>
 
-                      </v-card-title>
-                    </v-flex>
-                    
-                  </v-layout>
-
-                  <v-card-actions>
-
-                  </v-card-actions>
-                </v-card>
-
+            </v-card-title>
               </v-flex>
+                    
+            </v-layout>
+
+          <v-card-actions>
+
+        </v-card-actions>
+      </v-card>
+
+    </v-flex>
 
       </v-card>
     </v-flex>
+
+    <v-flex xs3>
+      <weather/>
+    </v-flex>
+
     <div v-if="this.parentDrawer===true">
       <ArticleDetail
        :drawer = parentDrawer
@@ -92,6 +97,7 @@ import FirebaseService from '@/services/FirebaseService'
 import 'firebase/firestore'
 import { async, Promise } from 'q';
 import ArticleDetail from '@/components/article/ArticleDetail'
+import weather from '../weather'
 
 // news api 로드
 const NewsAPI = require('newsapi');
@@ -101,7 +107,8 @@ const newsapi = new NewsAPI('2dc4b8b9d26f4a6b97e21a1f282bac9d'); //hojin : 07/31
 
   export default {
     components : {
-      ArticleDetail
+      ArticleDetail,
+      weather,
     },
     props : ['type','follow'], // 새로 고침 시 url 파라미터 사용하여 api 호출
     data () {
@@ -126,15 +133,15 @@ const newsapi = new NewsAPI('2dc4b8b9d26f4a6b97e21a1f282bac9d'); //hojin : 07/31
     },
     methods: {
         translater: function (idx) {
-            const googleTranslate = require('google-translate')('AIzaSyCWwcfPvVrgAbrDw6urNwinqawQ6WlE_f4')
+            // const googleTranslate = require('google-translate')('AIzaSyCWwcfPvVrgAbrDw6urNwinqawQ6WlE_f4')
 
-            googleTranslate.translate(this.article[idx].title, 'ko', (err, translation) => {
-            this.article[idx].title = translation.translatedText
-            })
+            // googleTranslate.translate(this.article[idx].title, 'ko', (err, translation) => {
+            // this.article[idx].title = translation.translatedText
+            // })
 
-            googleTranslate.translate(this.article[idx].description, 'ko', (err, translation) =>   {
-            this.article[idx].description = translation.translatedText
-            })
+            // googleTranslate.translate(this.article[idx].description, 'ko', (err, translation) =>   {
+            // this.article[idx].description = translation.translatedText
+            // })
         },
         topheadlinesArticle: function () {
           // 한번에 불러 올 수 있는 최대가 1~100사이의 수이고, 한번에 20개를 호출하기때문에 5번만 호출가능.

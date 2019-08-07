@@ -70,13 +70,13 @@ export default {
   },
   watch:{
     searchWord:function(newVal){
-      this.search();
+      this.search()
     }
   },
   created (){
     this.sDate = timeCheck()
     window.onload = function() {
-        var input = document.getElementById("autocomplete").focus();
+      var input = document.getElementById("autocomplete").focus()
     }
    },
    async mounted(){
@@ -112,7 +112,7 @@ export default {
         this.sourceNames.push(element.name)
         });
     },
-    search(){      
+    search(){
       var input = document.getElementById("input-search").value
       if( this.searchWord != null ) input = this.searchWord;
       
