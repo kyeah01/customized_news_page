@@ -36,22 +36,22 @@
 
         <v-divider></v-divider>
 
-        <v-treeview
+         <v-treeview
         :items="vuexItemList"
         :active.sync="selectedItems"
-        :open="open"
         activatable
         transition
         open-all
-        open-on-click
-        item-key='"name"+"type"'
+        item-key="id"
         return-object = true
     >
     <template v-slot:prepend="{ item, open }">
-      <v-icon v-if="!item.file">
-        {{ open ? 'fas fa-folder-open' : 'fas fa-rss' }}
+      <v-icon v-if="item.id < 0">
+          fas fa-rss
       </v-icon>
-      <v-icon v-else>{{adb}}</v-icon>
+      <v-icon v-else>
+        {{ open ? 'fas fa-folder-open' : 'fas fa-folder' }}
+      </v-icon>
     </template>
     </v-treeview>
 
@@ -177,7 +177,7 @@ export default {
           console.log(follow, type);
           
           this.$router.push('/article/' + type + '/ '+ follow)
-          // eventBus.$emit("article", this.selectedItems)
+          eventBus.$emit("article", this.selectedItems)
         }
     }
 }
