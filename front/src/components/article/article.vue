@@ -211,11 +211,14 @@ const newsapi = new NewsAPI('2dc4b8b9d26f4a6b97e21a1f282bac9d'); //hojin : 07/31
         console.log('this.search?',this.search)
         console.log(this.$route.params)
 
-        if(this.$route.params.type === "source"){
+        if(this.$route.params==null){
+          
+        }else if(this.$route.params.type === "source"){
           this.Dfollow_s=this.$route.params.follow
         }else{
           this.Dfollow_q=this.$route.params.follow
         }
+
 
         this.search=this.$route.params.follow
 
@@ -231,7 +234,12 @@ const newsapi = new NewsAPI('2dc4b8b9d26f4a6b97e21a1f282bac9d'); //hojin : 07/31
       watch : {
           search : function(){
             eventBus.$on('article', r=>{
-              this.search=r
+              if(r[0].type === "source"){
+                this.Dfollow_s=r[0].name
+              }else{
+                this.Dfollow_q=r[0].name
+              }
+              this.search=r[0].name
             })
             this.article=[{header : 'today'}]
             this.page=0
