@@ -231,7 +231,7 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
         if(Object.keys(this.$route.params).length === 0 && JSON.stringify(this.$route.params) === JSON.stringify({})){
           this.reqNone=true
         }else {
-          if(this.$route.params.type === "source"){
+          if(this.$route.params.type === this.$store.state.sourceSubTitle){
           this.Dfollow_s=this.$route.params.follow
           }else{
             this.Dfollow_q=this.$route.params.follow
@@ -249,7 +249,7 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
               // }else{
 
               // }
-              if(r[0].type === "source"){
+              if(r[0].type === this.$store.state.sourceSubTitle){
                 this.Dfollow_s=r[0].name
               }else{
                 this.Dfollow_q=r[0].name
