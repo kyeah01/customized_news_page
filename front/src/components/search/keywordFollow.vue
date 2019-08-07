@@ -2,7 +2,7 @@
 <v-layout wrap overflow>
     <v-flex shrink>
         <div>
-            <v-btn class="white green--text" @click="open">
+            <v-btn small outline class="green green--text" @click="open">
                 Follow
             </v-btn>
         </div>
@@ -128,3 +128,6 @@ export default {
     }
 }
 </script>
+
+<style>
+</style>
