@@ -42,6 +42,7 @@
         activatable
         transition
         open-all
+        open-on-click
         item-key="id"
         return-object = true
     >
@@ -181,7 +182,7 @@ export default {
           var type=this.selectedItems[0].type
           console.log(follow, type);
           
-          this.$router.push('/article/' + type + '/ '+ follow)
+          this.$router.push('/article/' + type + '/'+ follow)
           eventBus.$emit("article", this.selectedItems)
         }
     }

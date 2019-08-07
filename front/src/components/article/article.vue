@@ -3,7 +3,7 @@
 
     <v-flex xs6 offset-xs3>
       <div id="sourceName">{{search}}</div>
-      <div id="sourceInfo">info / today {{(article.length-1)/2}} articles</div>
+      <div id="sourceInfo">Follower : {{follower}} / today {{(article.length-1)/2}} articles</div>
     </v-flex>
     <v-flex xs3 id="headerExtra"> 
       <v-icon>fas fa-redo-alt</v-icon>
@@ -122,6 +122,7 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
         Dfollow_q : null,
         Dfollow_s : null,
         reqNone : false,
+        follower : null
       }
     },
     methods: {
@@ -143,8 +144,8 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
           this.busy = true
 
           if(this.reqNone){
-            this.search="Main"
-           newsapi.v2.topHeadlines({
+             this.search="Main"
+              newsapi.v2.topHeadlines({
               language: 'en',
               country: 'us'
             }).then(res => {
@@ -153,7 +154,6 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
                   post.read_later = false
                   this.article.push(post)
                   this.article.push({ divider: true, inset: true })
-                  console.log("length",this.article.length)
                 })
                 this.busy = false
               }).catch(err=> {
@@ -174,7 +174,6 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
                   post.read_later = false
                   this.article.push(post)
                   this.article.push({ divider: true, inset: true })
-                  console.log("length",this.article.length)
                 })
                 this.busy = false
               }).catch(err=> {
@@ -224,17 +223,32 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
           firebase.firestore().collection('Userinfo').doc(user.uid).update({
             readlater: firebase.firestore.FieldValue.arrayUnion(item)
           })
+        },
+        load_follower(bool){
+          if(bool){
+            firebase.firestore().collection('Sources').doc(this.Dfollow_s).get()
+            .then(r=>{
+              this.follower=r.data().users_num
+            })
+          }else{
+             firebase.firestore().collection('Keyword').doc(this.Dfollow_q).get()
+            .then(r=>{
+              this.follower=r.data().users_num
+            })
+          }
         }
       },
-      //navbar 클릭 X , 새로고침 시 url get
+      //navbar 클릭 X , 새로고침 시 url get,
       mounted(){
         if(Object.keys(this.$route.params).length === 0 && JSON.stringify(this.$route.params) === JSON.stringify({})){
           this.reqNone=true
         }else {
           if(this.$route.params.type === this.$store.state.sourceSubTitle){
-          this.Dfollow_s=this.$route.params.follow
+            this.Dfollow_s=this.$route.params.follow//bbc-news
+            this.load_follower(true)
           }else{
             this.Dfollow_q=this.$route.params.follow
+            this.load_follower(false)
           }
           this.search=this.$route.params.follow
         }
@@ -244,15 +258,12 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
       watch : {
           search : function(){
             eventBus.$on('article', r=>{
-              // if(r[0].type ==="undefined"){
-
-              // }else{
-
-              // }
               if(r[0].type === this.$store.state.sourceSubTitle){
                 this.Dfollow_s=r[0].name
+                this.load_follower(true)
               }else{
                 this.Dfollow_q=r[0].name
+                this.load_follower(false)
               }
               this.search=r[0].name
             })
