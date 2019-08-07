@@ -36,15 +36,14 @@
 
         <v-divider></v-divider>
 
-        <v-treeview
-        :items="vuexItemList"
+         <v-treeview
+        :items="items"
         :active.sync="selectedItems"
-        :open="open"
         activatable
         transition
         open-all
         open-on-click
-        item-key='"name"+"type"'
+        item-key="name"
         return-object = true
     >
     <template v-slot:prepend="{ item, open }">
@@ -177,7 +176,7 @@ export default {
           console.log(follow, type);
           
           this.$router.push('/article/' + type + '/ '+ follow)
-          // eventBus.$emit("article", this.selectedItems)
+          eventBus.$emit("article", this.selectedItems)
         }
     }
 }
