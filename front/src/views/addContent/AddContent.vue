@@ -26,8 +26,11 @@
       </v-flex>
     </v-layout>
     <v-layout row wrap>
-      <v-flex xs12>
+      <v-flex xs9>
          <sourceList :sourceData="resultSearch"></sourceList>
+      </v-flex>
+      <v-flex xs3>
+        <topSource></topSource>
       </v-flex>
     </v-layout>
   </v-container>
@@ -38,7 +41,7 @@ import firebase from 'firebase'
 import 'firebase/firestore'
 import sourceList from '@/components/search/sourceList'
 import searchOptionSelector from '@/components/search/searchOptionSelector'
-
+import topSource from '@/components/search/topSource'
 
 
 //user log
@@ -46,7 +49,7 @@ import timeCheck from '@/timeCheck'
 import userLog from '@/userLog'
 export default {
   components:{
-    sourceList, searchOptionSelector
+    sourceList, searchOptionSelector, topSource
   },
   props:['searchWord'],
   data (){
@@ -62,7 +65,7 @@ export default {
       sourceNames:[],
       resultSearch:[],
       
-      parentActive_tab: 0
+      parentActive_tab: 0,
     }
   },
   watch:{

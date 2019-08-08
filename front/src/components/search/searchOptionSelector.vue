@@ -1,10 +1,14 @@
 <template>
 <div class="discover">
-    <v-tabs v-model="tabNo">
-        <v-tab @click="goto('addcontent')"><span style="font-size: 16px;"><v-icon class="grey--text" id="rss">fas fa-rss</v-icon>Websites</span></v-tab>
+    <v-tabs v-model="tabNo" v-if="tabNo == 0">
+        <v-tab @click="goto('addcontent')"><span style="font-size: 16px; color: #2bb24c;"><v-icon class="green--text" id="rss">fas fa-rss</v-icon>Websites</span></v-tab>
         <v-tab @click="goto('addKeyword')"><span style="font-size: 16px;"><v-icon class="grey--text" id="google">fab fa-google</v-icon>Keyword alerts</span></v-tab>
     </v-tabs>
     
+    <v-tabs v-model="tabNo" v-if="tabNo == 1">
+        <v-tab @click="goto('addcontent')"><span style="font-size: 16px;"><v-icon class="grey--text" id="rss">fas fa-rss</v-icon>Websites</span></v-tab>
+        <v-tab @click="goto('addKeyword')"><span style="font-size: 16px; color: #2bb24c;"><v-icon class="green--text" id="google">fab fa-google</v-icon>Keyword alerts</span></v-tab>
+    </v-tabs>
 </div>
 </template>
 
@@ -32,6 +36,7 @@ input::-webkit-input-placeholder {
 .fa-rss:before {
     width: 24px;
     margin-right: 4px;
+    /* color: #2bb24c; */
 }
 
 .fa-google:before {
@@ -53,6 +58,10 @@ input::-webkit-input-placeholder {
     padding-bottom: 6px;
     padding-left: 0px;
     padding-right: 16px;
+}
+
+.v-tabs__item .v-tabs__item--active #text{
+    color: #2bb24c;
 }
 
 .v-tabs {
