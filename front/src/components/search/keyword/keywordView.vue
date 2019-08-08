@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import keywordFollow from '@/components/search/keywordFollow'
+import keywordFollow from '@/components/search/keyword/keywordFollow'
 export default {
     props: ['keywordInfo'],
     components: {

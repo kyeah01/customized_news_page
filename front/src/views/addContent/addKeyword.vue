@@ -33,8 +33,8 @@
 <script>
 import firebase from 'firebase'
 import searchOptionSelector from '@/components/search/searchOptionSelector'
-import keywordView from '@/components/search/keywordView'
-import topKeyword from '@/components/search/topKeyword'
+import keywordView from '@/components/search/keyword/keywordView'
+import topKeyword from '@/components/search/keyword/topKeyword'
 
 //user log
 import timeCheck from '@/timeCheck'

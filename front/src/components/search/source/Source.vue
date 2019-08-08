@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import follow from '../search/follow'
+import follow from '@/components/search/source/follow'
 
 export default {
     props: ['source'],

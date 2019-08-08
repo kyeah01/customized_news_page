@@ -19,8 +19,8 @@
 
 <script>
 import firebase from 'firebase'
-import Source from '../search/Source'
-import topSource from '../search/topSource'
+import Source from '@/components/search/source/Source'
+import topSource from '@/components/search/source/topSource'
 export default {
     props: ['sourceData'],
     components: {

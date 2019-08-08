@@ -43,7 +43,7 @@
 <script>
 import firebase from 'firebase'
 import 'firebase/firestore'
-import sourceList from '@/components/search/sourceList'
+import sourceList from '@/components/search/source/sourceList'
 
 
 //user log
