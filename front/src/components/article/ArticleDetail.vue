@@ -4,7 +4,7 @@
       <v-navigation-drawer 
         app
         v-model="drawer"
-        :touchless="true"
+        :touchless="false"
         temporary
         right
         style="width:83vw"
@@ -117,6 +117,7 @@ export default {
   props : ['drawer','detail'],
   methods : {
     close(){
+      console.log(this.detail)
       this.drawer=!this.drawer
       this.$emit('right_drawer', 'closeDetail')
     }

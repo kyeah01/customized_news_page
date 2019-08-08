@@ -3,6 +3,7 @@
     <div v-if="drawer">
       <v-navigation-drawer
             app
+            :temporary = controller
             v-model="drawer"
             right
             style="width:83vw"
@@ -22,7 +23,7 @@
                       <v-card :key="item.title">
                         <v-layout row>
                           <v-flex>
-                            <img id="articleImage" v-bind:src="item.urlToImage" style="width:130px; height:78px;" @click="call(item)">
+                            <img id="articleImage" v-bind:src="item.urlToImage" style="width:130px; height:78px;" @click="open_Detaildrawer(item)">
                           </v-flex>
                           
                           <v-flex>
@@ -67,7 +68,6 @@
 
 
          
-        <v-btn class="red white--text" @click="test1">Close</v-btn>
         <!-- <v-btn class="green white--text" @click="test1">Save changes</v-btn> -->
         </section>
       </v-navigation-drawer>
@@ -106,32 +106,19 @@ export default {
   },
   data(){
     return{
-      val: true,
       detailDrawer : false,
-      detailItem : null
+      detailItem : null,
+      controller : true
     }
   },
   watch: {
     drawer: function() {
       if (!this.drawer) {
-        console.log(this.val)
-        if (this.val) {
-          this.$emit('right_drawer', 'close')
-        } else {
-          this.$emit('right_drawer', 'save')
-        }
+       this.$emit('right_drawer', 'update')
       }
     }
   },
   methods: {
-      test1() {
-        this.val = false
-        this.drawer = !this.drawer
-      },
-      test2(){
-        this.val = true
-        this.drawer = !this.drawer
-      },
       delete_from_DB(item, index) {
 
         firebase.auth().onAuthStateChanged((user) => {
@@ -147,6 +134,7 @@ export default {
       open_Detaildrawer(item){
         this.detailItem=item
         this.detailDrawer=!this.detailDrawer
+        this.controller = false
       },
       close(){
         this.drawer = !this.drawer
@@ -156,11 +144,11 @@ export default {
       },
       closeDetail(){
         this.detailDrawer=!this.detailDrawer
+        this.controller = true
       },
   },
   computed : {
     deleteKey(){
-        console.log(this.readlaterArticles)
       return this.readlaterArticles
     }
   }
