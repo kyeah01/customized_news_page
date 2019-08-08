@@ -149,6 +149,7 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
               language: 'en',
               country: 'us'
             }).then(res => {
+                console.log('res', res)
                 res.articles.forEach(post => {
                   post.mark_as_read = false
                   post.read_later = false
@@ -203,26 +204,77 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
         },
         mark_as_read(item) {
           var user = firebase.auth().currentUser
-          item.mark_as_read = !item.mark_as_read
+          // item.mark_as_read = !item.mark_as_read
           // console.log('mark_as_read', item.mark_as_read)
           // console.log(user.uid)
-          firebase.firestore().collection('Userinfo').doc(user.uid).update({
-            markasread: firebase.firestore.FieldValue.arrayUnion(item)
-          })
+          if (!item.mark_as_read) {
+            firebase.firestore().collection('Userinfo').doc(user.uid).update({
+              markasread: firebase.firestore.FieldValue.arrayUnion(item)
+            })
+            item.mark_as_read = !item.mark_as_read
+          } else {
+            let delMarkasreadItemFromDB = firebase.firestore().collection('Userinfo').doc(user.uid).get()
+              .then(doc => {
+                if (!doc.exists) {
+                  console.log('No such document!');
+                } else {
+                  console.log('Document data:', doc.data());
+                  doc.data().markasread.forEach(delItem => {
+                    if (item.url == delItem.url) {
+                      firebase.auth().onAuthStateChanged((user) => {
+                        firebase.firestore().collection('Userinfo').doc(user.uid).update({
+                          markasread : firebase.firestore.FieldValue.arrayRemove(item)
+                        })
+                      })
+                    } 
+                  })
+                }
+                item.mark_as_read = !item.mark_as_read
+              })
+          }
         },
         read_later(item) {
           var user = firebase.auth().currentUser
+          // console.log('어떤 index?', index)
+          console.log('url check', item.url)
+
+          console.log('정체는?', firebase.firestore().collection('Userinfo').doc(user.uid))
+          // item.read_later = !item.read_later
           // this.read_later_value = !this.read_later_value
-          item.read_later = !item.read_later
           // console.log('read_later', item.read_later)
           // console.log('article정보2', this.article)
           // console.log('read_later_value', this.read_later_value)
           // console.log('user정보', user)
           // console.log('userdata', firebase.firestore().collection('Userinfo').doc(user.uid))
           // console.log(user.uid)
-          firebase.firestore().collection('Userinfo').doc(user.uid).update({
-            readlater: firebase.firestore.FieldValue.arrayUnion(item)
-          })
+          if (!item.read_later) {
+            firebase.firestore().collection('Userinfo').doc(user.uid).update({
+              readlater: firebase.firestore.FieldValue.arrayUnion(item)
+            })
+            item.read_later = !item.read_later
+          } else {
+            let delReadlaterItemFromDB = firebase.firestore().collection('Userinfo').doc(user.uid).get()
+            .then(doc => {
+              if (!doc.exists) {
+                console.log('No such document!');
+              } else {
+                console.log('Document data:', doc.data());
+                doc.data().readlater.forEach(delItem => {
+                  if (item.url == delItem.url) {
+                    firebase.auth().onAuthStateChanged((user) => {
+                      firebase.firestore().collection('Userinfo').doc(user.uid).update({
+                        readlater : firebase.firestore.FieldValue.arrayRemove(item)
+                      })
+                    })
+                  } 
+                })
+              }
+            })
+            .catch(err => {
+              console.log('Error getting document', err);
+            });
+            item.read_later = !item.read_later
+          }
         },
         load_follower(bool){
           if(bool){
