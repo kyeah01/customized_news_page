@@ -16,7 +16,7 @@ Vue.prototype.$http = axios
 
 // vue drag tree
 import VueDragTree from 'vue-drag-tree'
-import 'vue-drag-tree/dist/vue-drag-tree.min.css'
+// import 'vue-drag-tree/dist/vue-drag-tree.min.css'
 Vue.use(VueDragTree)
 
 Vue.config.productionTip = false
