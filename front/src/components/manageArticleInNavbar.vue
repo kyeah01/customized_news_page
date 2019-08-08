@@ -1,24 +1,22 @@
 <template>
 <div>
-        <vue-drag-tree disableDBClick 
-                    :data='followList' 
-                    :allowDrag='allowDrag' 
-                    :allowDrop='allowDrop' 
-                    :defaultText='"New Node"' 
-                    @current-node-clicked='curNodeClicked' 
-                    @drag="dragHandler" 
-                    @drag-enter="dragEnterHandler" 
-                    @drag-leave="dragLeaveHandler" 
-                    @drag-over="dragOverHandler" 
-                    @drag-end="dragEndHandler" 
-                    @drop="dropHandler" 
-                    v-slot="slotProps">
-    <!-- customize your node here if don't like the default / 如果你不喜欢默认样式，可以在这里定制你自己的节点 -->
-    <!-- <span :class="[slotProps.isClicked ? 'i-am-clicked' : 'i-am-not-clicked']"></span>
+    <vue-drag-tree disableDBClick :data='followList' :allowDrag='allowDrag' :allowDrop='allowDrop' :defaultText='"New Node"' @current-node-clicked='curNodeClicked' @drag="dragHandler" @drag-enter="dragEnterHandler" @drag-leave="dragLeaveHandler" @drag-over="dragOverHandler" @drag-end="dragEndHandler" @drop="dropHandler" v-slot="slotProps">
+        <!-- customize your node here if don't like the default / 如果你不喜欢默认样式，可以在这里定制你自己的节点 -->
+        <!-- <span :class="[slotProps.isClicked ? 'i-am-clicked' : 'i-am-not-clicked']"></span>
     <span class='i-am-node-name'>{{slotProps.nodeName}}</span> -->
+        <v-flex xs12>
+            <v-icon>fas fa-folder</v-icon>
+            <span> {{slotProps.nodeName}}</span>
+            <!-- <span>
+                <v-btn class="btn__content" depressed small>name</v-btn>
+                <v-btn class="btn__content" @click="test(slotProps.nodeName)" depressed small>del</v-btn>
+            </span> -->
+        </v-flex>
+
     </vue-drag-tree>
-    </div>
+</div>
 </template>
+
 <script>
 import firebase from 'firebase'
 
@@ -54,24 +52,28 @@ export default {
                     },
                 ],
             }],
-            backup:null,
-            draging:null,
-            droping:null,
+            backup: null,
+            draging: null,
+            droping: null,
         }
     },
     methods: {
-        test(){
-            this.data = this.$store.state.followList;
-            console.log(this.$store.state.followSource);
-            console.log(this.$store.state.userKeyword);
-            
+        test(nodeName) {
+            console.log(nodeName);
 
+            //카테고리 삭제하려면 
+            let followList = this.$store.state.followList;
+            for(var i in followList){
+                console.log(i);
+            }
+
+            
 
         },
         allowDrag(model, component) {
             let keywordSubtitle = this.$store.state.sourceSubTitle;
             let sourceSubtitle = this.$store.state.keywordSubTitle;
-            
+
             if (model.name == 'SOURCE' || model.name == 'KEYWORD') {
                 // can't be dragged
                 // console.log('cant be dragged');
@@ -95,7 +97,7 @@ export default {
         },
         dragHandler(model, component, e) {
             // console.log('dragHandler: ', model, component, e);
-            
+
             //drag하는 항목 저장.
             this.draging = model;
         },
@@ -115,11 +117,11 @@ export default {
         dropHandler(model, component, e) {
             // console.log('dropHandler: ', model, component, e);
 
-            this.droping = model;   // drop되는 곳 정보 저장.
-            
+            this.droping = model; // drop되는 곳 정보 저장.
+
             //키워드는 키워드로만, 소스는 소스로만 이동하도록하기.
             //키워드->소스로 이동하거나, 소스->키워드로 이동시키는 경우 백업본으로 덮어씌어버림
-            if( this.draging.type != this.droping.name){
+            if (this.draging.type != this.droping.name) {
                 this.$store.state.followList = this.backup;
                 return;
             }
@@ -131,28 +133,35 @@ export default {
             let user = firebase.auth().currentUser;
             let db = firebase.firestore().collection('Userinfo').doc(user.uid);
 
-            if( type == this.$store.state.keywordSubTitle ){
+            if (type == this.$store.state.keywordSubTitle) {
                 //keyword 요소를 drag 했을 때.
                 this.$store.state.userKeyword[name] = destination
                 db.update({
-                    keyword:this.$store.state.userKeyword
+                    keyword: this.$store.state.userKeyword
                 })
-            }else if( type == this.$store.state.sourceSubTitle){
+            } else if (type == this.$store.state.sourceSubTitle) {
                 // source 요소를 drag 했을 때.
                 this.$store.state.followSource[name] = destination;
                 db.update({
-                    keyword:this.$store.state.followSource
+                    keyword: this.$store.state.followSource
                 })
             }
         }
     },
-    mounted() {
-    },
-    computed:{
-        followList(){
+    mounted() {},
+    computed: {
+        followList() {
             return this.$store.state.followList;
         }
     }
-
 }
 </script>
+
+<style>
+.btn__content {
+    min-width: 0;
+}
+.is-clicked,.is-hover{
+    background-color: transparent !important;
+}
+</style>
