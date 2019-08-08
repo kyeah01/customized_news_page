@@ -50,6 +50,7 @@
 
 <script>
 import firebase from 'firebase'
+import EventBus from '@/eventBus'
 export default {
     props: ['news'],
     data: () => ({
@@ -78,18 +79,11 @@ export default {
             this.addopen = false
         },
         create: async function (newFeed) {
-
             // follow (abc - IT)
             var newsId = this.news.id;
             this.$store.state.followSource[newsId] = newFeed
 
             var user = firebase.auth().currentUser
-
-            // if (this.$store.state.followKeyword.includes(newFeed)) {
-            //     this.$store.state.followinfo[newFeed]++
-            // } else {
-            //     this.$store.state.followinfo[newFeed] = 1
-            // }
 
             firebase.firestore().collection('Userinfo').doc(user.uid).update({
                 follow: this.$store.state.followSource,
@@ -102,6 +96,7 @@ export default {
 
             this.addopen = false
             this.expand = !this.expand
+
 
         },
         getFollowKeyword(){

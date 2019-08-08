@@ -1,6 +1,9 @@
 <template>
 <div>
-    <vue-drag-tree disableDBClick :data='followList' :allowDrag='allowDrag' :allowDrop='allowDrop' :defaultText='"New Node"' @current-node-clicked='curNodeClicked' @drag="dragHandler" @drag-enter="dragEnterHandler" @drag-leave="dragLeaveHandler" @drag-over="dragOverHandler" @drag-end="dragEndHandler" @drop="dropHandler" v-slot="slotProps">
+    <vue-drag-tree disableDBClick 
+                :data='followList' 
+                :allowDrag='allowDrag' 
+                :allowDrop='allowDrop' :defaultText='"New Node"' @current-node-clicked='curNodeClicked' @drag="dragHandler" @drag-enter="dragEnterHandler" @drag-leave="dragLeaveHandler" @drag-over="dragOverHandler" @drag-end="dragEndHandler" @drop="dropHandler" v-slot="slotProps">
         <!-- customize your node here if don't like the default / 如果你不喜欢默认样式，可以在这里定制你自己的节点 -->
         <!-- <span :class="[slotProps.isClicked ? 'i-am-clicked' : 'i-am-not-clicked']"></span>
     <span class='i-am-node-name'>{{slotProps.nodeName}}</span> -->
@@ -115,7 +118,7 @@ export default {
             // console.log('dragEndHandler: ', model, component, e);
         },
         dropHandler(model, component, e) {
-            // console.log('dropHandler: ', model, component, e);
+            console.log('dropHandler: ', model, component, e);
 
             this.droping = model; // drop되는 곳 정보 저장.
 

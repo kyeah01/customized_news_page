@@ -2,9 +2,7 @@
 <v-container>
     <v-layout>
         <v-flex>
-            <searchOptionSelector
-             :active_tab = parentActive_tab
-            >
+            <searchOptionSelector :active_tab=parentActive_tab>
             </searchOptionSelector>
             <v-flex my-5>
                 <div>
@@ -21,7 +19,7 @@
     </v-layout>
     <v-layout row wrap>
         <v-flex xs9>
-            <keywordView v-show="keywordInfo.word != ''" :keywordInfo="keywordInfo" />
+            <keywordView :isFollowing="isFollowing" v-show="keywordInfo.word != ''" :keywordInfo="keywordInfo" />
         </v-flex>
         <v-flex xs3>
             <topKeyword />
@@ -39,6 +37,7 @@ import topKeyword from '@/components/search/keyword/topKeyword'
 //user log
 import timeCheck from '@/timeCheck'
 import userLog from '@/userLog'
+
 export default {
     components: {
         searchOptionSelector,
@@ -66,6 +65,19 @@ export default {
             },
 
             parentActive_tab: 1,
+
+            isFollowing: false,
+        }
+    },
+    computed :{
+        keywordFollowing(){
+            return this.$store.state.keywordFollowing;
+        }
+    },
+    created() {
+        this.sDate = timeCheck()
+        window.onload = function () {
+            var input = document.getElementById("autocomplete").focus();
         }
     },
     mounted() {
@@ -84,12 +96,7 @@ export default {
             this.search();
         }
     },
-    created() {
-        this.sDate = timeCheck()
-        window.onload = function () {
-            var input = document.getElementById("autocomplete").focus();
-        }
-    },
+
     destroyed() {
         this.eDate = timeCheck()
         //save user log on firebase
@@ -131,7 +138,19 @@ export default {
 
                         })
                     }
+                    this.isFollowElement(this.input);
+
                 });
+        },
+        isFollowElement(word) {
+            this.isFollowing = false;
+            let userKeyword = this.$store.state.userKeyword;
+
+            Object.keys(userKeyword).forEach(element => {
+                if (element == word) {
+                    this.isFollowing = true;
+                }
+            })
 
         },
         loadAutoComplete: function () {
