@@ -2,9 +2,15 @@
 <v-layout wrap overflow>
     <v-flex shrink>
         <div>
-            <v-btn small outline class="green green--text" @click="open">
+            <v-btn v-if="isFollowing" small outline class=" following green green--text" @click="open">
+                Following
+            </v-btn>
+            <v-btn v-else small outline class="green green--text" @click="open">
                 Follow
             </v-btn>
+            <!-- <v-btn :class="[isFollowing ? 'following' : '']" small outline class="green green--text" @click="open">
+                Follow
+            </v-btn> -->
         </div>
         <div class="followContent">
             <v-expand-transition>
@@ -49,19 +55,20 @@
 
 <script>
 import firebase from 'firebase'
+
 export default {
-    props: ['keyword'],
+    props: ['keyword', 'isFollowing'],
     data: () => ({
         expand: false,
         addopen: false,
         items: null,
         searchFeed: "",
         newFeed: "",
-        isFollowing: false,
         search: null,
         caseSensitive: false,
     }),
     methods: {
+
         open: function () {
             if (this.addopen == true) {
                 this.addopen = false
@@ -93,6 +100,8 @@ export default {
             this.$store.commit('loadRes')
             this.addopen = false
             this.expand = !this.expand
+            
+            this.isFollowing = true;
 
         },
         async keywordManage(keyword, user) {
@@ -130,4 +139,11 @@ export default {
 </script>
 
 <style>
+.following{
+    content: 'whatever it is you want to add';
+}
+
+.following:hover{
+     content: 'whatever it is you want to add';
+}
 </style>

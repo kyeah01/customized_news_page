@@ -104,8 +104,8 @@ import weather from '../weather'
 
 // news api 로드
 const NewsAPI = require('newsapi');
-const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
-// const newsapi = new NewsAPI('2dc4b8b9d26f4a6b97e21a1f282bac9d'); //hojin : 07/31 23:00
+// const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
+const newsapi = new NewsAPI('2dc4b8b9d26f4a6b97e21a1f282bac9d'); //hojin : 07/31 23:00
 // const newsapi = new NewsAPI('a0be542239a6455995a8cf063ff0f17d') //heajae
 
   export default {
@@ -126,6 +126,7 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
         parentDrawer : false,
         parentDetail : null,
         search : null,
+        type : null,
         today : null,
         beforeTwo : null,
 
@@ -178,7 +179,7 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
           }else{
               newsapi.v2.everything({
                 // country: this.country,
-                category: this.category,
+                // category: this.category,
                 sources : this.Dfollow_s,
                 q : this.Dfollow_q,
                 pageSize: this.pageSize,
@@ -320,8 +321,8 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
             this.load_follower(false)
           }
           this.search=this.$route.params.follow
+          this.type=this.$route.params.type
         }
-        this.leadMore()
       },
       //navbar 클릭으로 article 정보 변환시(eventbus)
       watch : {
@@ -329,9 +330,11 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
             eventBus.$on('article', r=>{
               if(r[0].type === this.$store.state.sourceSubTitle){
                 this.Dfollow_s=r[0].name
+                this.Dfollow_q=null
                 this.load_follower(true)
               }else{
                 this.Dfollow_q=r[0].name
+                this.Dfollow_s=null
                 this.load_follower(false)
               }
               this.search=r[0].name
@@ -340,7 +343,26 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
             this.page=0
             this.busy=false
             this.topheadlinesArticle()
-          }
+          },
+          //추후 수정 (search, type 같은 function으로)
+          type : function(){
+            eventBus.$on('article', r=>{
+              if(r[0].type === this.$store.state.sourceSubTitle){
+                this.Dfollow_s=r[0].name
+                this.Dfollow_q=null
+                this.load_follower(true)
+              }else{
+                this.Dfollow_q=r[0].name
+                this.Dfollow_s=null
+                this.load_follower(false)
+              }
+              this.search=r[0].name
+            })
+            this.article=[{header : 'today'}]
+            this.page=0
+            this.busy=false
+            this.topheadlinesArticle()
+          },
       }
   }
 </script>

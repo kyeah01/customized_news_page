@@ -195,6 +195,7 @@ export default {
         this.user = JSON.parse(sessionStorage.getItem('userInfo')) ? true : false
 
         this.userInfo = JSON.parse(sessionStorage.getItem('userInfo'))
+        
         // this.setTheDB()
         eventBus.$on('closeByFollow', closeDrawer => {
             this.drawer = closeDrawer
@@ -214,8 +215,6 @@ export default {
         selectedItems: function () {
             var follow = this.selectedItems[0].name
             var type = this.selectedItems[0].type
-            console.log(follow, type);
-
             this.$router.push('/article/' + type + '/' + follow)
             eventBus.$emit("article", this.selectedItems)
         },
