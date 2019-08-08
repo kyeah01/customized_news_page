@@ -39,9 +39,9 @@
 <script>
 import firebase from 'firebase'
 import 'firebase/firestore'
-import sourceList from '@/components/search/sourceList'
+import sourceList from '@/components/search/source/sourceList'
 import searchOptionSelector from '@/components/search/searchOptionSelector'
-import topSource from '@/components/search/topSource'
+import topSource from '@/components/search/source/topSource'
 
 
 //user log
