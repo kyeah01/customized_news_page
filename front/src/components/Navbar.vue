@@ -41,8 +41,9 @@
             <v-btn class="ma-1" 
                     :class="[editMode ? 'edit-mode' : 'not-edit-mode']"
                     :outline='editOutline'
-                    small 
+                    small
                     absolute 
+                    depressed
                     right 
                     :color="editColor"
                     style="z-index: 3"

@@ -1,16 +1,16 @@
 <template>
-    <v-container fluid :grid-list-md="!$vuetify.breakpoint.xs">
-        <v-layout wrap row>
+    <v-container :grid-list-md="!$vuetify.breakpoint.xs">
+        <v-layout row wrap>
           <v-flex xs6 md6>
           <h1>
             <span class="heading" id="header-title">Manage account</span>
-            <div class="sub">Logged in using {{ log }}</div>
+            <div class="sub">Logged in using Google</div>
           </h1>
           </v-flex>
         </v-layout>
         <!-- card -->
-        <v-layout wrap 3>
-          <v-flex d-flex xs12 sm4 v-for="p in pCards" :key=p.title class="pb-2">
+        <v-layout row wrap class="cardList">
+          <v-flex d-flex xs12 sm4 md3 v-for="p in pCards" :key=p.title class="pb-2">
              <ProfileCard
               :title= p.title
               :icon = p.icon
@@ -19,6 +19,13 @@
               </ProfileCard>
            </v-flex>
         </v-layout>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <v-btn>키워드, 카테고리 수정+삭제</v-btn>
     </v-container>
 </template>
 
@@ -34,7 +41,6 @@ import ProfileCard from '@/components/profile/ProfileCard'
       },
       data () {
         return {
-          log: '',
           email: '',
           dialog: false,
           items: [
@@ -57,12 +63,13 @@ import ProfileCard from '@/components/profile/ProfileCard'
             second : null
           },
           pCards :[
-            { title : 'General' , icon : 'close', event : 1},
-            { title : 'Preview' , icon : 'check', event : 2},
-            { title : 'Intergrations' , icon : 'details', event : 3},
-            { title : 'read' , icon : 'crop', event : 4},
-            { title : 'Appearance' , icon : 'edit', event : 5},
-            { title : 'Your Profile' , icon : 'person', event : 6},
+            // { title : 'General' , icon : 'close', event : 1},
+            { title : 'Mark as read' , icon : 'fas fa-check', event : 1},
+            { title : 'Read later' , icon : 'far fa-bookmark', event : 2},
+            { title : 'Your profile' , icon : 'fas fa-user', event : 3},
+            { title : 'Coming soon' , icon : 'fas fa-question', event : 4},
+            { title : 'Coming soon' , icon : 'fas fa-question', event : 5},
+            { title : 'Coming soon' , icon : 'fas fa-question', event : 6},
           ]
         }
       },  
@@ -73,18 +80,13 @@ import ProfileCard from '@/components/profile/ProfileCard'
           this.sDate.second=date.getSeconds()
 
           firebase.auth().onAuthStateChanged((user) => {
-            if (user) {
-              if (!user.photoURL) {
-                this.log = 'Idle'
-              }else if (user.photoURL.slice(0, 10) === 'https://lh') {
-                this.log = 'Google'
-              } else if (user.photoURL.slice(0, 27) === 'https://graph.facebook.com/') {
-                this.log = 'Facebook'
-              } else {
-                this.log = 'Idle'
-              }
-            }
-          })
+                      if (!user) {
+                          this.$router.push("/")
+                      } else {
+                        this.email = user.email
+                      }
+
+                  })
         },
         destroyed(){
           var user=firebase.auth().currentUser
@@ -111,3 +113,40 @@ import ProfileCard from '@/components/profile/ProfileCard'
         }
   }
 </script>
+
+<style scoped>
+h1 {
+  margin-top: 36px;
+  margin-bottom: 36px;
+}
+
+h1 .heading {
+  color: #333333;
+  font-family: sans-serif;
+  font-size: 2.125rem;
+  font-weight: bold;
+  letter-spacing: -.04em;
+  line-height: 1.25em;
+  margin-bottom: 3rem;
+  margin-top: 3rem;
+  text-align: left;
+  text-transform: none;
+}
+
+h1 .sub {
+  -webkit-font-smoothing: antialiased;
+  color: #757575;
+  font-family: sans-serif;
+  font-size: 1.25rem;
+  font-weight: normal;
+  letter-spacing: 0;
+  line-height: 1.4em;
+  margin-top: 0.5rem;
+  max-width: 624px;
+  text-transform: none;
+}
+
+/* .cardList{
+  margin-left: -8px !important;
+} */
+</style>
