@@ -3,7 +3,7 @@
 
     <v-flex xs6 offset-xs3>
       <div id="sourceName">{{search}}</div>
-      <div id="sourceInfo">info / today {{(article.length-1)/2}} articles</div>
+      <div id="sourceInfo">Follower : {{follower}} / today {{(article.length-1)/2}} articles</div>
     </v-flex>
     <v-flex xs3 id="headerExtra">
       <v-icon>fas fa-redo-alt</v-icon>
@@ -101,8 +101,8 @@ import weather from '../weather'
 
 // news api 로드
 const NewsAPI = require('newsapi');
-// const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
-const newsapi = new NewsAPI('2dc4b8b9d26f4a6b97e21a1f282bac9d'); //hojin : 07/31 23:00
+const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
+// const newsapi = new NewsAPI('2dc4b8b9d26f4a6b97e21a1f282bac9d'); //hojin : 07/31 23:00
 // const newsapi = new NewsAPI('a0be542239a6455995a8cf063ff0f17d') //heajae
 
   export default {
@@ -115,7 +115,6 @@ const newsapi = new NewsAPI('2dc4b8b9d26f4a6b97e21a1f282bac9d'); //hojin : 07/31
       return {
         article : [{header:'today'}],
         country: 'us',
-        // category: 'entertainment',
         busy: false,
         limit: 20,
         pageSize: 20,
@@ -128,7 +127,9 @@ const newsapi = new NewsAPI('2dc4b8b9d26f4a6b97e21a1f282bac9d'); //hojin : 07/31
         beforeTwo : null,
 
         Dfollow_q : null,
-        Dfollow_s : null
+        Dfollow_s : null,
+        reqNone : false,
+        follower : null
       }
     },
     methods: {
@@ -149,28 +150,47 @@ const newsapi = new NewsAPI('2dc4b8b9d26f4a6b97e21a1f282bac9d'); //hojin : 07/31
           this.page += 1
           this.busy = true
 
-          newsapi.v2.everything({
-            // country: this.country,
-            category: this.category,
-            sources : this.Dfollow_s,
-            q : this.Dfollow_q,
-            pageSize: this.pageSize,
-            page: this.page
-          }).then(res => {
-            res.articles.forEach(post => {
-              post.mark_as_read = false
-              post.read_later = false
-              this.article.push(post)
-              this.article.push({ divider: true, inset: true })
-              console.log("length",this.article.length)
-            })
-            this.busy = false
-          }).catch(err=> {
-            this.busy = false
-            console.log(err)
-          })
+          if(this.reqNone){
+             this.search="Main"
+              newsapi.v2.topHeadlines({
+              language: 'en',
+              country: 'us'
+            }).then(res => {
+                res.articles.forEach(post => {
+                  post.mark_as_read = false
+                  post.read_later = false
+                  this.article.push(post)
+                  this.article.push({ divider: true, inset: true })
+                })
+                this.busy = false
+              }).catch(err=> {
+                this.busy = false
+                console.log(err)
+              })
+          }else{
+              newsapi.v2.everything({
+                // country: this.country,
+                category: this.category,
+                sources : this.Dfollow_s,
+                q : this.Dfollow_q,
+                pageSize: this.pageSize,
+                page: this.page
+              }).then(res => {
+                res.articles.forEach(post => {
+                  post.mark_as_read = false
+                  post.read_later = false
+                  this.article.push(post)
+                  this.article.push({ divider: true, inset: true })
+                })
+                this.busy = false
+              }).catch(err=> {
+                this.busy = false
+                console.log(err)
+              })
+            }
           }
         },
+
         leadMore: function () {
             this.topheadlinesArticle()
           // 어떤 검색방법을 사용할 것인지 결정하는 함수가 들어가야 합니다.
@@ -210,48 +230,53 @@ const newsapi = new NewsAPI('2dc4b8b9d26f4a6b97e21a1f282bac9d'); //hojin : 07/31
           firebase.firestore().collection('Userinfo').doc(user.uid).update({
             readlater: firebase.firestore.FieldValue.arrayUnion(item)
           })
+        },
+        load_follower(bool){
+          if(bool){
+            firebase.firestore().collection('Sources').doc(this.Dfollow_s).get()
+            .then(r=>{
+              this.follower=r.data().users_num
+            })
+          }else{
+             firebase.firestore().collection('Keyword').doc(this.Dfollow_q).get()
+            .then(r=>{
+              this.follower=r.data().users_num
+            })
+          }
         }
-
       },
-      //navbar 클릭 X , 새로고침 시 url get
+      //navbar 클릭 X , 새로고침 시 url get,
       mounted(){
-        console.log('this.search?',this.search)
-        console.log(this.$route.params)
-
-        if(this.$route.params==null){
-          
-        }else if(this.$route.params.type === "source"){
-          this.Dfollow_s=this.$route.params.follow
-        }else{
-          this.Dfollow_q=this.$route.params.follow
+        if(Object.keys(this.$route.params).length === 0 && JSON.stringify(this.$route.params) === JSON.stringify({})){
+          this.reqNone=true
+        }else {
+          if(this.$route.params.type === this.$store.state.sourceSubTitle){
+            this.Dfollow_s=this.$route.params.follow//bbc-news
+            this.load_follower(true)
+          }else{
+            this.Dfollow_q=this.$route.params.follow
+            this.load_follower(false)
+          }
+          this.search=this.$route.params.follow
         }
-
-
-        this.search=this.$route.params.follow
-
-        console.log("Dfollow_s",this.Dfollow_s)
-        console.log("Dfollow_q",this.Dfollow_q)
-
-        // if(search!=this.find){
-        //   this.search=this.find
-        // }
         this.leadMore()
       },
       //navbar 클릭으로 article 정보 변환시(eventbus)
       watch : {
           search : function(){
             eventBus.$on('article', r=>{
-              if(r[0].type === "source"){
+              if(r[0].type === this.$store.state.sourceSubTitle){
                 this.Dfollow_s=r[0].name
+                this.load_follower(true)
               }else{
                 this.Dfollow_q=r[0].name
+                this.load_follower(false)
               }
               this.search=r[0].name
             })
             this.article=[{header : 'today'}]
             this.page=0
             this.busy=false
-           //if 조건 필요 (soruce 냐 키워드냐)
             this.topheadlinesArticle()
           }
       }
