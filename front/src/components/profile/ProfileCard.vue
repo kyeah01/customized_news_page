@@ -1,38 +1,43 @@
 <template>
     <v-card>
-        <v-container>
-          <v-divider color="primary"/>
+        <v-container class="cardBorder" @click="test">
+          <!-- <v-divider color="primary"/> -->
+            <v-card-title class="cardPadding">
           <v-layout wrap now>
-            <v-flex xs4>
-              <span class="grey--text">{{title}}</span>
-              <v-avatar>
-                <v-icon medium>{{icon}}</v-icon>
-              </v-avatar>
+            <v-flex xs10>
+              <span class="black--text cardTitle">{{title}}</span>
+            </v-flex>
+            <v-flex xs1>
+              <!-- <v-avatar> -->
+                <v-icon class="cardIcon">{{icon}}</v-icon>
+              <!-- </v-avatar> -->
             </v-flex>
           </v-layout>
-          <v-card-actions>
-             <v-btn 
-              text color="green" 
+            </v-card-title>
+          <v-card-actions class="detailMore">
+            <!-- <v-btn 
+              small
+              outline color="green green--text" 
               @click="test"
               >
               Detail More
-            </v-btn>
+            </v-btn> -->
           </v-card-actions>
         </v-container>
-        {{event}}
+        <!-- {{event}} -->
         <div>
-          <General v-if="this.dir===1"
+          <!-- <General v-if="this.dir===1"
             :drawer = parentDrawer
             @right_drawer = "update">
-          </General>
-          <Markasread v-else-if="this.dir===2"
+          </General> -->
+          <Markasread v-if="this.dir===1"
             :drawer = parentDrawer
             :markasreadArticles = markasreadArticles
             @right_drawer = "update"
             @deleteMark = "dmark"
           >
           </Markasread>
-          <Readlater v-else-if="this.dir===3"
+          <Readlater v-else-if="this.dir===2"
             :drawer = parentDrawer
             :readlaterArticles = readlaterArticles
             @right_drawer = "update"
@@ -47,10 +52,14 @@
             :drawer = parentDrawer
             @right_drawer = "update">
           </Appearance> -->
-          <UserSetting v-else
+          <UserSetting v-else-if="this.dir===3"
             :drawer = parentDrawer
             @right_drawer = "update">
           </UserSetting>
+          <UserSetting ></UserSetting>
+          <UserSetting ></UserSetting>
+          <UserSetting ></UserSetting>
+          
 
         </div>
         <!-- 스낵바 수정 -->
@@ -118,7 +127,7 @@ export default {
       console.log('몇번?',this.dir)
       this.parentDrawer = !this.parentDrawer
       eventBus.$emit("leftDrawer", !this.navSign)
-      if (this.dir == 2) {
+      if (this.dir == 1) {
         firebase.auth().onAuthStateChanged((user) => {
         const db = firebase.firestore();
         db.collection('Userinfo').doc(user.uid).get()
@@ -129,7 +138,7 @@ export default {
             console.log('Error getting documents', err);
           });
         })
-      } else if (this.dir == 3) {
+      } else if (this.dir == 2) {
         firebase.auth().onAuthStateChanged((user) => {
         const db = firebase.firestore();
         db.collection('Userinfo').doc(user.uid).get()
@@ -176,5 +185,31 @@ export default {
 }
 </script>
 
+<style scoped>
+.detailMore {
+  /* padding: 0px; */
+}
 
+.cardIcon {
+  padding-left: 10px;
+  font-size: 20px;
+}
 
+.cardBorder {
+  border-top: 2px solid #2bb24c;
+  border-radius: 4px;
+  padding-top: 60px;
+  padding-bottom: 0px;
+}
+
+.cardPadding {
+  padding-left: 0px;
+  padding-right: 0px;
+  padding-top: 32px;
+  padding-bottom: 0px;
+}
+
+.cardTitle {
+  font-size: 16px;
+}
+</style>
