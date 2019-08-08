@@ -75,7 +75,7 @@
 
     </v-navigation-drawer>
     <div class="btn-addContent" :class="[drawer ? 'btn-addContent-open' : 'btn-addContent-close']">
-        <v-btn to="/addContent" block flat color="#2bb24c">
+        <v-btn to="/addContent" block flat color="#2bb24c" @click="closeLeftDrawer">
             <v-icon class="white--text mr-1">add</v-icon>
             <span class="white--text" style="font-size: 12px;">ADD CONTENT</span>
         </v-btn>
@@ -186,6 +186,9 @@ export default {
         },
         setTheDB() {
             this.$store.commit('loadRes')
+        },
+        closeLeftDrawer() {
+            this.drawer = !this.drawer
         }
     },
     created() {
@@ -193,6 +196,9 @@ export default {
 
         this.userInfo = JSON.parse(sessionStorage.getItem('userInfo'))
         // this.setTheDB()
+        eventBus.$on('closeByFollow', closeDrawer => {
+            this.drawer = closeDrawer
+        })
     },
     watch: {
         drawer: function (drawer) {
@@ -212,7 +218,7 @@ export default {
 
             this.$router.push('/article/' + type + '/' + follow)
             eventBus.$emit("article", this.selectedItems)
-        }
+        },
     }
 }
 </script>
