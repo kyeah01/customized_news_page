@@ -22,6 +22,7 @@
     </v-toolbar>
 
     <v-navigation-drawer height="92vh" app stateless v-model="drawer" style="background-color: #d9d9d9;">
+        
         <!-- <v-toolbar flat> -->
         <v-list>
             <v-list-tile>
@@ -36,27 +37,40 @@
 
         <v-divider></v-divider>
 
-         <v-treeview
-        :items="vuexItemList"
-        :active.sync="selectedItems"
-        activatable
-        transition
-        open-all
-        item-key="id"
-        return-object = true
-    >
-    <template v-slot:prepend="{ item, open }">
-      <v-icon v-if="item.id < 0">
-          fas fa-rss
-      </v-icon>
-      <v-icon v-else>
-        {{ open ? 'fas fa-folder-open' : 'fas fa-folder' }}
-      </v-icon>
-    </template>
-    </v-treeview>
+        <v-flex xs12>
+            <v-btn class="ma-1" 
+                    :class="[editMode ? 'edit-mode' : 'not-edit-mode']"
+                    :outline='editOutline'
+                    small 
+                    absolute 
+                    right 
+                    :color="editColor"
+                    style="z-index: 3"
+                    @click="test"
+                    >
+                Edit
+            </v-btn>
+        </v-flex>
 
-    <manageArticleInNavbar></manageArticleInNavbar>
+        <v-treeview v-if="!editMode" :items="vuexItemList" 
+                    :active.sync="selectedItems"
+                    activatable 
+                    transition 
+                    open-all 
+                    open-on-click
+                    item-key="id" 
+                    return-object=true>
+            <template v-slot:prepend="{ item, open }">
+                <v-icon v-if="item.id < 0">
+                    fas fa-rss
+                </v-icon>
+                <v-icon v-else>
+                    {{ open ? 'fas fa-folder-open' : 'fas fa-folder' }}
+                </v-icon>
+            </template>
+        </v-treeview>
 
+        <manageArticleInNavbar v-else></manageArticleInNavbar>
 
     </v-navigation-drawer>
     <div class="btn-addContent" :class="[drawer ? 'btn-addContent-open' : 'btn-addContent-close']">
@@ -84,8 +98,8 @@ export default {
         Login,
         manageArticleInNavbar
     },
-    computed:{
-        vuexItemList(){
+    computed: {
+        vuexItemList() {
             return this.$store.state.followList;
         }
     },
@@ -104,12 +118,26 @@ export default {
             // navbar search
             searchWord: "",
 
-            items:[],
-            userInfo:null,
-            selectedItems: []
+            items: [],
+            userInfo: null,
+            selectedItems: [],
+            editMode: false,
+            editColor: "#999",
+            editOutline:true,
         }
     },
     methods: {
+        test(){
+            this.editMode = !this.editMode
+            
+            if( this.editMode ){
+                this.editColor = "#ff5722";
+                this.editOutline = false;
+            }else{
+                this.editColor = "#999";
+                this.editOutline = true;
+            }
+        },
         search: function () {
             this.$router.push('/addcontent/' + this.searchWord)
         },
@@ -155,7 +183,7 @@ export default {
             this.$router.push('/article/' + j)
             eventBus.$emit("article", j)
         },
-        setTheDB(){
+        setTheDB() {
             this.$store.commit('loadRes')
         }
     },
@@ -176,19 +204,28 @@ export default {
         write: function (source) {
             alert("nav source")
         },
-        selectedItems :function(){
-          var follow=this.selectedItems[0].name
-          var type=this.selectedItems[0].type
-          console.log(follow, type);
-          
-          this.$router.push('/article/' + type + '/ '+ follow)
-          eventBus.$emit("article", this.selectedItems)
+        selectedItems: function () {
+            var follow = this.selectedItems[0].name
+            var type = this.selectedItems[0].type
+            console.log(follow, type);
+
+            this.$router.push('/article/' + type + '/' + follow)
+            eventBus.$emit("article", this.selectedItems)
         }
     }
 }
 </script>
 
 <style lang="css" scoped>
+.btn-edit{
+
+}
+.edit-mode{
+    color:#fff;
+}
+.not-edit-mode{
+
+}
 .btn-addContent {
     width: 300px;
     position: fixed;
