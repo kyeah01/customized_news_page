@@ -44,6 +44,19 @@ export default {
             await this.Google()
             var user = firebase.auth().currentUser
             if (user) {
+                firebase.firestore().collection('Userinfo').doc(user.uid).get().then(res => {
+                    const judge = res.exists
+                    if (!judge) {
+                        firebase.firestore().collection('Userinfo').doc(user.uid).set({
+                            keyword: {},
+                            markasread: [],
+                            readlater: [],
+                            sourceFollow : [],
+                            follow : {},
+                            followInfo : {}
+                        })   
+                    }
+                })
                 const time = new Date()
                 const date = time.getFullYear() + (time.getMonth() > 8 ? time.getMonth()+1 : '0'+(time.getMonth()+1)) + (time.getDate()>9 ? time.getDate() : '0'+time.getDate())
                 firebase.firestore().collection('visitorStat').doc(date).update({

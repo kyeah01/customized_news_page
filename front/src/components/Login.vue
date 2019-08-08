@@ -56,7 +56,6 @@
                   <v-btn
                       color="green darken-1"
                       flat="flat"
-                      @click="dialog1 = false"
                       v-on:click="SignUp"
                   >
                       Sign Up
@@ -130,8 +129,8 @@ export default {
             firebase.firestore().collection('visitorStat').doc(date).update({
               newCreatedUser: firebase.firestore.FieldValue.increment(1),
             })
-            this.dialog2 = false
             this.Login()
+            this.dialog1 = false
             firebase.firestore().collection('Userinfo').doc(cred.user.uid).set({
               keyword: {},
               markasread: [],
