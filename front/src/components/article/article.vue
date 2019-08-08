@@ -1,18 +1,20 @@
 <template>
+<v-container>
+  <v-layout>
+    <v-flex offset-xs1>
+      <div id="sourceName"> {{search}}</div>
+      <div id="sourceInfo"> Follower : {{follower}} / today {{(article.length-1)/2}} articles</div>
+    </v-flex>
+  </v-layout>
   <v-layout row wrap>
-
-    <v-flex xs6 offset-xs3>
-      <div id="sourceName">{{search}}</div>
-      <div id="sourceInfo">Follower : {{follower}} / today {{(article.length-1)/2}} articles</div>
-    </v-flex>
-    <v-flex xs3 id="headerExtra">
-      <v-icon>fas fa-redo-alt</v-icon>
-      <v-icon>fas fa-ellipsis-h</v-icon>
-    </v-flex>
   
 
   <!-- <v-layout row> -->
-    <v-flex xs6 offset-xs2>
+    <v-flex offset-xs1>
+    <!-- <v-flex xs3 id="headerExtra">
+      <v-icon>fas fa-redo-alt</v-icon>
+      <v-icon>fas fa-ellipsis-h</v-icon>
+    </v-flex> -->
       <v-card v-infinite-scroll="leadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="limit">  
       <v-flex xs12 v-for="(item, index) in article" :key="item.title">
         <v-subheader v-if="item.header" :key="item.header">
@@ -74,7 +76,7 @@
       </v-card>
     </v-flex>
 
-    <v-flex xs3>
+    <v-flex xs4>
       <weather/>
     </v-flex>
 
@@ -88,6 +90,7 @@
     </div>
   <!-- </v-layout> -->
   </v-layout>
+</v-container>
 </template>
 
 <script>
