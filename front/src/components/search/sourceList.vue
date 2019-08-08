@@ -1,27 +1,20 @@
 <template>
-<v-container grid-list-xs>
-    <v-layout column wrap>
-
-    </v-layout>
+<div>
     <v-layout row wrap>
-
-        <v-flex xs9>
+        <v-flex xs12>
             <v-layout row wrap>
-                <v-flex xs9>
+                <v-flex xs12>
                     <span>SORTING BY FEEDLY SCORE</span>
                     <v-icon>expand_more</v-icon>
                 </v-flex>
                 <v-flex xs12 class="my-3" v-for="source in sourceData" :key="source.id">
-                    <Source :source="source" class="source">
+                    <Source class="source" :source="source">
                     </Source>
                 </v-flex>
             </v-layout>
         </v-flex>
-        <v-flex xs3>
-            <topSource></topSource>
-        </v-flex>
     </v-layout>
-</v-container>
+</div>
 </template>
 
 <script>

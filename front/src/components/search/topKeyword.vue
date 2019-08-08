@@ -1,8 +1,8 @@
 <template>
-<v-container grid-list-xs>
+<v-container grid-list-xs class="topkeywordBox">
     <v-layout column >
         <v-flex xs12>
-            <v-subheader><strong>Top Keyword</strong></v-subheader>
+            <v-subheader class="topkeywordTitle"><strong>Top Keyword</strong></v-subheader>
         </v-flex>
         <v-layout row wrap>
             <v-flex class="my-1" v-for="item in items" :key="item">
@@ -47,11 +47,20 @@ export default {
 </script>
 
 <style>
+.topkeywordBox {
+    padding-top: 0px;
+    padding-left: 48px;
+    padding-right: 0px;
+}
+
+.topkeywordTitle {
+    padding: 0px;
+    height: 38px;
+}
+
 .topsource-item{
     border: #9e9e9e 1px solid;
     border-radius: 5px;
     color:#9e9e9e;
 }
-
-
 </style>

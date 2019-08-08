@@ -1,24 +1,26 @@
 <template>
 <v-card>
-    <v-card-title primary-title>
+    <v-card-title primary-title class="sourceCard">
         <v-layout row wrap>
-            <v-flex xs12 style="height : 50px">
-                <span class="headline">{{source.name}}</span>
+            <v-flex xs10 class="sourceTitle" style="height : 50px">
+                <p class="headline">{{source.name}}</p>
+                <a href="#newUrl" class="sourceUrl">{{source.url}}</a>
+            </v-flex>
+            <v-flex xs2>
                 <follow class="follow" :news="source">
                 </follow>
             </v-flex>
-            <v-flex xs12 style="height : 50px">
-                <v-layout row wrap>
-                    <a href="#newUrl">{{source.url}}</a>
+            <v-flex xs12>
+                <v-layout row wrap class="sourceDescription">
                     <v-flex xs12>
-                        {{source.description}}
+                        <p>{{source.description}}</p>
                     </v-flex>
                 </v-layout>
             </v-flex>
         </v-layout>
     </v-card-title>
-    <v-card-actions>
-    </v-card-actions>
+    <!-- <v-card-actions>
+    </v-card-actions> -->
 </v-card>
 </template>
 
@@ -34,6 +36,29 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.sourceCard {
+    padding-top: 16px;
+}
+.sourceTitle p {
+    color: #333333;
+    font-size: 16px !important;
+    font-weight: 700;
+    line-height: 1.25rem;
+    text-transform: capitalize;
+    margin-bottom: -8px;
+}
 
+.sourceUrl {
+    color: #9E9E9E !important;
+    font-size: 14px;
+}
+
+.sourceDescription {
+    margin-top: 12px;
+}
+
+.sourceDescription p {
+    margin-bottom: 0px;
+}
 </style>

@@ -2,7 +2,7 @@
 <v-layout wrap overflow>
     <v-flex shrink>
         <div>
-        <v-btn class="white green--text" @click="open">
+        <v-btn small outline class="green green--text" @click="open">
             Follow
         </v-btn>
         </div>
@@ -164,14 +164,15 @@ export default {
 
 .scroll {
     overflow-y: auto;
+    position: absolute;
+    right: 25px;
     height : 200px;
     width : 300px;
     z-index : 1; 
 }
 
 .followContent{
-    width : 200px;
+    width : 100px;
 }
 
 </style>
-
