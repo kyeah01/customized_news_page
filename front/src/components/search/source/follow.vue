@@ -3,7 +3,7 @@
     <v-flex shrink>
         <div>
         <v-btn small outline class="green green--text" @click="open">
-            Follow
+            follow
         </v-btn>
         </div>
         <div class="followContent">
@@ -52,7 +52,7 @@
 import firebase from 'firebase'
 import EventBus from '@/eventBus'
 export default {
-    props: ['news'],
+    props: ['news',],
     data: () => ({
         expand: false,
         addopen: false,
@@ -62,6 +62,8 @@ export default {
         isFollowing : false,
         search: null,
         caseSensitive: false,
+
+        closeDrawer: false
     }),
     
     methods: {
@@ -71,6 +73,8 @@ export default {
             }
             this.items = this.$store.state.userCategorys
             this.expand = !this.expand
+            
+            EventBus.$emit('closeByFollow', this.closeDrawer)
         },
         addFeed: function () {
             this.addopen = true
@@ -96,8 +100,6 @@ export default {
 
             this.addopen = false
             this.expand = !this.expand
-
-
         },
         getFollowKeyword(){
 
