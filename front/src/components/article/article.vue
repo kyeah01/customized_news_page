@@ -132,7 +132,8 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
         Dfollow_q : null,
         Dfollow_s : null,
         reqNone : false,
-        follower : null
+        follower : null,
+        defaultImage : 'https://via.placeholder.com/300x300/FFFFFF/000000?text='
       }
     },
     methods: {
@@ -161,6 +162,9 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
             }).then(res => {
                 console.log('res', res)
                 res.articles.forEach(post => {
+                   if(post.urlToImage==null){
+                    post.urlToImage=this.defaultImage+post.source.name
+                  }
                   post.mark_as_read = false
                   post.read_later = false
                   this.article.push(post)
@@ -181,6 +185,9 @@ const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
                 page: this.page
               }).then(res => {
                 res.articles.forEach(post => {
+                  if(post.urlToImage==null){
+                    post.urlToImage=this.defaultImage+post.source.name
+                  }
                   post.mark_as_read = false
                   post.read_later = false
                   this.article.push(post)

@@ -21,8 +21,9 @@
           </h1>
           <p class="text-lg-right grey--text">{{detail.author}}</p>
           <p class="text-lg-right grey--text">{{detail.publishedAt}}</p>
-
-          <v-img v-bind:src="detail.urlToImage"
+          
+          <v-img 
+            v-bind:src="detail.urlToImage"
             width:130px 
             height:78px>
           </v-img>
