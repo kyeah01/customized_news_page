@@ -178,6 +178,7 @@ export default {
             }
             this.drawer = !this.drawer
 
+            // eventBus.$emit('closeByDrawer', this.drawer)
         },
         moveSourceDetail: function (j) {
             alert(j)
@@ -189,13 +190,15 @@ export default {
         },
         closeLeftDrawer() {
             this.drawer = !this.drawer
-        }
+        },
+        // changePlaceholder() {
+        //     document.getElementById("search").placeholder = "Search in your feeds";
+        // }
     },
     created() {
         this.user = JSON.parse(sessionStorage.getItem('userInfo')) ? true : false
 
         this.userInfo = JSON.parse(sessionStorage.getItem('userInfo'))
-        
         // this.setTheDB()
         eventBus.$on('closeByFollow', closeDrawer => {
             this.drawer = closeDrawer
@@ -215,6 +218,8 @@ export default {
         selectedItems: function () {
             var follow = this.selectedItems[0].name
             var type = this.selectedItems[0].type
+            console.log(follow, type);
+
             this.$router.push('/article/' + type + '/' + follow)
             eventBus.$emit("article", this.selectedItems)
         },
@@ -263,6 +268,7 @@ export default {
 
 .container-1 {
     width: 192px;
+    /* width: 300px; */
     vertical-align: middle;
     white-space: nowrap;
     position: relative;
@@ -270,6 +276,7 @@ export default {
 
 .container-1 input#search {
     width: 192px;
+    /* width: 300px; */
     height: 32px;
     position: absolute;
     top: 85%;
@@ -288,7 +295,7 @@ export default {
     -moz-transition: background .55s ease;
     -ms-transition: background .55s ease;
     -o-transition: background .55s ease;
-    transition: background .55s ease;
+    transition: background .55s ease, width 0.55s ease;
 }
 
 .container-1 input#search::-webkit-input-placeholder {
@@ -316,6 +323,19 @@ export default {
     margin-top: 17px;
     z-index: 1;
     color: #4f5b66;
+}
+
+.container-1 input#search:focus, .container-1 input#search:active{
+    outline: none;
+    width: 300px;
+}
+ 
+.container-1:hover input#search{
+    /* width: 300px; */
+}
+ 
+.container-1:hover .icon{
+  /* color: #93a2ad; */
 }
 
 /* .container-1 input#search:hover, .container-1 input#search:focus, .container-1 input#search:active{
