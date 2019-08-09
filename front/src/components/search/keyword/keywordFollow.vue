@@ -55,7 +55,7 @@
 
 <script>
 import firebase from 'firebase'
-
+import eventBus from '../../../eventBus'
 export default {
     props: ['keyword', 'isFollowing'],
     data: () => ({
@@ -86,22 +86,18 @@ export default {
 
             // follow (abc - IT);
             var userKeyword = this.$store.state.userKeyword
-
             userKeyword[this.keyword] = category
-
             var user = firebase.auth().currentUser
-
             firebase.firestore().collection('Userinfo').doc(user.uid).update({
                 keyword: userKeyword
             })
 
             this.keywordManage(this.keyword, user);
-
             this.$store.commit('loadRes')
             this.addopen = false
             this.expand = !this.expand
-            
             this.isFollowing = true;
+            eventBus.$emit("snack", true)
 
         },
         async keywordManage(keyword, user) {
@@ -133,7 +129,7 @@ export default {
                     }
 
                 })
-        }
+        },
     }
 }
 </script>

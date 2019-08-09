@@ -25,6 +25,8 @@
             <topKeyword />
         </v-flex>
     </v-layout>
+
+   
 </v-container>
 </template>
 
@@ -33,6 +35,7 @@ import firebase from 'firebase'
 import searchOptionSelector from '@/components/search/searchOptionSelector'
 import keywordView from '@/components/search/keyword/keywordView'
 import topKeyword from '@/components/search/keyword/topKeyword'
+import eventBus from '../../eventBus'
 
 //user log
 import timeCheck from '@/timeCheck'
@@ -55,18 +58,24 @@ export default {
             // autocomplete
             input: "",
             keywordsName: [],
-            keywordInfo: {
+                keywordInfo: {
                 users: [],
                 users_num: 0,
                 word: '',
                 apiResponse: {
-                    articles: [],
+                articles: [],
                 }
             },
 
             parentActive_tab: 1,
 
             isFollowing: false,
+
+            snackbar : false,
+            y: 'bottom',
+            x: 'right',
+            timeout: 3000,
+            text: 'Success Modify',
         }
     },
     computed :{
@@ -79,6 +88,7 @@ export default {
         window.onload = function () {
             var input = document.getElementById("autocomplete").focus();
         }
+        
     },
     mounted() {
         //db에서 keyword list load
@@ -94,6 +104,16 @@ export default {
         searchWord: function (newVal) {
             this.input = newVal;
             this.search();
+        },
+        sign : function(){
+
+        },
+        tmp : function(){
+            alert("joy")
+            eventBus.$on("snack", sign=>{
+                alert("hojin")
+                // if(sign) this.snackbar=true
+            })
         }
     },
 
@@ -154,7 +174,6 @@ export default {
 
         },
         loadAutoComplete: function () {
-
             new Autocomplete('#autocomplete', {
                 search: input => {
                     if (input.length < 2) {
