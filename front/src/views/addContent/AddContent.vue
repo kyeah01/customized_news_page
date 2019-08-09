@@ -42,11 +42,14 @@ import 'firebase/firestore'
 import sourceList from '@/components/search/source/sourceList'
 import searchOptionSelector from '@/components/search/searchOptionSelector'
 import topSource from '@/components/search/source/topSource'
-
+import env from '../../../env.js'
 
 //user log
 import timeCheck from '@/timeCheck'
 import userLog from '@/userLog'
+
+
+
 export default {
   components:{
     sourceList, searchOptionSelector, topSource
@@ -102,7 +105,7 @@ export default {
 // const newsapi = new NewsAPI('2dc4b8b9d26f4a6b97e21a1f282bac9d'); //hojin : 07/31 23:00
   methods: {
     async getSources(){
-    await this.$axios.get('https://newsapi.org/v2/sources?apiKey=7656fc1833b542c99aa26670752b9088')
+    await this.$axios.get('https://newsapi.org/v2/sources?apiKey='+env.data().api1)
       .then( r=> {
         this.sources = r.data.sources           
         })
