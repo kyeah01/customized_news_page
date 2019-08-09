@@ -2,13 +2,19 @@
 <div>
     <v-layout row wrap>
         <v-flex xs12>
-            <v-layout row wrap>
+            <v-layout row wrap v-if="sourceData == 'No feeds with matching titles.'">
+                <v-flex xs12>
+                    {{sourceData}}
+                </v-flex>
+            </v-layout>
+
+            <v-layout row wrap v-else> 
                 <v-flex xs12>
                     <span>SORTING BY FEEDLY SCORE</span>
                     <v-icon>expand_more</v-icon>
                 </v-flex>
                 <v-flex xs12 class="my-3" v-for="source in sourceData" :key="source.id">
-                    <Source class="source" :source="source">
+                    <Source class="source" :source = source>
                     </Source>
                 </v-flex>
             </v-layout>
@@ -22,13 +28,22 @@ import firebase from 'firebase'
 import Source from '@/components/search/source/Source'
 import topSource from '@/components/search/source/topSource'
 export default {
-    props: ['sourceData'],
+    props: ['sourceData', 'searchkey'],
     components: {
         Source,
-        topSource,
+        topSource
     },
+    // data: {
+        
+    // },
+    // watch: {
+    //     sourceData: function() {
+    //         console.log('sourceData from sourceList.vue', this.sourceData)
+    //     }
+    //     // console.log('sourceData from sourceList.vue', this.sourceData)
+    // },
     mounted() {
-
+        
     },
     methods: {
         call: async function (source) {

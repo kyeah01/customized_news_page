@@ -25,9 +25,10 @@
                 </v-flex>
       </v-flex>
     </v-layout>
-    <v-layout row wrap>
+    <!-- 메인에서 안보이게 처리 -->
+    <v-layout row wrap v-if="resultSearch.length >= 1">
       <v-flex xs9>
-         <sourceList :sourceData="resultSearch"></sourceList>
+         <sourceList :sourceData="resultSearch" :searchKey="input"></sourceList>
       </v-flex>
       <v-flex xs3>
         <topSource></topSource>
@@ -66,6 +67,7 @@ export default {
       resultSearch:[],
       
       parentActive_tab: 0,
+      noFeeds: 'No feeds with matching titles.'
     }
   },
   watch:{
@@ -102,7 +104,7 @@ export default {
 // const newsapi = new NewsAPI('2dc4b8b9d26f4a6b97e21a1f282bac9d'); //hojin : 07/31 23:00
   methods: {
     async getSources(){
-    await this.$axios.get('https://newsapi.org/v2/sources?apiKey=7656fc1833b542c99aa26670752b9088')
+    await this.$axios.get('https://newsapi.org/v2/sources?apiKey=2dc4b8b9d26f4a6b97e21a1f282bac9d')
       .then( r=> {
         this.sources = r.data.sources           
         })
@@ -116,12 +118,24 @@ export default {
       
       // if( this.searchWord != null ) input = this.searchWord;
       
-      this.resultSearch = []
-      this.sources.forEach(element =>{
-        if( element.name.toLowerCase().indexOf(this.input.toLowerCase()) != -1 ){
-          this.resultSearch.push(element)
-        }
-      })
+
+      // 검색 결과 분기
+      console.log('이건가?', this.input)
+      if (!this.input) {
+        // 검색어 없는 경우
+        this.resultSearch = this.noFeeds
+      } else if (this.input.length == 1) {
+        // 너무 짧은 경우
+        this.resultSearch = this.noFeeds
+      } else {
+        this.resultSearch = []
+        console.log('this.resultSearch', this.resultSearch)
+        this.sources.forEach(element =>{
+          if( element.name.toLowerCase().indexOf(this.input.toLowerCase()) != -1 ){
+            this.resultSearch.push(element)
+          }
+        })
+      }
     },
     loadAutoComplete: function() {
       // console.log(this.sourceNames);
