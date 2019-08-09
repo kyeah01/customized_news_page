@@ -6,16 +6,16 @@
             follow
         </v-btn>
         </div>
-        <div class="followContent">
+        <div class="expandBox">
         <v-expand-transition>
             <v-card v-show="expand" class="scroll">
                 <div v-if="addopen===false">
                         <!-- <input v-model="searchFeed" class="autocomplete-input" placeholder="Search by topic" aria-label="Search by topic" autofocus> -->
-                        <v-list flat>
-                            <v-list-tile v-for="item in items" :key="item" @click="create(item)">
-                                <v-list-tile-action>
-                                    <v-icon>fas fa-rss</v-icon>
-                                </v-list-tile-action>
+                        <v-list class="followExpand" flat>
+                            <v-list-tile v-for="item in items" :key="item" @click="create(item)" class="itemStyle">
+                                <!-- <v-list-tile-action> -->
+                                    <v-icon class="categoryIcon">fas fa-rss</v-icon>
+                                <!-- </v-list-tile-action> -->
 
                                 <v-list-tile-content>
                                     <v-list-tile-title>{{item}}</v-list-tile-title>
@@ -23,14 +23,14 @@
                             </v-list-tile>
 
                             <v-divider />
-                            <v-list-tile @click="addFeed">
-                                <v-list-tile-action>
-                                    <v-icon>add</v-icon>
-                                </v-list-tile-action>
-                                <v-list-tile-content>
-                                    <v-list-tile-title>add New Feed</v-list-tile-title>
-                                </v-list-tile-content>
-                            </v-list-tile>
+                            <v-footer class="followTile" @click="addFeed">
+                                <!-- <v-list-tile-action> -->
+                                    <v-icon class="addIcon">add</v-icon>
+                                <!-- </v-list-tile-action> -->
+                                <!-- <v-list-tile-content class="followContent"> -->
+                                    <span class="addFeed">New Feed</span>
+                                <!-- </v-list-tile-content> -->
+                            </v-footer>
                         </v-list>
                 </div>
 
@@ -100,6 +100,10 @@ export default {
 
             this.addopen = false
             this.expand = !this.expand
+
+            // EventBus.$on('closeByDrawer', drawer => {
+            //     this.expand = drawer
+            // })
         },
         getFollowKeyword(){
 
@@ -140,7 +144,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .autocomplete-input {
     border: 1px solid #eee;
     border-radius: 8px;
@@ -159,17 +163,50 @@ export default {
     background-position: 12px
 }
 
+.expandBox{
+    width : 100px;
+}
+
 .scroll {
     overflow-y: auto;
     position: absolute;
     right: 25px;
-    height : 200px;
+    /* height : 200px; */
     width : 300px;
     z-index : 1; 
+
+    /* padding: 16px; */
 }
 
-.followContent{
-    width : 100px;
+.followExpand {
+    padding: 0px;
 }
+
+.followTile {
+    background-color: #ffffff;
+    padding: 8px;
+}
+
+.categoryIcon {
+    width: 20px;
+    font-size: 20px;
+    margin-right: 4px;
+}
+
+.addIcon {
+    color: #2bb24c !important;
+    font-size: 20px;
+    padding-left: 4px;
+}
+
+.addFeed {
+    color: #2bb24c;
+}
+
+.itemStyle {
+    /* padding: 8px; */
+    /* height: 40px; */
+}
+
 
 </style>
