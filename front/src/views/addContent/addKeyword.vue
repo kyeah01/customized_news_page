@@ -21,7 +21,8 @@
         <v-flex xs9>
             <keywordView :isFollowing="isFollowing" v-show="keywordInfo.word != ''" :keywordInfo="keywordInfo" />
         </v-flex>
-        <v-flex xs3>
+        <!-- 메인에서 안보이게 처리 -->
+        <v-flex xs3 v-if="keywordInfo.word.length >= 1">
             <topKeyword />
         </v-flex>
     </v-layout>
@@ -134,7 +135,7 @@ export default {
         },
         async search() {
             // 입력한 키워드 검색결과에 따라 데이터베이스에 키워드 저장하기.
-            await this.$axios.get(`https://newsapi.org/v2/everything?q=${this.input}&apiKey=966170e136db43a98338739406d5f48d`)
+            await this.$axios.get(`https://newsapi.org/v2/everything?q=${this.input}&apiKey=2dc4b8b9d26f4a6b97e21a1f282bac9d`)
                 .then(response => {
                     this.keywordInfo['apiResponse'] = response.data;
                     this.keywordInfo['word'] = this.input;
