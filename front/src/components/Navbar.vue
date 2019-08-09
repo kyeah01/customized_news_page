@@ -1,7 +1,7 @@
 <template lang="html">
 <nav>
     <v-toolbar app color="white">
-        <v-toolbar-side-icon @click="call"></v-toolbar-side-icon>
+        <v-toolbar-side-icon @click="call" v-if="user"></v-toolbar-side-icon>
         <v-toolbar-title @click="goto('')" style="cursor:pointer">Idle</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items class="hidden-sm-and-down">
@@ -36,6 +36,7 @@
         <!-- </v-toolbar> -->
 
         <v-divider></v-divider>
+        <!-- <span style="margin:30px 0px 30px 10px; height:100px"><v-icon>far fa-newspaper</v-icon> Main</span> -->
 
         <v-flex xs12>
             <v-btn class="ma-1" 
@@ -53,7 +54,8 @@
             </v-btn>
         </v-flex>
 
-        <v-treeview v-if="!editMode" :items="vuexItemList" 
+        <v-template v-if="!editMode">
+        <v-treeview :items="vuexItemList" 
                     :active.sync="selectedItems"
                     activatable 
                     transition 
@@ -70,6 +72,7 @@
                 </v-icon>
             </template>
         </v-treeview>
+        </v-template>
 
         <manageArticleInNavbar v-else></manageArticleInNavbar>
 
@@ -193,7 +196,6 @@ export default {
     },
     created() {
         this.user = JSON.parse(sessionStorage.getItem('userInfo')) ? true : false
-
         this.userInfo = JSON.parse(sessionStorage.getItem('userInfo'))
         
         // this.setTheDB()
