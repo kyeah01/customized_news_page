@@ -136,7 +136,7 @@ const newsapi = new NewsAPI(env.data().api1);
         Dfollow_q : null,
         Dfollow_s : null,
         reqNone : false,
-        follower : null,
+        follower : 'XX',
         defaultImage : 'https://via.placeholder.com/300x300/FFFFFF/000000?text='
       }
     },
@@ -220,7 +220,7 @@ const newsapi = new NewsAPI(env.data().api1);
           this.parentDrawer = !this.parentDrawer
         },
         update(){
-        this.parentDrawer = !this.parentDrawer
+         this.parentDrawer = !this.parentDrawer
         },
         mark_as_read(item) {
           var user = firebase.auth().currentUser
@@ -328,43 +328,24 @@ const newsapi = new NewsAPI(env.data().api1);
       },
       //navbar 클릭으로 article 정보 변환시(eventbus)
       watch : {
-          search : function(){
-            eventBus.$on('article', r=>{
-              if(r[0].type === this.$store.state.sourceSubTitle){
-                this.Dfollow_s=r[0].name
-                this.Dfollow_q=null
-                this.load_follower(true)
-              }else{
-                this.Dfollow_q=r[0].name
-                this.Dfollow_s=null
-                this.load_follower(false)
-              }
-              this.search=r[0].name
-            })
-            this.article=[{header : 'today'}]
-            this.page=0
-            this.busy=false
-            this.topheadlinesArticle()
-          },
-          //추후 수정 (search, type 같은 function으로)
-          type : function(){
-            eventBus.$on('article', r=>{
-              if(r[0].type === this.$store.state.sourceSubTitle){
-                this.Dfollow_s=r[0].name
-                this.Dfollow_q=null
-                this.load_follower(true)
-              }else{
-                this.Dfollow_q=r[0].name
-                this.Dfollow_s=null
-                this.load_follower(false)
-              }
-              this.search=r[0].name
-            })
-            this.article=[{header : 'today'}]
-            this.page=0
-            this.busy=false
-            this.topheadlinesArticle()
-          },
+          ['search' || 'type'] : function(){
+              eventBus.$on('article', r=>{
+                if(r[0].type === this.$store.state.sourceSubTitle){
+                  this.Dfollow_s=r[0].name
+                  this.Dfollow_q=null
+                  this.load_follower(true)
+                }else{
+                  this.Dfollow_q=r[0].name
+                  this.Dfollow_s=null
+                  this.load_follower(false)
+                }
+                this.search=r[0].name
+              })
+              this.article=[{header : 'today'}]
+              this.page=0
+              this.busy=false
+              this.topheadlinesArticle()
+          }
       }
   }
 </script>

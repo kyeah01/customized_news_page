@@ -112,9 +112,14 @@ export default {
     }
   },
   watch: {
-    drawer: function() {
+      drawer: function() {
       if (!this.drawer) {
-       this.$emit('right_drawer', 'update')
+        console.log(this.val)
+        if (this.val) {
+          this.$emit('right_drawer', 'close')
+        } else {
+          this.$emit('right_drawer', 'save')
+        }
       }
     }
   },
