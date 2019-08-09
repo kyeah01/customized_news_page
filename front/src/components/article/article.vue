@@ -6,9 +6,8 @@
       <div id="sourceInfo"> Follower : {{follower}} / today {{(article.length-1)/2}} articles</div>
     </v-flex>
   </v-layout>
-  <v-layout row wrap>
-  
 
+  <v-layout row wrap>
   <!-- <v-layout row> -->
     <v-flex offset-xs1>
     <!-- <v-flex xs3 id="headerExtra">
@@ -37,8 +36,8 @@
               <v-card-title primary-title>
               <v-layout row>
                 <!-- <div> -->
-                  <span class="headline" id="title" v-if="!item.mark_as_read" @click="call(item)">{{item.title}}</span>
-                  <span class="headline" id="title" v-else style="color:#888888;" @click="call(item)">{{item.title}}</span>
+                  <span class="headline pointer" id="title" v-if="!item.mark_as_read" @click="call(item)">{{item.title}}</span>
+                  <span class="headline pointer" id="title" v-else style="color:#888888;" @click="call(item)">{{item.title}}</span>
                 <!-- </div> -->
               <v-spacer></v-spacer>
                 <div>
@@ -50,16 +49,17 @@
                   <!-- <v-btn class="border-green" flat color="light-green accent-4">Follow</v-btn> -->
                 </div>
               </v-layout>
+
                           
                           
                           
               <div id="author" @click="call(item)">
                 <span id="read_later" v-if="item.read_later">Read later</span>
-                <span id="dot" v-if="item.read_later">·</span>
+                <span id="dot" class="pointer" v-if="item.read_later">·</span>
                 {{item.author}}
               </div>
                             <!-- <span id="description">{{item.description}}</span> -->
-              <span id="description" @click="call(item)">{{item.content}}</span>
+              <span id="description" @click="call(item)" class="pointer">{{item.content}}</span>
 
             </v-card-title>
               </v-flex>
@@ -98,15 +98,18 @@ import eventBus from '../../eventBus'
 import firebase from 'firebase'
 import FirebaseService from '@/services/FirebaseService'
 import 'firebase/firestore'
-import { async, Promise } from 'q';
+import { async, Promise } from 'q'
 import ArticleDetail from '@/components/article/ArticleDetail'
 import weather from '../weather'
+import env from '../../../env.js'
+
+// const dotenv = require('dotenv');
+
+
 
 // news api 로드
 const NewsAPI = require('newsapi');
-// const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9');
-const newsapi = new NewsAPI('2dc4b8b9d26f4a6b97e21a1f282bac9d'); //hojin : 07/31 23:00
-// const newsapi = new NewsAPI('a0be542239a6455995a8cf063ff0f17d') //heajae
+const newsapi = new NewsAPI(env.data().api1);
 
   export default {
     components : {
@@ -161,7 +164,6 @@ const newsapi = new NewsAPI('2dc4b8b9d26f4a6b97e21a1f282bac9d'); //hojin : 07/31
               language: 'en',
               country: 'us'
             }).then(res => {
-                console.log('res', res)
                 res.articles.forEach(post => {
                    if(post.urlToImage==null){
                     post.urlToImage=this.defaultImage+post.source.name
@@ -448,5 +450,9 @@ const newsapi = new NewsAPI('2dc4b8b9d26f4a6b97e21a1f282bac9d'); //hojin : 07/31
 #bookmark {
   padding: 0 2px;
   font-size: 16px;
+}
+
+.pointer {
+   cursor:pointer
 }
 </style>
