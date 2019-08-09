@@ -49,13 +49,10 @@ export default {
 
 <style>
 .topsourceBox {
-    padding-top: 0px;
-    padding-left: 48px;
-    padding-right: 0px;
+    padding-left: 20px;
 }
 
 .topsourceTitle {
-    padding: 0px;
     height: 38px;
 }
 

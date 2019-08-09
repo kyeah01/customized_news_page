@@ -48,9 +48,7 @@ export default {
 
 <style>
 .topkeywordBox {
-    padding-top: 0px;
-    padding-left: 48px;
-    padding-right: 0px;
+    padding-left: 20px;
 }
 
 .topkeywordTitle {

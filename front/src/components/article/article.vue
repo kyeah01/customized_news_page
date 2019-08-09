@@ -76,8 +76,16 @@
       </v-card>
     </v-flex>
 
-    <v-flex xs4>
+    <v-flex xs4 v-if="search=='Main'">
       <weather/>
+      <br>
+      <v-card style="border-radius: 10px; width:100%;">
+        <topSource/>
+      </v-card>
+      <br>
+      <v-card style="border-radius: 10px; width:100%;">
+        <topKeyword/>
+      </v-card>
     </v-flex>
 
     <div v-if="this.parentDrawer===true">
@@ -100,6 +108,8 @@ import FirebaseService from '@/services/FirebaseService'
 import 'firebase/firestore'
 import { async, Promise } from 'q'
 import ArticleDetail from '@/components/article/ArticleDetail'
+import topSource from '@/components/search/source/topSource'
+import topKeyword from '@/components/search/keyword/topKeyword'
 import weather from '../weather'
 import env from '../../../env.js'
 
@@ -115,6 +125,8 @@ const newsapi = new NewsAPI(env.data().api1);
     components : {
       ArticleDetail,
       weather,
+      topSource,
+      topKeyword
     },
     props : ['type','follow'], // 새로 고침 시 url 파라미터 사용하여 api 호출
     data () {
@@ -453,6 +465,6 @@ const newsapi = new NewsAPI(env.data().api1);
 }
 
 .pointer {
-   cursor:pointer
+  cursor:pointer
 }
 </style>

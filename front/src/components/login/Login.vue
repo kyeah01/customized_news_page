@@ -78,7 +78,7 @@
 import firebase from 'firebase'
 import GoogleLogin from './GoogleLogin'
 import FacebookLogin from './FacebookLogin'
-import NavbarAvatar from './NavbarAvatar'
+import NavbarAvatar from '../NavbarAvatar'
 
 
 export default {
