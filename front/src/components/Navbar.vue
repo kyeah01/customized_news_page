@@ -34,9 +34,12 @@
             </v-list-tile>
         </v-list>
         <!-- </v-toolbar> -->
-
+ 
         <v-divider></v-divider>
-        <!-- <span style="margin:30px 0px 30px 10px; height:100px"><v-icon>far fa-newspaper</v-icon> Main</span> -->
+        <div style="margin:10px 0px 12px 10px;"><span style="margin:30px 0px 30px 10px; height:100px"><v-icon>far fa-newspaper</v-icon>  &nbsp Main</span></div>
+        <div style="margin:10px 0px 12px 10px;"><span style="margin:30px 0px 30px 10px; height:100px"><v-icon>fas fa-check</v-icon>  &nbsp Recently Read</span></div>
+        <div style="margin:10px 0px 12px 10px;"><span style="margin:30px 0px 30px 10px; height:100px"><v-icon>far fa-bookmark</v-icon>  &nbsp&nbsp Recently Read</span></div>
+        <v-divider></v-divider>
 
         <v-flex xs12>
             <v-btn class="ma-1" 
