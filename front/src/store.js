@@ -18,7 +18,9 @@ export default new Vuex.Store({
 
     //
     sourceSubTitle:"source",
-    keywordSubTitle:"keyword"
+    keywordSubTitle:"keyword",
+
+    keywordFollowing : false,
   },
   mutations: {
     loadUserinfoData(state, fromDB){
@@ -75,7 +77,6 @@ export default new Vuex.Store({
                 ]
               })
                 state.userCategorys.push(res[key])
-                
               } else {
                 // 카테고리가 있는 경우
                 followList[judge].children[0].children.push({

@@ -12,7 +12,7 @@
                     <v-layout row wrap>
                         <v-flex xs12 wrap class="keywordTitle">
                             <span class="headline">{{keyword}}</span>
-                            <keywordFollow class="follow" :keyword="keyword">
+                            <keywordFollow class="follow" :keyword="keyword" :isFollowing="isFollowing">
                             </keywordFollow>
                         </v-flex>
                         <v-flex xs12 class="search-content-color">
@@ -31,7 +31,7 @@
                                     <v-flex xs2>
                                         <p>{{totalResults}}</p>
                                         <span>articles</span>
-                                        
+
                                     </v-flex>
                                 </v-layout>
                             </v-layout>
@@ -47,17 +47,32 @@
 <script>
 import keywordFollow from '@/components/search/keyword/keywordFollow'
 export default {
-    props: ['keywordInfo'],
+    props: ['keywordInfo', 'isFollowing'],
     components: {
-        keywordFollow
+        keywordFollow,
+    },
+    data() {
+        return {}
     },
     watch: {
         keywordInfo: function () {
             // console.log('watch', this.keywordInfo);
         }
     },
-    mounted() {
-        // console.log('keywordInfo : ', this.keywordInfo);
+    updated() {
+
+    },
+    methods: {
+        isFollowElement(word) {
+            this.isFollowing = false;
+            let followSource = this.$store.state.userKeyword;
+            Object.keys(followSource).forEach(element => {
+                if (element == word) {
+                    this.isFollowing = true;
+                }
+            })
+
+        },
     },
     computed: {
         keyword() {
@@ -89,7 +104,8 @@ export default {
 .search-content-color {
     color: #757575;
 }
-.test{
+
+.test {
     border-color: blue;
 }
 

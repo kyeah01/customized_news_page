@@ -129,13 +129,15 @@ const newsapi = new NewsAPI(env.data().api1);
         parentDrawer : false,
         parentDetail : null,
         search : null,
+        type : null,
         today : null,
         beforeTwo : null,
 
         Dfollow_q : null,
         Dfollow_s : null,
         reqNone : false,
-        follower : null
+        follower : null,
+        defaultImage : 'https://via.placeholder.com/300x300/FFFFFF/000000?text='
       }
     },
     methods: {
@@ -163,6 +165,9 @@ const newsapi = new NewsAPI(env.data().api1);
               country: 'us'
             }).then(res => {
                 res.articles.forEach(post => {
+                   if(post.urlToImage==null){
+                    post.urlToImage=this.defaultImage+post.source.name
+                  }
                   post.mark_as_read = false
                   post.read_later = false
                   this.article.push(post)
@@ -176,13 +181,16 @@ const newsapi = new NewsAPI(env.data().api1);
           }else{
               newsapi.v2.everything({
                 // country: this.country,
-                category: this.category,
+                // category: this.category,
                 sources : this.Dfollow_s,
                 q : this.Dfollow_q,
                 pageSize: this.pageSize,
                 page: this.page
               }).then(res => {
                 res.articles.forEach(post => {
+                  if(post.urlToImage==null){
+                    post.urlToImage=this.defaultImage+post.source.name
+                  }
                   post.mark_as_read = false
                   post.read_later = false
                   this.article.push(post)
@@ -315,8 +323,8 @@ const newsapi = new NewsAPI(env.data().api1);
             this.load_follower(false)
           }
           this.search=this.$route.params.follow
+          this.type=this.$route.params.type
         }
-        this.leadMore()
       },
       //navbar 클릭으로 article 정보 변환시(eventbus)
       watch : {
@@ -324,9 +332,11 @@ const newsapi = new NewsAPI(env.data().api1);
             eventBus.$on('article', r=>{
               if(r[0].type === this.$store.state.sourceSubTitle){
                 this.Dfollow_s=r[0].name
+                this.Dfollow_q=null
                 this.load_follower(true)
               }else{
                 this.Dfollow_q=r[0].name
+                this.Dfollow_s=null
                 this.load_follower(false)
               }
               this.search=r[0].name
@@ -335,7 +345,26 @@ const newsapi = new NewsAPI(env.data().api1);
             this.page=0
             this.busy=false
             this.topheadlinesArticle()
-          }
+          },
+          //추후 수정 (search, type 같은 function으로)
+          type : function(){
+            eventBus.$on('article', r=>{
+              if(r[0].type === this.$store.state.sourceSubTitle){
+                this.Dfollow_s=r[0].name
+                this.Dfollow_q=null
+                this.load_follower(true)
+              }else{
+                this.Dfollow_q=r[0].name
+                this.Dfollow_s=null
+                this.load_follower(false)
+              }
+              this.search=r[0].name
+            })
+            this.article=[{header : 'today'}]
+            this.page=0
+            this.busy=false
+            this.topheadlinesArticle()
+          },
       }
   }
 </script>

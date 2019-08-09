@@ -4,7 +4,7 @@
       <v-navigation-drawer
             app
             :temporary = controller
-            :touchless="true"
+            :touchless="false"
             v-model="drawer"
             right
             style="width:83vw"
@@ -111,7 +111,7 @@ export default {
   watch: {
     drawer : function() {
       if (!this.drawer) {
-          this.$emit('right_drawer', 'update')
+        this.$emit('right_drawer', 'update')
       }
     }
   },

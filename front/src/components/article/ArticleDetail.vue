@@ -4,7 +4,7 @@
       <v-navigation-drawer 
         app
         v-model="drawer"
-        :touchless="true"
+        :touchless="false"
         temporary
         right
         style="width:83vw"
@@ -21,8 +21,9 @@
           </h1>
           <p class="text-lg-right grey--text">{{detail.author}}</p>
           <p class="text-lg-right grey--text">{{detail.publishedAt}}</p>
-
-          <v-img v-bind:src="detail.urlToImage"
+          
+          <v-img 
+            v-bind:src="detail.urlToImage"
             width:130px 
             height:78px>
           </v-img>
@@ -116,6 +117,7 @@ export default {
   props : ['drawer','detail'],
   methods : {
     close(){
+      console.log(this.detail)
       this.drawer=!this.drawer
       this.$emit('right_drawer', 'closeDetail')
     }
