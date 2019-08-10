@@ -18,16 +18,17 @@
                             <v-list-tile v-for="item in items" :key="item" @click="create(item)">
                                 <v-list-tile-action>
                                     <v-icon v-if="isFollowCategory(item)" color="#2bb24c">fas fa-rss</v-icon>
-                                    <v-icon v-else>fas fa-folder-open</v-icon>
+                                    <v-icon v-else>fas fa-rss</v-icon>
                                 </v-list-tile-action>
 
                                 <v-list-tile-content>
                                     <v-list-tile-title>{{item}}</v-list-tile-title>
                                 </v-list-tile-content>
 
-                                <v-list-tile-action>
-                                    <v-btn @click="click" icon ripple>
-                                        <v-icon color="grey lighten-1">info</v-icon>
+                                <v-list-tile-action v-if="isFollowCategory(item)">
+                                    <v-btn @click.stop="unfollow(item)">
+                                        remove
+                                        <!-- <v-icon color="red lighten-1">info</v-icon> -->
                                     </v-btn>
                                 </v-list-tile-action>
                             </v-list-tile>
@@ -73,12 +74,22 @@ export default {
         caseSensitive: false,
     }),
     methods: {
-        click(){
-            console.log('click');
+        unfollow(){
+            delete this.$store.state.userKeyword[this.keyword];
+
+            var user = firebase.auth().currentUser
+            firebase.firestore().collection('Userinfo').doc(user.uid).update({
+                keyword : this.$store.state.userKeyword
+            })
+            this.$store.commit('loadRes');
+            this.isFollowing = false;
+            
+            
+
         },
         isFollowCategory(category) {
-            let sources = this.$store.state.userKeyword;
-            if (sources[this.keyword] == category) {
+            let userKeyword = this.$store.state.userKeyword;
+            if (userKeyword[this.keyword] == category) {
                 return true;
             } else return false;
 
@@ -88,6 +99,7 @@ export default {
                 this.addopen = false
             }
             this.items = this.$store.state.userCategorys
+            
             this.expand = !this.expand
         },
         addFeed: function () {
