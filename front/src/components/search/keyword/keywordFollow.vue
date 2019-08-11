@@ -83,9 +83,6 @@ export default {
             })
             this.$store.commit('loadRes');
             this.isFollowing = false;
-            
-            
-
         },
         isFollowCategory(category) {
             let userKeyword = this.$store.state.userKeyword;
