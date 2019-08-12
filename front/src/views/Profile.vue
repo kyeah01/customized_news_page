@@ -4,7 +4,7 @@
           <v-flex xs6 md6>
           <h1>
             <span class="heading" id="header-title">Manage account</span>
-            <div class="sub">Logged in using Google</div>
+            <div class="sub">Logged in using {{ log }}</div>
           </h1>
           </v-flex>
         </v-layout>
@@ -41,6 +41,7 @@ import ProfileCard from '@/components/profile/ProfileCard'
       },
       data () {
         return {
+          log: '',
           email: '',
           dialog: false,
           items: [
@@ -80,13 +81,19 @@ import ProfileCard from '@/components/profile/ProfileCard'
           this.sDate.second=date.getSeconds()
 
           firebase.auth().onAuthStateChanged((user) => {
-                      if (!user) {
-                          this.$router.push("/")
-                      } else {
-                        this.email = user.email
-                      }
+            if (user) {
+              if (!user.photoURL) {
+                this.log = 'Idle'
+              }else if (user.photoURL.slice(0, 10) === 'https://lh') {
+                this.log = 'Google'
+              } else if (user.photoURL.slice(0, 27) === 'https://graph.facebook.com/') {
+                this.log = 'Facebook'
+              } else {
+                this.log = 'Idle'
+              }
+            }
+          })
 
-                  })
         },
         destroyed(){
           var user=firebase.auth().currentUser
