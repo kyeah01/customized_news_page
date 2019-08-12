@@ -31,13 +31,10 @@
 import firebase from 'firebase'
 import Source from '@/components/search/source/Source'
 export default {
-    props: ['sourceData', 'searchkey','isChange'],
+    props: ['sourceData', 'searchkey'],
     components: {
         Source,
     },
-    // data: {
-        
-    // },
     // watch: {
     //     sourceData: function() {
     //         console.log('sourceData from sourceList.vue', this.sourceData)

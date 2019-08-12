@@ -186,12 +186,11 @@ export default {
       })
     },
      update_follow(tmp){
-       console.log("addcontent",tmp)
-       if(tmp[1]<0){
+       if(tmp[1]){
          this.text=tmp[0]+" is Following"
        }else{
          console.log("addcontent unfollow",tmp)
-         this.text=tmp[0]+" is UnFollow"
+         this.text=tmp[0]+" is UnFollowed"
        }
        this.snackbar=true
     }
