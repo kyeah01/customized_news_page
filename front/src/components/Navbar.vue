@@ -11,15 +11,18 @@
                 <div class="container-1">
                     <br style="height: 20.8px;">
                     <span class="icon" id="searchIcon"><i class="fa fa-search"></i></span>
-                    <v-select outline 
+                    
+                    <input v-model="searchWord" type="search" id="search" :placeholder="placeholder" @click="changePlaceholder" @keydown.enter="search" />
+                </div>
+                
+            </div>
+            <v-select outline 
                                 color="#2bb24c" 
                                 v-model="searchSelected" 
                                 :items="searchMenuSelect"
-                                height=20
+                                height="35px"
+                                width
                                 ></v-select>
-                    <input v-model="searchWord" type="search" id="search" :placeholder="placeholder" @click="changePlaceholder" @keydown.enter="search" />
-                </div>
-            </div>
             <v-btn @click="goto('test')" flat>Test Space</v-btn>
             <Login />
 
@@ -350,9 +353,16 @@ export default {
 
 <style lang="css" scoped>
 .v-input__slot{
-  min-height: auto!important;
-  display: flex!important;
-  align-items: center!important;
+    /* 
+        app.vue에 선언되어 있음... 
+        v-input__slot 여기서 안먹는것 같음.
+        vuetify ver. 1.5 min-height 값 52px 제한
+        참고 : https://stackoverflow.com/questions/53363333/vuetify-js-v-select-minimum-height-limitation
+    */
+}
+
+.container-1{
+    width: 100px !important;
 }
 .btn-edit {}
 
