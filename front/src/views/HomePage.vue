@@ -1,25 +1,44 @@
 <template lang="html">
 <div>
-    <div style="background-color:#F2F2F2;">
-    <v-container>
-    <!-- title -->
-    <h1>FOR YOUR CONVENIENCE,</h1>
-    <!-- <hr width="200px" style="height:5px; border:0;background: #2bb24c"> -->
-    <p class="blockquote" style="padding-left:0px;">모든 컨텐츠를 한번에 받아보세요</p>
-    <v-layout row>
-      <img src="https://cdn.pixabay.com/photo/2018/07/01/13/28/announcement-3509489_1280.jpg" alt="신문" width="50%">
-      <v-layout wrap justify-center align-center style="padding-left:0px;">
-        <blockquote class="blockquote" style="text-align:center; padding:0 0 0 0;">
-          Keep up with all the topics that matter to you.<br>All in one place, <strong>"IDLE"</strong>.
-        </blockquote>
-      <v-btn large dark color="success">GET STARTED FOR FREE</v-btn>
-      </v-layout>
-    </v-layout>
-    <br>
-    <br>
-    </v-container>
+    <div>
+      <v-container>
+        <carousel-3d :controls-visible="true" :controls-prev-html="'&#10092;'" :controls-next-html="'&#10093;'" 
+                    :controls-width="30" :controls-height="60" :clickable="false" :width="600" :height="430"
+                    :autoplay="true" :autoplay-timeout="3000" @after-slide-change="isTop(i)">
+          <slide v-for="(slide, i) in slides" :index="i" style="border:0;">
+            <template slot-scope="{ index, isCurrent, leftIndex, rightIndex }">
+              <img :data-index="index" :class="{ 'elevation-24': isCurrent }" :src="slide.img">
+            </template>
+          </slide>
+        </carousel-3d>
+      </v-container>
+
+      <v-container>
+        <v-layout justify-center>
+          <v-card style="height:auto; width:38vw; padding-top:10px" class="elevation-24">
+            <v-img src="https://user-images.githubusercontent.com/45934061/62856062-d8812b80-bd2e-11e9-8739-80e5f83a1658.PNG" alt="main Img"/>
+          </v-card>
+        </v-layout>
+        <v-layout justify-center>
+          <blockquote class="blockquote" style="text-align:center; padding:50px 0 10px 0;">
+            Keep up with all the topics that matter to you.<br>All in one place, <strong>"IDLE"</strong>.
+          </blockquote>
+        </v-layout>
+        <v-layout justify-center>
+          <!-- <img src="https://cdn.pixabay.com/photo/2018/07/01/13/28/announcement-3509489_1280.jpg" alt="신문" width="50%"> -->
+          <v-btn large dark color="success">GET STARTED FOR FREE</v-btn>
+        </v-layout>
+        <br>
+        <br>
+      </v-container>
     </div>
     <div>
+      <v-container>
+        <h1>FOR YOUR CONVENIENCE,</h1>
+        <p class="blockquote" style="padding-left:0px;">모든 컨텐츠를 한번에 받아보세요</p>
+      </v-container>
+    </div>
+    <div style="background-color:#F2F2F2;">
       <br>
       <br>
       <v-container style="text-align: right;">
@@ -42,16 +61,7 @@
         <p class="blockquote">좋아하는 신문사의 기사를 구독하세요</p>
         <!-- <img src="https://cdn.pixabay.com/p hoto/2018/07/01/13/28/announcement-3509489_1280.jpg" alt="신문" width="50%" style="padding-left:24px;"> -->
       </v-container>
-    </div>
-
-    <div>
-      <v-container >
-        <v-card style="height:auto; width:50vw" class="align:center">
-          <v-img src="https://user-images.githubusercontent.com/45934061/62856062-d8812b80-bd2e-11e9-8739-80e5f83a1658.PNG" alt="main Img"/>
-        </v-card>
-      </v-container>
-    </div>
-    
+    </div>  
       <v-layout>
       <v-flex>
 
@@ -67,6 +77,8 @@ import FirebaseService from '@/services/FirebaseService'
 import 'firebase/firestore'
 import GitGraph from '../components/GitGraph'
 import Footer from '../components/Footer'
+import { Carousel3d, Slide } from 'vue-carousel-3d';
+
 
 //user log
 import timeCheck from '../timeCheck'
@@ -77,12 +89,17 @@ export default {
       sDate : null,
       eDate : null,
       path : '/',
-      words:null
+      words:null,
+      slides : [
+        {img:'https://user-images.githubusercontent.com/45934061/62856062-d8812b80-bd2e-11e9-8739-80e5f83a1658.PNG'},
+        {img:''},
+        {img:''},
+      ]
     }
   },
   components: {
-    GitGraph,
-    Footer,
+    Carousel3d,
+    Slide,
   },
   created (){
     this.sDate = timeCheck()
