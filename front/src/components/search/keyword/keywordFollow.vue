@@ -2,15 +2,13 @@
 <v-layout wrap overflow>
     <v-flex shrink>
         <div>
-            <v-btn v-if="isFollowing" small outline class=" following green green--text" @click="open">
-                Following
+            <v-btn v-if="isFollowing" small outline color="#9e9e9e" class="following" @click="open">
+                <span>Following</span>
             </v-btn>
             <v-btn v-else small outline class="green green--text" @click="open">
                 Follow
             </v-btn>
-            <!-- <v-btn :class="[isFollowing ? 'following' : '']" small outline class="green green--text" @click="open">
-                Follow
-            </v-btn> -->
+
         </div>
         <div class="followContent">
             <v-expand-transition>
@@ -19,12 +17,20 @@
                         <v-list flat>
                             <v-list-tile v-for="item in items" :key="item" @click="create(item)">
                                 <v-list-tile-action>
-                                    <v-icon>fas fa-rss</v-icon>
+                                    <v-icon v-if="isFollowCategory(item)" color="#2bb24c">fas fa-rss</v-icon>
+                                    <v-icon v-else>fas fa-rss</v-icon>
                                 </v-list-tile-action>
 
                                 <v-list-tile-content>
                                     <v-list-tile-title>{{item}}</v-list-tile-title>
                                 </v-list-tile-content>
+
+                                <v-list-tile-action v-if="isFollowCategory(item)">
+                                    <v-btn @click.stop="unfollow(item)">
+                                        remove
+                                        <!-- <v-icon color="red lighten-1">info</v-icon> -->
+                                    </v-btn>
+                                </v-list-tile-action>
                             </v-list-tile>
 
                             <v-divider />
@@ -68,12 +74,29 @@ export default {
         caseSensitive: false,
     }),
     methods: {
+        unfollow(){
+            delete this.$store.state.userKeyword[this.keyword];
 
+            var user = firebase.auth().currentUser
+            firebase.firestore().collection('Userinfo').doc(user.uid).update({
+                keyword : this.$store.state.userKeyword
+            })
+            this.$store.commit('loadRes');
+            this.isFollowing = false;
+        },
+        isFollowCategory(category) {
+            let userKeyword = this.$store.state.userKeyword;
+            if (userKeyword[this.keyword] == category) {
+                return true;
+            } else return false;
+
+        },
         open: function () {
             if (this.addopen == true) {
                 this.addopen = false
             }
             this.items = this.$store.state.userCategorys
+            
             this.expand = !this.expand
         },
         addFeed: function () {
@@ -135,11 +158,16 @@ export default {
 </script>
 
 <style>
-.following{
-    content: 'whatever it is you want to add';
+.following {
+    text-align: center;
 }
 
-.following:hover{
-     content: 'whatever it is you want to add';
+.following:hover span {
+    display: none;
+}
+
+.following:hover::after {
+    content: 'edit';
+
 }
 </style>

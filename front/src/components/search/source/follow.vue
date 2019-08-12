@@ -2,46 +2,57 @@
 <v-layout wrap overflow>
     <v-flex shrink>
         <div>
-        <v-btn small outline class="green green--text" @click="open">
-            follow
-        </v-btn>
+            <v-btn v-if="isFollowing" small outline color="#9e9e9e" class="following" @click="open">
+                <span>Following</span>
+            </v-btn>
+            <v-btn v-else small outline class="green green--text" @click="open">
+                follow
+            </v-btn>
         </div>
         <div class="expandBox">
-        <v-expand-transition>
-            <v-card v-show="expand" class="scroll">
-                <div v-if="addopen===false">
+            <v-expand-transition>
+                <v-card v-show="expand" class="scroll">
+                    <div v-if="addopen===false">
                         <!-- <input v-model="searchFeed" class="autocomplete-input" placeholder="Search by topic" aria-label="Search by topic" autofocus> -->
                         <v-list class="followExpand" flat>
                             <v-list-tile v-for="item in items" :key="item" @click="create(item)" class="itemStyle">
-                                <!-- <v-list-tile-action> -->
-                                    <v-icon class="categoryIcon">fas fa-rss</v-icon>
-                                <!-- </v-list-tile-action> -->
+                                <v-list-tile-action>
+                                    <v-icon v-if="isFollowCategory(item)" color="#2bb24c">fas fa-rss</v-icon>
+                                    <v-icon v-else>fas fa-rss</v-icon>
+                                </v-list-tile-action>
 
                                 <v-list-tile-content>
                                     <v-list-tile-title>{{item}}</v-list-tile-title>
                                 </v-list-tile-content>
+
+                                <v-list-tile-action v-if="isFollowCategory(item)">
+                                    <v-btn @click.stop="unfollow()">
+                                        remove
+                                        <!-- <v-icon color="red lighten-1">info</v-icon> -->
+                                    </v-btn>
+                                </v-list-tile-action>
                             </v-list-tile>
 
                             <v-divider />
                             <v-footer class="followTile" @click="addFeed">
                                 <!-- <v-list-tile-action> -->
-                                    <v-icon class="addIcon">add</v-icon>
+                                <v-icon class="addIcon">add</v-icon>
                                 <!-- </v-list-tile-action> -->
                                 <!-- <v-list-tile-content class="followContent"> -->
-                                    <span class="addFeed">New Feed</span>
+                                <span class="addFeed">New Feed</span>
                                 <!-- </v-list-tile-content> -->
                             </v-footer>
                         </v-list>
-                </div>
+                    </div>
 
-                <div v-else>
-                    <span class="title font-weight-bold.font-italic" >Feed Name</span>
-                    <input v-model="newFeed" class="autocomplete-input" placeholder="New Topic Name" autofocus>
-                    <v-btn @click="create(newFeed)" class="success">Create</v-btn>
-                    <v-btn @click="before" class="normal">Before</v-btn>
-                </div>
-            </v-card>
-        </v-expand-transition>
+                    <div v-else>
+                        <span class="title font-weight-bold.font-italic">Feed Name</span>
+                        <input v-model="newFeed" class="autocomplete-input" placeholder="New Topic Name" autofocus>
+                        <v-btn @click="create(newFeed)" class="success">Create</v-btn>
+                        <v-btn @click="before" class="normal">Before</v-btn>
+                    </div>
+                </v-card>
+            </v-expand-transition>
         </div>
     </v-flex>
 
@@ -52,28 +63,60 @@
 import firebase from 'firebase'
 import EventBus from '@/eventBus'
 export default {
-    props: ['news',],
+    props: ['news', ],
+    // news : 검색된 결과 news 정보 하나를 받아옴. ex) abc 검색 -> abc-news, abc-news-au 각각의 정보를 따로따로 가져옴.
     data: () => ({
         expand: false,
         addopen: false,
         items: null,
         searchFeed: "",
         newFeed: "",
-        isFollowing : false,
+        isFollowing: false,
         search: null,
         caseSensitive: false,
 
         closeDrawer: false
     }),
-    
+    created() {
+        let newsId = this.news.id;
+        let followSource = this.$store.state.followSource;
+
+        if(followSource[newsId] != null ) this.isFollowing = true;
+        else this.isFollowing = false;
+
+    },
+    mounted() {
+        // console.log('props news : ',this.news);
+    },
     methods: {
+        unfollow(){
+            // this.news : target news 정보
+            // console.log(this.news);
+            
+
+            delete this.$store.state.followSource[this.news.id];
+
+            var user = firebase.auth().currentUser
+            firebase.firestore().collection('Userinfo').doc(user.uid).update({
+                follow : this.$store.state.followSource
+            })
+            this.$store.commit('loadRes');
+            this.isFollowing = false;
+        },
+        isFollowCategory(category) {
+            let followSource = this.$store.state.followSource;
+            if (followSource[this.news.id] == category) {
+                return true;
+            } else return false;
+
+        },
         open: function () {
-            if(this.addopen==true){
-                this.addopen=false
+            if (this.addopen == true) {
+                this.addopen = false
             }
             this.items = this.$store.state.userCategorys
             this.expand = !this.expand
-            
+
             EventBus.$emit('closeByFollow', this.closeDrawer)
         },
         addFeed: function () {
@@ -101,11 +144,12 @@ export default {
             this.addopen = false
             this.expand = !this.expand
 
+            this.isFollowing = true;
             // EventBus.$on('closeByDrawer', drawer => {
             //     this.expand = drawer
             // })
         },
-        getFollowKeyword(){
+        getFollowKeyword() {
 
         },
         async sourcesManage(news, user) {
@@ -145,6 +189,18 @@ export default {
 </script>
 
 <style scoped>
+.following {
+    text-align: center;
+}
+
+.following:hover span {
+    display: none;
+}
+
+.following:hover::after {
+    content: 'edit';
+
+}
 .autocomplete-input {
     border: 1px solid #eee;
     border-radius: 8px;
@@ -163,8 +219,8 @@ export default {
     background-position: 12px
 }
 
-.expandBox{
-    width : 100px;
+.expandBox {
+    width: 100px;
 }
 
 .scroll {
@@ -172,8 +228,8 @@ export default {
     position: absolute;
     right: 25px;
     /* height : 200px; */
-    width : 300px;
-    z-index : 1; 
+    width: 300px;
+    z-index: 1;
 
     /* padding: 16px; */
 }
@@ -207,6 +263,4 @@ export default {
     /* padding: 8px; */
     /* height: 40px; */
 }
-
-
 </style>
