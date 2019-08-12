@@ -76,7 +76,7 @@
       </v-card>
     </v-flex>
 
-    <v-flex xs4 v-if="search=='Main'">
+    <v-flex xs4 v-if="search=='Main'" hidden-md-and-down>
       <weather/>
       <br>
       <v-card style="border-radius: 10px; width:100%;">
@@ -177,7 +177,11 @@ const newsapi = new NewsAPI(env.data().api1);
               country: 'us'
             }).then(res => {
                 res.articles.forEach(post => {
-                   if(post.urlToImage==null){
+                  if (post.source.name=='Youtube.com') {
+                    post.content = ''
+                    post.urlToImage = 'https://img.youtube.com/vi/'+post.url.split('?v=')[1]+'/mqdefault.jpg'
+                  }
+                   else if(post.urlToImage==null){
                     post.urlToImage=this.defaultImage+post.source.name
                   }
                   post.mark_as_read = false

@@ -1,6 +1,6 @@
 <template>
 <v-container grid-list-xs class="topkeywordBox">
-    <v-layout column >
+    <v-layout column>
         <v-flex xs12>
             <v-subheader class="topkeywordTitle"><strong>Top Keyword</strong></v-subheader>
         </v-flex>
