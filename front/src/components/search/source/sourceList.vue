@@ -13,8 +13,12 @@
                     <span>SORTING BY FEEDLY SCORE</span>
                     <v-icon>expand_more</v-icon>
                 </v-flex>
-                <v-flex xs12 class="my-3" v-for="source in sourceData" :key="source.id">
-                    <Source class="source" :source = source>
+                <v-flex xs12 class="my-3" v-for="(source,idx) in sourceData" :key="source.id">
+                    <Source class="source" 
+                    :source = source
+                    :idx = idx
+                    @sign_Source="update_follow"
+                    >
                     </Source>
                 </v-flex>
             </v-layout>
@@ -27,7 +31,7 @@
 import firebase from 'firebase'
 import Source from '@/components/search/source/Source'
 export default {
-    props: ['sourceData', 'searchkey'],
+    props: ['sourceData', 'searchkey','isChange'],
     components: {
         Source,
     },
@@ -71,6 +75,9 @@ export default {
                         sources: userSources
                     })
                 })
+        },
+         update_follow(tmp){
+             this.$emit('sign_sourceList',tmp)
         }
     }
 }
