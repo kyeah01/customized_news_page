@@ -34,9 +34,9 @@
           <div>
           {{detail.content}}
           </div>
-          <div>
+          <v-layout justify-center>
             <v-btn dark large><a v-bind:href="detail.url" target="_blank" style="color : white">Visit Website</a></v-btn>
-          </div>
+          </v-layout>
         </section>
       </v-navigation-drawer>
     </div>

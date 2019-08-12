@@ -1,35 +1,63 @@
 <template lang="html">
 <div>
-  <v-container>
+    <div style="background-color:#F2F2F2;">
+    <v-container>
     <!-- title -->
+    <h1>FOR YOUR CONVENIENCE,</h1>
+    <!-- <hr width="200px" style="height:5px; border:0;background: #2bb24c"> -->
+    <p class="blockquote" style="padding-left:0px;">모든 컨텐츠를 한번에 받아보세요</p>
     <v-layout row>
-      <v-flex xs12>
-        Discover the best sources for any topic
-      </v-flex>
+      <img src="https://cdn.pixabay.com/photo/2018/07/01/13/28/announcement-3509489_1280.jpg" alt="신문" width="50%">
+      <v-layout wrap justify-center align-center style="padding-left:0px;">
+        <blockquote class="blockquote" style="text-align:center; padding:0 0 0 0;">
+          Keep up with all the topics that matter to you.<br>All in one place, <strong>"IDLE"</strong>.
+        </blockquote>
+      <v-btn large dark color="success">GET STARTED FOR FREE</v-btn>
+      </v-layout>
     </v-layout>
-    <v-layout>
+    <br>
+    <br>
+    </v-container>
+    </div>
+    <div>
+      <br>
+      <br>
+      <v-container style="text-align: right;">
+        <h1>JUST FOR YOU,</h1>
+      
+        <p class="blockquote">원하는 키워드가 들어간 기사를 구독하세요</p>
+        <v-layout row justify-end>
+          <!-- <img src="https://cdn.pixabay.com/photo/2017/02/06/00/22/keywords-letters-2041816_1280.jpg" alt="키워드" width="50%" style="padding-left:24px;"> -->
+
+        </v-layout>
+      </v-container>
+      <br>
+      <br>
+    </div>
+    <div style="background-color:#2bb24c;">
+      <br>
+      <br>
+      <v-container>
+        <h1>FOR YOUR PREFERENCE,</h1>
+        <p class="blockquote">좋아하는 신문사의 기사를 구독하세요</p>
+        <!-- <img src="https://cdn.pixabay.com/p hoto/2018/07/01/13/28/announcement-3509489_1280.jpg" alt="신문" width="50%" style="padding-left:24px;"> -->
+      </v-container>
+    </div>
+
+    <div>
+      <v-container >
+        <v-card style="height:auto; width:50vw" class="align:center">
+          <v-img src="https://user-images.githubusercontent.com/45934061/62856062-d8812b80-bd2e-11e9-8739-80e5f83a1658.PNG" alt="main Img"/>
+        </v-card>
+      </v-container>
+    </div>
+    
+      <v-layout>
       <v-flex>
-        <v-form>
-          <v-text-field
-            outline
-            label="Prepend inner"
-            prepend-inner-icon="place"
-          ></v-text-field>
 
-
-          <!-- search-box start -->
-          <div id="autocomplete" class="autocomplete">
-            <input class="autocomplete-input" placeholder="Search by topic" aria-label="Search by topic">
-            <ul class="autocomplete-result-list"></ul>
-          </div>
-          <!-- search-box end -->
-        </v-form>
       </v-flex>
     </v-layout>
-  <GitGraph/>
 
-  </v-container>
-  <Footer/>
   </div>
 </template>
 
