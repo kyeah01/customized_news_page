@@ -9,7 +9,7 @@ import Trend from 'vuetrend'
 import VueAnalytics from 'vue-analytics'
 import './axios'
 import VueDraggable from "vue-draggable";
-
+import 'expose-loader?$!expose-loader?jQuery!jquery'
 Vue.use(VueDraggable);
 
 Vue.prototype.$http = axios

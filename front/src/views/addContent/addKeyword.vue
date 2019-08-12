@@ -134,6 +134,8 @@ export default {
                 });
         },
         async search() {
+            var a=$('#input-search').val();
+            this.input=a
             // 입력한 키워드 검색결과에 따라 데이터베이스에 키워드 저장하기.
             await this.$axios.get(`https://newsapi.org/v2/everything?q=${this.input}&apiKey=2dc4b8b9d26f4a6b97e21a1f282bac9d`)
                 .then(response => {
