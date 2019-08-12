@@ -6,7 +6,7 @@
              :active_tab = parentActive_tab
             >
             </searchOptionSelector>
-                <v-flex my-5>
+                <v-flex my-5 xs9>
                     <div>
                         <p class="description">Discover the best sources for any topic</p>
                     </div>
@@ -162,5 +162,7 @@ export default {
 </script>
 
 <style lang="css" scoped>
-
+topSource {
+  padding-left: 48px;
+}
 </style>

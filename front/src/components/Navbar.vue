@@ -35,11 +35,12 @@
         </v-list>
         <!-- </v-toolbar> -->
  
+        <v-divider></v-divider> 
+        <div style="margin-top:10px"><div style="padding:10px 0px 10px 15px; cursor:pointer" @click="goto('article')"><v-icon>far fa-newspaper</v-icon><span>  &nbsp Main</span></div></div>
+        <div><div style="padding:10px 0px 10px 15px;"><v-icon>fas fa-check</v-icon><span>  &nbsp Recently Read</span></div></div>
+        <div style="margin-bottom:10px"><div style="padding:10px 0px 10px 15px;"><v-icon>far fa-bookmark</v-icon><span>  &nbsp&nbsp Read Later</span></div></div>
         <v-divider></v-divider>
-        <div style="margin:10px 0px 12px 10px;"><span style="margin:30px 0px 30px 10px; height:100px"><v-icon>far fa-newspaper</v-icon>  &nbsp Main</span></div>
-        <div style="margin:10px 0px 12px 10px;"><span style="margin:30px 0px 30px 10px; height:100px"><v-icon>fas fa-check</v-icon>  &nbsp Recently Read</span></div>
-        <div style="margin:10px 0px 12px 10px;"><span style="margin:30px 0px 30px 10px; height:100px"><v-icon>far fa-bookmark</v-icon>  &nbsp&nbsp Recently Read</span></div>
-        <v-divider></v-divider>
+
 
         <v-flex xs12>
             <v-btn class="ma-1" 
@@ -95,7 +96,7 @@ import firebase from 'firebase'
 // import GoogleLogin from './GoogleLogin'
 // import FacebookLogin from './FacebookLogin'
 import eventBus from '../eventBus'
-import Login from '@/components/Login'
+import Login from '@/components/login/Login'
 import manageArticleInNavbar from '@/components/manageArticleInNavbar'
 
 export default {

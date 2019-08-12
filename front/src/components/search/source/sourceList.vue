@@ -8,7 +8,7 @@
                 </v-flex>
             </v-layout>
 
-            <v-layout row wrap v-else> 
+            <v-layout row wrap v-else>
                 <v-flex xs12>
                     <span>SORTING BY FEEDLY SCORE</span>
                     <v-icon>expand_more</v-icon>
@@ -26,12 +26,10 @@
 <script>
 import firebase from 'firebase'
 import Source from '@/components/search/source/Source'
-import topSource from '@/components/search/source/topSource'
 export default {
     props: ['sourceData', 'searchkey'],
     components: {
         Source,
-        topSource
     },
     // data: {
         
