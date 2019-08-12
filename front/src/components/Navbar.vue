@@ -24,7 +24,7 @@
     </v-toolbar>
 
     <v-navigation-drawer height="92vh" app stateless v-model="drawer" style="background-color: #d9d9d9;">
-        
+
         <!-- <v-toolbar flat> -->
         <v-list>
             <v-list-tile>
@@ -36,47 +36,41 @@
             </v-list-tile>
         </v-list>
         <!-- </v-toolbar> -->
-        <v-divider></v-divider> 
-        <div style="margin-top:10px"><div style="padding:10px 0px 10px 15px; cursor:pointer" @click="goto('article')"><v-icon>far fa-newspaper</v-icon><span>  &nbsp Main</span></div></div>
-        <div><div style="padding:10px 0px 10px 15px;"><v-icon>fas fa-check</v-icon><span>  &nbsp Recently Read</span></div></div>
-        <div style="margin-bottom:10px"><div style="padding:10px 0px 10px 15px;"><v-icon>far fa-bookmark</v-icon><span>  &nbsp&nbsp Read Later</span></div></div>
+        <v-divider></v-divider>
+        <div style="margin-top:10px">
+            <div style="padding:10px 0px 10px 15px; cursor:pointer" @click="goto('article')">
+                <v-icon>far fa-newspaper</v-icon><span> &nbsp Main</span>
+            </div>
+        </div>
+        <div>
+            <div style="padding:10px 0px 10px 15px;">
+                <v-icon>fas fa-check</v-icon><span>&nbsp Recently Read</span>
+            </div>
+        </div>
+        <div style="margin-bottom:10px">
+            <div style="padding:10px 0px 10px 15px; cursor:pointer" @click="readLaterBtnClicked">
+                <v-icon>far fa-bookmark</v-icon><span>&nbsp&nbsp Read Later</span>
+            </div>
+        </div>
         <v-divider></v-divider>
 
-
         <v-flex xs12>
-            <v-btn class="ma-1" 
-                    :class="[editMode ? 'edit-mode' : 'not-edit-mode']"
-                    :outline='editOutline'
-                    small
-                    absolute 
-                    depressed
-                    right 
-                    :color="editColor"
-                    style="z-index: 3"
-                    @click="test"
-                    >
+            <v-btn class="ma-1" :class="[editMode ? 'edit-mode' : 'not-edit-mode']" :outline='editOutline' small absolute depressed right :color="editColor" style="z-index: 3" @click="test">
                 Edit
             </v-btn>
         </v-flex>
 
         <v-template v-if="!editMode">
-        <v-treeview :items="vuexItemList" 
-                    :active.sync="selectedItems"
-                    activatable 
-                    transition 
-                    open-all 
-                    open-on-click
-                    item-key="id" 
-                    return-object=true>
-            <template v-slot:prepend="{ item, open }">
-                <v-icon v-if="item.id < 0">
-                    fas fa-rss
-                </v-icon>
-                <v-icon v-else>
-                    {{ open ? 'fas fa-folder-open' : 'fas fa-folder' }}
-                </v-icon>
-            </template>
-        </v-treeview>
+            <v-treeview :items="vuexItemList" :active.sync="selectedItems" activatable transition open-all open-on-click item-key="id" return-object=true>
+                <template v-slot:prepend="{ item, open }">
+                    <v-icon v-if="item.id < 0">
+                        fas fa-rss
+                    </v-icon>
+                    <v-icon v-else>
+                        {{ open ? 'fas fa-folder-open' : 'fas fa-folder' }}
+                    </v-icon>
+                </template>
+            </v-treeview>
         </v-template>
 
         <manageArticleInNavbar v-else></manageArticleInNavbar>
@@ -89,6 +83,8 @@
         </v-btn>
     </div>
 
+    <readlater :drawer='readlaterDrawer' :readlaterArticles="readlaterArticles" @deleteReadlater="dread" @readLater_drawer_false="drawerClosed"></readlater>
+
 </nav>
 </template>
 
@@ -99,13 +95,15 @@ import firebase from 'firebase'
 import eventBus from '../eventBus'
 import Login from '@/components/login/Login'
 import manageArticleInNavbar from '@/components/manageArticleInNavbar'
+import readlater from '@/components/profile/Readlater'
 
 export default {
     components: {
         // GoogleLogin,
         // FacebookLogin,
         Login,
-        manageArticleInNavbar
+        manageArticleInNavbar,
+        readlater
     },
     computed: {
         vuexItemList() {
@@ -132,19 +130,53 @@ export default {
             selectedItems: [],
             editMode: false,
             editColor: "#999",
-            editOutline:true,
+            editOutline: true,
 
-            placeholder: 'Search...'
+            placeholder: 'Search...',
+            readlaterDrawer: false,
+            readlaterArticles: null,
         }
     },
     methods: {
-        test(){
+        dread() {
+            firebase.auth().onAuthStateChanged((user) => {
+                const db = firebase.firestore();
+                db.collection('Userinfo').doc(user.uid).get()
+                    .then(doc => {
+                        this.readlaterArticles = doc.data().readlater
+                    })
+                    .catch((err) => {
+                        console.log('Error getting documents', err);
+                    });
+            })
+        },
+        drawerClosed() {
+            // drawer 닫히면 emit 받아서 여기(navbar.vue)도 값 설정
+            this.readlaterDrawer = false;
+
+        },
+        readLaterBtnClicked() {
+            this.readlaterDrawer = !this.readlaterDrawer;
+
+            firebase.auth().onAuthStateChanged((user) => {
+                const db = firebase.firestore();
+                db.collection('Userinfo').doc(user.uid).get()
+                    .then(doc => {
+                        this.readlaterArticles = doc.data().readlater
+                    })
+                    .catch((err) => {
+                        console.log('Error getting documents', err);
+                    });
+            })
+
+        },
+        test() {
             this.editMode = !this.editMode
-            
-            if( this.editMode ){
+
+            if (this.editMode) {
                 this.editColor = "#ff5722";
                 this.editOutline = false;
-            }else{
+            } else {
                 this.editColor = "#999";
                 this.editOutline = true;
             }
@@ -202,12 +234,12 @@ export default {
             this.drawer = !this.drawer
         },
         changePlaceholder() {
-            $(function() {
+            $(function () {
                 var placeholder1 = $('#search');
-                placeholder1.focus(function(){
+                placeholder1.focus(function () {
                     placeholder1.val('Search in your feeds')
                 })
-                placeholder1.blur(function(){
+                placeholder1.blur(function () {
                     placeholder1.val('Search...')
                 })
             })
@@ -248,15 +280,14 @@ export default {
 </script>
 
 <style lang="css" scoped>
-.btn-edit{
+.btn-edit {}
 
+.edit-mode {
+    color: #fff;
 }
-.edit-mode{
-    color:#fff;
-}
-.not-edit-mode{
 
-}
+.not-edit-mode {}
+
 .btn-addContent {
     width: 300px;
     position: fixed;
@@ -353,22 +384,24 @@ export default {
     transition: background .55s ease
 }
 
-.container-1 input#search:focus, .container-1 input#search:active {
+.container-1 input#search:focus,
+.container-1 input#search:active {
     outline: none;
     /* box-shadow: 0 0 1px 1px #2bb24c; */
     width: 300px;
     display: block;
 }
 
-.container-1 input#search:focus, .container-1 input#search:active:after {
+.container-1 input#search:focus,
+.container-1 input#search:active:after {
     border: 1px solid #2bb24c;
     border-radius: 5px;
 }
 
-.container-1:hover input#search{
+.container-1:hover input#search {
     /* width: 300px; */
 }
- 
+
 /* .container-1 .icon:focus, .container-1 .icon:active {
     position: relative;
     right: 161px;
@@ -389,13 +422,14 @@ export default {
     right: 500px;
 } */
 
-
-.container-1 span#searchIcon:focus, .container-1 span#searchIcon:active{
+.container-1 span#searchIcon:focus,
+.container-1 span#searchIcon:active {
     position: absolute;
     right: 270px;
 }
 
-.container-1 span#searchIcon:focus, .container-1 span#searchIcon:active:after{
+.container-1 span#searchIcon:focus,
+.container-1 span#searchIcon:active:after {
     position: absolute;
     right: 270px;
 }

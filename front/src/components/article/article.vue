@@ -40,7 +40,7 @@
                                             <v-icon id="check" v-if="item.mark_as_read" style="color:#2bb24c;" @click="mark_as_read(item)">fas fa-check</v-icon>
                                             <v-icon id="check" v-else @click="mark_as_read(item)">fas fa-check</v-icon>
                                             <v-icon id="bookmark" v-if="!item.read_later" @click="read_later(item)">far fa-bookmark</v-icon>
-                                            <v-icon id="bookmark" v-else @click="read_later(item)" style="color:#2bb24c;">far fa-bookmark</v-icon>
+                                            <v-icon id="bookmark" v-else @click="read_later(item)" style="color:#2bb24c;">fad fa-bookmark</v-icon>
 
                                             <!-- <v-icon @click="read_later(item)">far fa-bookmark</v-icon>
                   <v-icon @click="read_later(item)">far fa-bookmark</v-icon> -->
@@ -72,27 +72,23 @@
         </v-flex>
 
         <v-flex xs4 v-if="search=='Main'" hidden-md-and-down>
-      <weather/>
-      <br>
-      <v-card style="border-radius: 10px; width:100%;">
-        <topSource/>
-      </v-card>
-      <br>
-      <v-card style="border-radius: 10px; width:100%;">
-        <topKeyword/>
-      </v-card>
-    </v-flex>
+            <weather />
+            <br>
+            <v-card style="border-radius: 10px; width:100%;">
+                <topSource />
+            </v-card>
+            <br>
+            <v-card style="border-radius: 10px; width:100%;">
+                <topKeyword />
+            </v-card>
+        </v-flex>
 
-    <div v-if="this.parentDrawer===true">
-      <ArticleDetail
-       :drawer = parentDrawer
-       :detail = parentDetail
-       @right_drawer = "update"
-       >
-      </ArticleDetail>
-    </div>
-  <!-- </v-layout> -->
-  </v-layout>
+        <div v-if="this.parentDrawer===true">
+            <ArticleDetail :drawer=parentDrawer :detail=parentDetail @right_drawer="update">
+            </ArticleDetail>
+        </div>
+        <!-- </v-layout> -->
+    </v-layout>
 </v-container>
 </template>
 
@@ -117,12 +113,12 @@ import env from '../../../env.js'
 const NewsAPI = require('newsapi');
 const newsapi = new NewsAPI(env.data().api1);
 
-  export default {
-    components : {
-      ArticleDetail,
-      weather,
-      topSource,
-      topKeyword
+export default {
+    components: {
+        ArticleDetail,
+        weather,
+        topSource,
+        topKeyword
     },
     props: ['type', 'follow'], // 새로 고침 시 url 파라미터 사용하여 api 호출
     data() {
@@ -176,11 +172,10 @@ const newsapi = new NewsAPI(env.data().api1);
                     }).then(res => {
                         res.articles.forEach(post => {
                             // console.log('post foreach 시작');
-if (post.source.name=='Youtube.com') {
-                    post.content = ''
-                    post.urlToImage = 'https://img.youtube.com/vi/'+post.url.split('?v=')[1]+'/mqdefault.jpg'
-                  }
-                   else if (post.urlToImage == null) {
+                            if (post.source.name == 'Youtube.com') {
+                                post.content = ''
+                                post.urlToImage = 'https://img.youtube.com/vi/' + post.url.split('?v=')[1] + '/mqdefault.jpg'
+                            } else if (post.urlToImage == null) {
                                 post.urlToImage = this.defaultImage + post.source.name
                             }
                             post.mark_as_read = false
@@ -190,8 +185,8 @@ if (post.source.name=='Youtube.com') {
                                 if (bool) post.mark_as_read = true;
                             })
 
-                            this.isReadLater(post).then(bool =>{
-                              if( bool ) post.read_later = true;
+                            this.isReadLater(post).then(bool => {
+                                if (bool) post.read_later = true;
                             })
 
                             // console.log('isMarkAsRead 끝');
@@ -265,7 +260,6 @@ if (post.source.name=='Youtube.com') {
                 return post.url == markAsReadUrl;
             });
 
-
             if (isMask) return true;
             else return false;
 
@@ -292,7 +286,6 @@ if (post.source.name=='Youtube.com') {
                 // https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Array/some
                 return post.url == element.url;
             });
-
 
             if (isMask) return true;
             else return false;
@@ -431,17 +424,19 @@ if (post.source.name=='Youtube.com') {
                     this.Dfollow_s = null
                     this.load_follower(false)
                 }
-                this.search=r[0].name
-              })
-              this.article=[{header : 'today'}]
-              this.page=0
-              this.busy=false
-              if(!this.reqNone){
+                this.search = r[0].name
+            })
+            this.article = [{
+                header: 'today'
+            }]
+            this.page = 0
+            this.busy = false
+            if (!this.reqNone) {
                 this.topheadlinesArticle()
-              }
-          }
-      }
-  }
+            }
+        }
+    }
+}
 </script>
 
 <style scoped>
@@ -547,6 +542,6 @@ if (post.source.name=='Youtube.com') {
 }
 
 .pointer {
-  cursor:pointer
+    cursor: pointer
 }
 </style>
