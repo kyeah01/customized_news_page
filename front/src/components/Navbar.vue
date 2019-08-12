@@ -23,7 +23,7 @@
         </v-toolbar-items>
     </v-toolbar>
 
-    <v-navigation-drawer height="92vh" app stateless v-model="drawer" style="background-color: #d9d9d9;">
+    <v-navigation-drawer height="93.5vh" app stateless v-model="drawer" style="background-color: #d9d9d9;">
 
         <!-- <v-toolbar flat> -->
         <v-list>
@@ -353,7 +353,7 @@ export default {
     bottom: 0px;
     left: 0px;
     background-color: #2bb24c;
-    height: 8vh;
+    height: 6.5vh;
     transition: all 0.2s;
 }
 
