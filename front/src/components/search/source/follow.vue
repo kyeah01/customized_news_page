@@ -11,7 +11,7 @@
         </div>
         <div class="expandBox">
             <v-expand-transition>
-                <v-card v-show="expand" class="scroll">
+                <v-card v-show="expand" class="scroll" v-if="this.$store.state.follow_openIdx===this.idx">
                     <div v-if="addopen===false">
                         <!-- <input v-model="searchFeed" class="autocomplete-input" placeholder="Search by topic" aria-label="Search by topic" autofocus> -->
                         <v-list class="followExpand" flat>
@@ -26,10 +26,10 @@
                                 </v-list-tile-content>
 
                                 <v-list-tile-action v-if="isFollowCategory(item)">
-                                    <v-btn @click.stop="unfollow()">
-                                        remove
+                                    <v-icon @click.stop="unfollow()">
+                                        fas fa-trash-alt
                                         <!-- <v-icon color="red lighten-1">info</v-icon> -->
-                                    </v-btn>
+                                    </v-icon>
                                 </v-list-tile-action>
                             </v-list-tile>
 
@@ -62,7 +62,7 @@ export default {
     props: ['news',"idx"],
     // news : 검색된 결과 news 정보 하나를 받아옴. ex) abc 검색 -> abc-news, abc-news-au 각각의 정보를 따로따로 가져옴.
     data: () => ({
-        expand: false,
+        expand: true,
         addopen: false,
         items: null,
         searchFeed: "",
@@ -70,6 +70,7 @@ export default {
         isFollowing: false,
         search: null,
         caseSensitive: false,
+        already_open : false,
 
         closeDrawer: false,
     }),
@@ -79,7 +80,6 @@ export default {
 
         if(followSource[newsId] != null ) {
             this.isFollowing = true;
-            this.idx=-1
         }
         else this.isFollowing = false;
 
@@ -100,8 +100,7 @@ export default {
             })
             this.$store.commit('loadRes');
             this.isFollowing = false;
-            this.idx=1;
-            var tmp=[this.news.id ,this.idx];
+            var tmp=[this.news.id ,false];
             this.$emit('sign_follow',tmp)
         },
         isFollowCategory(category) {
@@ -112,13 +111,18 @@ export default {
 
         },
         open: function () {
+            EventBus.$emit('closeByFollow', this.closeDrawer)
+            this.items = this.$store.state.userCategorys
+
             if (this.addopen == true) {
                 this.addopen = false
             }
-            this.items = this.$store.state.userCategorys
-            this.expand = !this.expand
 
-            EventBus.$emit('closeByFollow', this.closeDrawer)
+            if(this.$store.state.follow_openIdx==this.idx){
+               this.$store.state.follow_openIdx=-1 
+            }else{
+                this.$store.state.follow_openIdx=this.idx
+            }
         },
         addFeed: function () {
             this.addopen = true
@@ -128,27 +132,29 @@ export default {
         },
         create: async function (newFeed) {
             // follow (abc - IT)
-            var newsId = this.news.id;
-            this.$store.state.followSource[newsId] = newFeed
+            if(!this.isFollowCategory(newFeed)){
 
-            var user = firebase.auth().currentUser
-
-            firebase.firestore().collection('Userinfo').doc(user.uid).update({
-                follow: this.$store.state.followSource,
-                followInfo: this.$store.state.followinfo
-            })
-            this.$store.state.followKeyword = Object.keys(this.$store.state.followinfo)
-            this.$store.commit('loadRes')
-
-            this.sourcesManage(this.news, user);
-
-            this.addopen = false
-            this.expand = !this.expand
-
-            this.isFollowing = true;
-            this.idx=-1
-            var tmp=[newsId,this.idx];
-            this.$emit('sign_follow',tmp)
+                var newsId = this.news.id;
+                this.$store.state.followSource[newsId] = newFeed
+    
+                var user = firebase.auth().currentUser
+    
+                firebase.firestore().collection('Userinfo').doc(user.uid).update({
+                    follow: this.$store.state.followSource,
+                    followInfo: this.$store.state.followinfo
+                })
+                this.$store.state.followKeyword = Object.keys(this.$store.state.followinfo)
+                this.$store.commit('loadRes')
+    
+                this.sourcesManage(this.news, user);
+    
+                this.addopen = false
+                this.expand = !this.expand
+    
+                this.isFollowing = true;
+                var tmp=[newsId,true];
+                this.$emit('sign_follow',tmp)
+            } 
             // EventBus.$on('closeByDrawer', drawer => {
             //     this.expand = drawer
             // })
@@ -203,6 +209,7 @@ export default {
 
 .following:hover::after {
     content: 'edit';
+    text-align: center;
 
 }
 .autocomplete-input {

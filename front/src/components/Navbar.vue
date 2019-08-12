@@ -55,10 +55,27 @@
         <v-divider></v-divider>
 
         <v-flex xs12>
-            <v-btn class="ma-1" :class="[editMode ? 'edit-mode' : 'not-edit-mode']" :outline='editOutline' small absolute depressed right :color="editColor" style="z-index: 3" @click="test">
+            <v-btn class="ma-1" :class="[editMode ? 'edit-mode' : 'not-edit-mode']" :outline='editOutline' small absolute depressed right :color="editColor" style="z-index: 3" @click="test"/>
+        <v-layout justify-space-between>
+            <v-flex style="margin:10px 0px 12px 10px;">Category</v-flex>
+            <v-icon @click="Category_move()" style="margin:10px 10px 12px 10px;">fas fa-cog</v-icon>
+        </v-layout>
+
+        <!-- <v-flex xs12>
+            <v-btn class="ma-1" 
+                    :class="[editMode ? 'edit-mode' : 'not-edit-mode']"
+                    :outline='editOutline'
+                    small
+                    absolute 
+                    depressed
+                    right 
+                    :color="editColor"
+                    style="z-index: 3"
+                    @click="test"
+                    >
                 Edit
-            </v-btn>
-        </v-flex>
+            </v-btn>-->
+        </v-flex> 
 
         <v-template v-if="!editMode">
             <v-treeview :items="vuexItemList" :active.sync="selectedItems" activatable transition open-all open-on-click item-key="id" return-object=true>
@@ -89,7 +106,7 @@
 </template>
 
 <script>
-import firebase from 'firebase'
+import firebase, { functions } from 'firebase'
 // import GoogleLogin from './GoogleLogin'
 // import FacebookLogin from './FacebookLogin'
 import eventBus from '../eventBus'
@@ -170,7 +187,10 @@ export default {
             })
 
         },
-        test() {
+        Category_move() {
+            this.$router.push("/category_setting")
+        },
+        test(){
             this.editMode = !this.editMode
 
             if (this.editMode) {
@@ -203,9 +223,9 @@ export default {
 
         init: async function () {
             var user = firebase.auth().currentUser
-            var tmp = firebase.firestore().collection("Userinfo").doc(user.uid).get()
+            firebase.firestore().collection("Userinfo").doc(user.uid).get()
                 .then(r => {
-                    tmp = r.data()
+                    const tmp = r.data()
 
                     this.$store.commit('loadUserinfoData', tmp)
                     this.$store.commit('loadRes')
@@ -371,18 +391,18 @@ export default {
 .container-1 .icon {
     position: absolute;
     top: 35%;
-    /* right: 161px; */
     margin-left: 17px;
     margin-top: 17px;
     z-index: 1;
     color: #4f5b66;
 
-    -webkit-transition: background .55s ease;
-    -moz-transition: background .55s ease;
-    -ms-transition: background .55s ease;
-    -o-transition: background .55s ease;
-    transition: background .55s ease
+    transition: transform .55s ease
 }
+
+/* .container-1:focus, .container-1:active {
+    width: 300px;
+}
+ */
 
 .container-1 input#search:focus,
 .container-1 input#search:active {
@@ -390,6 +410,7 @@ export default {
     /* box-shadow: 0 0 1px 1px #2bb24c; */
     width: 300px;
     display: block;
+    /* text-align: right; */
 }
 
 .container-1 input#search:focus,
@@ -406,21 +427,18 @@ export default {
     position: relative;
     right: 161px;
 } */
-
-/* .container-1:hover .icon{
-    width: 300px;
-} */
-/* searchIcon */
-
-/* .container-1:active span#searchIcon{
-    position: absolute;
-    right: 500px;
+.container-1:focus .icon, .container-1:active .icon {
+    transform: translateX(-105.5px)
 }
 
-.container-1:active:after span#searchIcon{
-    position: absolute;
-    right: 500px;
-} */
+.container-1 .icon:focus, .container-1 .icon:active {
+    transform: translateX(-105.5px)
+}
+
+.container-1 .icon:focus, .container-1 .icon:active:after {
+    transform: translateX(-105.5px)
+}
+
 
 .container-1 span#searchIcon:focus,
 .container-1 span#searchIcon:active {
@@ -428,16 +446,20 @@ export default {
     right: 270px;
 }
 
-.container-1 span#searchIcon:focus,
 .container-1 span#searchIcon:active:after {
     position: absolute;
     right: 270px;
-}
 
-/* .container-1:focus .icon .container-1:active .icon{
-    position: absolute;
-    right: 100px;
-} */
+}
+.container-1:hover input#search{
+    /* width: 300px; */
+}
+ 
+
+
+.container-1:hover .icon{
+  /* color: #93a2ad; */
+}
 
 /* .container-1 input#search:hover, .container-1 input#search:focus, .container-1 input#search:active{
   outline:none;

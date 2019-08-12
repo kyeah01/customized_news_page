@@ -21,6 +21,7 @@ export default new Vuex.Store({
     keywordSubTitle:"keyword",
 
     keywordFollowing : false,
+    follow_openIdx : -1
   },
   mutations: {
     loadUserinfoData(state, fromDB){

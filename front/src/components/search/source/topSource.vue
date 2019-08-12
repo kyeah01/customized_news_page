@@ -54,6 +54,7 @@ export default {
 
 .topsourceTitle {
     height: 38px;
+    padding: 0px;
 }
 
 .topsource-item{

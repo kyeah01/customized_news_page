@@ -25,36 +25,32 @@
                     <v-card v-else :key="item.title">
                         <v-layout row>
                             <v-flex>
-                                <img id="articleImage" v-bind:src="item.urlToImage" style="width:130px; height:78px;" @click="call(item)">
+                                <img id="articleImage" v-bind:src="item.urlToImage"  @click="call(item)" style="width:130px; height:78px;">
                             </v-flex>
 
                             <v-flex>
                                 <v-card-title primary-title>
                                     <v-layout row>
                                         <!-- <div> -->
-                                        <span class="headline pointer" id="title" v-if="!item.mark_as_read" @click="call(item)">{{item.title}}</span>
-                                        <span class="headline pointer" id="title" v-else style="color:#888888;" @click="call(item)">{{item.title}}</span>
+                                        <span class="headline pointer" id="title" @click="call(item)" v-if="!item.mark_as_read">{{item.title}}</span>
+                                        <span class="headline pointer" id="title" @click="call(item)" v-else style="color:#888888;">{{item.title}}</span>
                                         <!-- </div> -->
                                         <v-spacer></v-spacer>
                                         <div>
-                                            <v-icon id="check" v-if="item.mark_as_read" style="color:#2bb24c;" @click="mark_as_read(item)">fas fa-check</v-icon>
-                                            <v-icon id="check" v-else @click="mark_as_read(item)">fas fa-check</v-icon>
+                                            <!-- <v-icon id="check" v-if="item.mark_as_read" style="color:#2bb24c;" @click="mark_as_read(item)">fas fa-check</v-icon> -->
+                                            <!-- <v-icon id="check" v-else @click="mark_as_read(item)">fas fa-check</v-icon> -->
                                             <v-icon id="bookmark" v-if="!item.read_later" @click="read_later(item)">far fa-bookmark</v-icon>
-                                            <v-icon id="bookmark" v-else @click="read_later(item)" style="color:#2bb24c;">fad fa-bookmark</v-icon>
-
-                                            <!-- <v-icon @click="read_later(item)">far fa-bookmark</v-icon>
-                  <v-icon @click="read_later(item)">far fa-bookmark</v-icon> -->
-                                            <!-- <v-btn class="border-green" flat color="light-green accent-4">Follow</v-btn> -->
+                                            <v-icon id="bookmark" v-else @click="read_later(item)" style="color:#2bb24c;">far fa-bookmark</v-icon>
                                         </div>
                                     </v-layout>
 
-                                    <div id="author" @click="call(item)">
+                                    <div id="author">
                                         <span id="read_later" v-if="item.read_later">Read later</span>
                                         <span id="dot" class="pointer" v-if="item.read_later">·</span>
                                         {{item.author}}
                                     </div>
                                     <!-- <span id="description">{{item.description}}</span> -->
-                                    <span id="description" @click="call(item)" class="pointer">{{item.content}}</span>
+                                    <span id="description" class="pointer" @click="call(item)">{{item.content}}</span>
 
                                 </v-card-title>
                             </v-flex>
@@ -301,6 +297,7 @@ export default {
             // 또한, topheadlines는 from, to를 통해 날짜 필터링 검색이 가능합니다.
         },
         call: function (item) {
+            this.mark_as_read(item)
             this.parentDetail = item
             this.parentDrawer = !this.parentDrawer
         },
@@ -309,9 +306,6 @@ export default {
         },
         mark_as_read(item) {
             var user = firebase.auth().currentUser
-            // item.mark_as_read = !item.mark_as_read
-            // console.log('mark_as_read', item.mark_as_read)
-            // console.log(user.uid)
             if (!item.mark_as_read) {
                 firebase.firestore().collection('Userinfo').doc(user.uid).update({
                     markasread: firebase.firestore.FieldValue.arrayUnion(item)
@@ -340,18 +334,6 @@ export default {
         },
         read_later(item) {
             var user = firebase.auth().currentUser
-            // console.log('어떤 index?', index)
-            console.log('url check', item.url)
-
-            console.log('정체는?', firebase.firestore().collection('Userinfo').doc(user.uid))
-            // item.read_later = !item.read_later
-            // this.read_later_value = !this.read_later_value
-            // console.log('read_later', item.read_later)
-            // console.log('article정보2', this.article)
-            // console.log('read_later_value', this.read_later_value)
-            // console.log('user정보', user)
-            // console.log('userdata', firebase.firestore().collection('Userinfo').doc(user.uid))
-            // console.log(user.uid)
             if (!item.read_later) {
                 firebase.firestore().collection('Userinfo').doc(user.uid).update({
                     readlater: firebase.firestore.FieldValue.arrayUnion(item)

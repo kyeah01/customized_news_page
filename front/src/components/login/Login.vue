@@ -79,6 +79,8 @@ import firebase from 'firebase'
 import GoogleLogin from './GoogleLogin'
 import FacebookLogin from './FacebookLogin'
 import NavbarAvatar from '../NavbarAvatar'
+import { async } from 'q';
+// import eventBus from '../eventBus'
 
 
 export default {
@@ -89,6 +91,7 @@ export default {
     },
     data () {
       return {
+        user: '',
         userInfo: '',
         email: '',
         password: '',
@@ -99,11 +102,25 @@ export default {
       }
     },
     methods: {
+      init: async function() {
+        var user = firebase.auth().currentUser
+        await firebase.firestore().collection("Userinfo").doc(user.uid).get()
+          .then(r => {
+            const tmp = r.data()
+
+            this.$store.commit('loadUserinfoData', tmp)
+            this.$store.commit('loadRes')
+            sessionStorage.setItem('categories' , JSON.stringify(this.$store.state.followList))
+          })
+        window.location.href = '/';
+        
+      },
       Login: async function() {
         await firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
           (user) => {
             alert('Well done ! You are now connected')
             sessionStorage.setItem('userInfo', JSON.stringify(user))
+            this.user = user.user
             const time = new Date()
             const date = time.getFullYear() + (time.getMonth() > 8 ? time.getMonth()+1 : '0'+(time.getMonth()+1)) + (time.getDate()>9 ? time.getDate() : '0'+time.getDate())
             firebase.firestore().collection('visitorStat').doc(date).update({
@@ -112,7 +129,9 @@ export default {
             this.$store.commit('imageSoruceUpdate', user.user.photoURL)
             this.email = ''
             this.password = ''
-            window.location.href = '/';
+            this.init()
+            // this.$router.push('/article')
+            // window.location.href = '/';
           },
           (err) => {
             alert('Oops, ' + err.message)
