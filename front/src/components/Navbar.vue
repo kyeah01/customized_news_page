@@ -346,24 +346,25 @@ export default {
 .container-1 .icon {
     position: absolute;
     top: 35%;
-    /* right: 161px; */
     margin-left: 17px;
     margin-top: 17px;
     z-index: 1;
     color: #4f5b66;
 
-    -webkit-transition: background .55s ease;
-    -moz-transition: background .55s ease;
-    -ms-transition: background .55s ease;
-    -o-transition: background .55s ease;
-    transition: background .55s ease
+    transition: transform .55s ease
 }
+
+/* .container-1:focus, .container-1:active {
+    width: 300px;
+}
+ */
 
 .container-1 input#search:focus, .container-1 input#search:active {
     outline: none;
     /* box-shadow: 0 0 1px 1px #2bb24c; */
     width: 300px;
     display: block;
+    /* text-align: right; */
 }
 
 .container-1 input#search:focus, .container-1 input#search:active:after {
@@ -371,45 +372,30 @@ export default {
     border-radius: 5px;
 }
 
+.container-1:focus .icon, .container-1:active .icon {
+    transform: translateX(-105.5px)
+}
+
+.container-1 .icon:focus, .container-1 .icon:active {
+    transform: translateX(-105.5px)
+}
+
+.container-1 .icon:focus, .container-1 .icon:active:after {
+    transform: translateX(-105.5px)
+}
+
+
+
+
 .container-1:hover input#search{
     /* width: 300px; */
 }
  
-/* .container-1 .icon:focus, .container-1 .icon:active {
-    position: relative;
-    right: 161px;
-} */
 
-/* .container-1:hover .icon{
-    width: 300px;
-} */
-/* searchIcon */
 
-/* .container-1:active span#searchIcon{
-    position: absolute;
-    right: 500px;
+.container-1:hover .icon{
+  /* color: #93a2ad; */
 }
-
-.container-1:active:after span#searchIcon{
-    position: absolute;
-    right: 500px;
-} */
-
-
-.container-1 span#searchIcon:focus, .container-1 span#searchIcon:active{
-    position: absolute;
-    right: 270px;
-}
-
-.container-1 span#searchIcon:focus, .container-1 span#searchIcon:active:after{
-    position: absolute;
-    right: 270px;
-}
-
-/* .container-1:focus .icon .container-1:active .icon{
-    position: absolute;
-    right: 100px;
-} */
 
 /* .container-1 input#search:hover, .container-1 input#search:focus, .container-1 input#search:active{
   outline:none;
