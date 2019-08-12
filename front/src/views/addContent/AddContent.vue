@@ -116,7 +116,9 @@ export default {
         this.sourceNames.push(element.name)
         });
     },
-    search(){      
+    search(){
+      var a=$('#input-search').val();
+      this.input=a      
       // var input = document.getElementById("input-search").value
       
       // if( this.searchWord != null ) input = this.searchWord;
