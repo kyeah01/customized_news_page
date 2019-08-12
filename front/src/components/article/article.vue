@@ -165,6 +165,7 @@ const newsapi = new NewsAPI(env.data().api1);
             // })
         },
         topheadlinesArticle: function () {
+          console.log("main2")
           // 한번에 불러 올 수 있는 최대가 1~100사이의 수이고, 한번에 20개를 호출하기때문에 5번만 호출가능.
           if (this.page<5){
           this.page += 1
@@ -360,7 +361,9 @@ const newsapi = new NewsAPI(env.data().api1);
               this.article=[{header : 'today'}]
               this.page=0
               this.busy=false
-              this.topheadlinesArticle()
+              if(!this.reqNone){
+                this.topheadlinesArticle()
+              }
           }
       }
   }
