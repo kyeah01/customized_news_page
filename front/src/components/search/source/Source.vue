@@ -7,7 +7,10 @@
                 <a href="#newUrl" class="sourceUrl">{{source.url}}</a>
             </v-flex>
             <v-flex xs2>
-                <follow class="follow" :news="source">
+                <follow class="follow" 
+                :news="source"
+                :idx="idx"
+                @sign_follow="update_follow">
                 </follow>
             </v-flex>
             <v-flex xs12>
@@ -28,9 +31,14 @@
 import follow from '@/components/search/source/follow'
 
 export default {
-    props: ['source'],
+    props: ['source','idx'],
     components: {
         follow
+    },
+    methods : {
+        update_follow(tmp){
+            this.$emit('sign_Source',tmp)
+        }
     }
 
 }
