@@ -11,12 +11,15 @@
                 <div class="container-1">
                     <br style="height: 20.8px;">
                     <span class="icon" id="searchIcon"><i class="fa fa-search"></i></span>
-                    <!-- <input v-model="searchWord" type="search" id="search" placeholder="Search..." @keydown.enter="search" /> -->
+                    <v-select outline 
+                                color="#2bb24c" 
+                                v-model="searchSelected" 
+                                :items="searchMenuSelect"
+                                height=20
+                                ></v-select>
                     <input v-model="searchWord" type="search" id="search" :placeholder="placeholder" @click="changePlaceholder" @keydown.enter="search" />
-                    <!-- <input v-model="searchWord" type="search" id="searchClick" placeholder="Search in your feeds" @keydown.enter="search" /> -->
                 </div>
             </div>
-
             <v-btn @click="goto('test')" flat>Test Space</v-btn>
             <Login />
 
@@ -39,7 +42,7 @@
         <v-divider></v-divider>
         <div style="margin-top:10px">
             <div style="padding:10px 0px 10px 15px; cursor:pointer" @click="goto('article')">
-                <v-icon>far fa-newspaper</v-icon><span> &nbsp Main</span>
+                <v-icon>far fa-newspaper</v-icon><span>&nbsp Main</span>
             </div>
         </div>
         <div>
@@ -161,6 +164,8 @@ export default {
             readlaterArticles: null,
             recentlyReadDrawer: false,
             markasreadArticles: null,
+            searchSelected : "",
+            searchMenuSelect : ['키워드', '신문사'],
         }
     },
     methods: {
@@ -241,7 +246,12 @@ export default {
             }
         },
         search: function () {
-            this.$router.push('/addcontent/' + this.searchWord)
+            if( this.searchSelected == '신문사'){
+                this.$router.push('/addcontent/' + this.searchWord)
+            }else if( this.searchSelected == '키워드'){
+                this.$router.push('/addKeyword/' + this.searchWord)
+            }
+            
         },
         goto: function (addr) {
             this.$router.push('/' + addr)
@@ -339,6 +349,11 @@ export default {
 </script>
 
 <style lang="css" scoped>
+.v-input__slot{
+  min-height: auto!important;
+  display: flex!important;
+  align-items: center!important;
+}
 .btn-edit {}
 
 .edit-mode {

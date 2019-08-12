@@ -71,6 +71,7 @@ export default {
             parentActive_tab: 1,
 
             isFollowing: false,
+            searchByInput: false,
 
             snackbar : false,
             y: 'bottom',
@@ -98,13 +99,15 @@ export default {
 
         this.input = this.searchWord;
         if (this.searchWord != null) this.search();
-
+        this.searchByInput = true;
     },
     watch: {
         //top10 keyword 클릭시 url 바뀜 -> props 변수 searchWord 변함 -> 검색 실행
         searchWord: function (newVal) {
             this.input = newVal;
+            this.searchByInput = false;
             this.search();
+            this.searchByInput = true;
         },
         sign : function(){
 
@@ -134,8 +137,10 @@ export default {
                 });
         },
         async search() {
-            var a=$('#input-search').val();
-            this.input=a
+            if( this.searchByInput){
+                this.input=$('#input-search').val();
+            }
+            
             // 입력한 키워드 검색결과에 따라 데이터베이스에 키워드 저장하기.
             await this.$axios.get(`https://newsapi.org/v2/everything?q=${this.input}&apiKey=2dc4b8b9d26f4a6b97e21a1f282bac9d`)
                 .then(response => {
