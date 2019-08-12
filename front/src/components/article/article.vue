@@ -22,18 +22,18 @@
 
                     <v-divider v-else-if="item.divider" :key="index" :inset="item.inset"></v-divider>
 
-                    <v-card v-else :key="item.title" @click="call(item)">
+                    <v-card v-else :key="item.title">
                         <v-layout row>
                             <v-flex>
-                                <img id="articleImage" v-bind:src="item.urlToImage" style="width:130px; height:78px;">
+                                <img id="articleImage" v-bind:src="item.urlToImage"  @click="call(item)" style="width:130px; height:78px;">
                             </v-flex>
 
                             <v-flex>
                                 <v-card-title primary-title>
                                     <v-layout row>
                                         <!-- <div> -->
-                                        <span class="headline pointer" id="title" v-if="!item.mark_as_read">{{item.title}}</span>
-                                        <span class="headline pointer" id="title" v-else style="color:#888888;">{{item.title}}</span>
+                                        <span class="headline pointer" id="title" @click="call(item)" v-if="!item.mark_as_read">{{item.title}}</span>
+                                        <span class="headline pointer" id="title" @click="call(item)" v-else style="color:#888888;">{{item.title}}</span>
                                         <!-- </div> -->
                                         <v-spacer></v-spacer>
                                         <div>
@@ -41,10 +41,6 @@
                                             <!-- <v-icon id="check" v-else @click="mark_as_read(item)">fas fa-check</v-icon> -->
                                             <v-icon id="bookmark" v-if="!item.read_later" @click="read_later(item)">far fa-bookmark</v-icon>
                                             <v-icon id="bookmark" v-else @click="read_later(item)" style="color:#2bb24c;">far fa-bookmark</v-icon>
-
-                                            <!-- <v-icon @click="read_later(item)">far fa-bookmark</v-icon>
-                  <v-icon @click="read_later(item)">far fa-bookmark</v-icon> -->
-                                            <!-- <v-btn class="border-green" flat color="light-green accent-4">Follow</v-btn> -->
                                         </div>
                                     </v-layout>
 
@@ -54,7 +50,7 @@
                                         {{item.author}}
                                     </div>
                                     <!-- <span id="description">{{item.description}}</span> -->
-                                    <span id="description" class="pointer">{{item.content}}</span>
+                                    <span id="description" class="pointer" @click="call(item)">{{item.content}}</span>
 
                                 </v-card-title>
                             </v-flex>
@@ -316,11 +312,7 @@ if (post.source.name=='Youtube.com') {
             this.parentDrawer = !this.parentDrawer
         },
         mark_as_read(item) {
-            console.log('왔나?')
             var user = firebase.auth().currentUser
-            // item.mark_as_read = !item.mark_as_read
-            // console.log('mark_as_read', item.mark_as_read)
-            // console.log(user.uid)
             if (!item.mark_as_read) {
                 firebase.firestore().collection('Userinfo').doc(user.uid).update({
                     markasread: firebase.firestore.FieldValue.arrayUnion(item)
@@ -349,18 +341,6 @@ if (post.source.name=='Youtube.com') {
         },
         read_later(item) {
             var user = firebase.auth().currentUser
-            // console.log('어떤 index?', index)
-            console.log('url check', item.url)
-
-            console.log('정체는?', firebase.firestore().collection('Userinfo').doc(user.uid))
-            // item.read_later = !item.read_later
-            // this.read_later_value = !this.read_later_value
-            // console.log('read_later', item.read_later)
-            // console.log('article정보2', this.article)
-            // console.log('read_later_value', this.read_later_value)
-            // console.log('user정보', user)
-            // console.log('userdata', firebase.firestore().collection('Userinfo').doc(user.uid))
-            // console.log(user.uid)
             if (!item.read_later) {
                 firebase.firestore().collection('Userinfo').doc(user.uid).update({
                     readlater: firebase.firestore.FieldValue.arrayUnion(item)
