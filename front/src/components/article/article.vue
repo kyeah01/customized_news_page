@@ -22,23 +22,23 @@
 
                     <v-divider v-else-if="item.divider" :key="index" :inset="item.inset"></v-divider>
 
-                    <v-card v-else :key="item.title">
+                    <v-card v-else :key="item.title" @click="call(item)">
                         <v-layout row>
                             <v-flex>
-                                <img id="articleImage" v-bind:src="item.urlToImage" style="width:130px; height:78px;" @click="call(item)">
+                                <img id="articleImage" v-bind:src="item.urlToImage" style="width:130px; height:78px;">
                             </v-flex>
 
                             <v-flex>
                                 <v-card-title primary-title>
                                     <v-layout row>
                                         <!-- <div> -->
-                                        <span class="headline pointer" id="title" v-if="!item.mark_as_read" @click="call(item)">{{item.title}}</span>
-                                        <span class="headline pointer" id="title" v-else style="color:#888888;" @click="call(item)">{{item.title}}</span>
+                                        <span class="headline pointer" id="title" v-if="!item.mark_as_read">{{item.title}}</span>
+                                        <span class="headline pointer" id="title" v-else style="color:#888888;">{{item.title}}</span>
                                         <!-- </div> -->
                                         <v-spacer></v-spacer>
                                         <div>
-                                            <v-icon id="check" v-if="item.mark_as_read" style="color:#2bb24c;" @click="mark_as_read(item)">fas fa-check</v-icon>
-                                            <v-icon id="check" v-else @click="mark_as_read(item)">fas fa-check</v-icon>
+                                            <!-- <v-icon id="check" v-if="item.mark_as_read" style="color:#2bb24c;" @click="mark_as_read(item)">fas fa-check</v-icon> -->
+                                            <!-- <v-icon id="check" v-else @click="mark_as_read(item)">fas fa-check</v-icon> -->
                                             <v-icon id="bookmark" v-if="!item.read_later" @click="read_later(item)">far fa-bookmark</v-icon>
                                             <v-icon id="bookmark" v-else @click="read_later(item)" style="color:#2bb24c;">far fa-bookmark</v-icon>
 
@@ -48,13 +48,13 @@
                                         </div>
                                     </v-layout>
 
-                                    <div id="author" @click="call(item)">
+                                    <div id="author">
                                         <span id="read_later" v-if="item.read_later">Read later</span>
                                         <span id="dot" class="pointer" v-if="item.read_later">·</span>
                                         {{item.author}}
                                     </div>
                                     <!-- <span id="description">{{item.description}}</span> -->
-                                    <span id="description" @click="call(item)" class="pointer">{{item.content}}</span>
+                                    <span id="description" class="pointer">{{item.content}}</span>
 
                                 </v-card-title>
                             </v-flex>
@@ -308,6 +308,7 @@ if (post.source.name=='Youtube.com') {
             // 또한, topheadlines는 from, to를 통해 날짜 필터링 검색이 가능합니다.
         },
         call: function (item) {
+            this.mark_as_read(item)
             this.parentDetail = item
             this.parentDrawer = !this.parentDrawer
         },
@@ -315,6 +316,7 @@ if (post.source.name=='Youtube.com') {
             this.parentDrawer = !this.parentDrawer
         },
         mark_as_read(item) {
+            console.log('왔나?')
             var user = firebase.auth().currentUser
             // item.mark_as_read = !item.mark_as_read
             // console.log('mark_as_read', item.mark_as_read)
