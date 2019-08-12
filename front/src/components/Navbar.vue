@@ -43,7 +43,7 @@
             </div>
         </div>
         <div>
-            <div style="padding:10px 0px 10px 15px;">
+            <div style="padding:10px 0px 10px 15px; cursor:pointer" @click="recentlyReadBtnClicked">
                 <v-icon>fas fa-check</v-icon><span>&nbsp Recently Read</span>
             </div>
         </div>
@@ -55,13 +55,13 @@
         <v-divider></v-divider>
 
         <v-flex xs12>
-            <v-btn class="ma-1" :class="[editMode ? 'edit-mode' : 'not-edit-mode']" :outline='editOutline' small absolute depressed right :color="editColor" style="z-index: 3" @click="test"/>
-        <v-layout justify-space-between>
-            <v-flex style="margin:10px 0px 12px 10px;">Category</v-flex>
-            <v-icon @click="Category_move()" style="margin:10px 10px 12px 10px;">fas fa-cog</v-icon>
-        </v-layout>
+            <v-btn class="ma-1" :class="[editMode ? 'edit-mode' : 'not-edit-mode']" :outline='editOutline' small absolute depressed right :color="editColor" style="z-index: 3" @click="test" />
+            <v-layout justify-space-between>
+                <v-flex style="margin:10px 0px 12px 10px;">Category</v-flex>
+                <v-icon @click="Category_move()" style="margin:10px 10px 12px 10px;">fas fa-cog</v-icon>
+            </v-layout>
 
-        <!-- <v-flex xs12>
+            <!-- <v-flex xs12>
             <v-btn class="ma-1" 
                     :class="[editMode ? 'edit-mode' : 'not-edit-mode']"
                     :outline='editOutline'
@@ -75,7 +75,7 @@
                     >
                 Edit
             </v-btn>-->
-        </v-flex> 
+        </v-flex>
 
         <v-template v-if="!editMode">
             <v-treeview :items="vuexItemList" :active.sync="selectedItems" activatable transition open-all open-on-click item-key="id" return-object=true>
@@ -100,19 +100,24 @@
         </v-btn>
     </div>
 
-    <readlater :drawer='readlaterDrawer' :readlaterArticles="readlaterArticles" @deleteReadlater="dread" @readLater_drawer_false="drawerClosed"></readlater>
+    <readlater :drawer='readlaterDrawer' :readlaterArticles="readlaterArticles" @deleteReadlater="dread" @readLater_drawer_false="readlaterdrawerClosed"></readlater>
+
+    <Markasread :drawer="recentlyReadDrawer" :markasreadArticles="markasreadArticles" @right_drawer="recentlyReadDrawerClosed" @deleteMark="dmark"></Markasread>
 
 </nav>
 </template>
 
 <script>
-import firebase, { functions } from 'firebase'
+import firebase, {
+    functions
+} from 'firebase'
 // import GoogleLogin from './GoogleLogin'
 // import FacebookLogin from './FacebookLogin'
 import eventBus from '../eventBus'
 import Login from '@/components/login/Login'
 import manageArticleInNavbar from '@/components/manageArticleInNavbar'
 import readlater from '@/components/profile/Readlater'
+import Markasread from '@/components/profile/Markasread'
 
 export default {
     components: {
@@ -120,7 +125,8 @@ export default {
         // FacebookLogin,
         Login,
         manageArticleInNavbar,
-        readlater
+        readlater,
+        Markasread
     },
     computed: {
         vuexItemList() {
@@ -150,8 +156,11 @@ export default {
             editOutline: true,
 
             placeholder: 'Search...',
+
             readlaterDrawer: false,
             readlaterArticles: null,
+            recentlyReadDrawer: false,
+            markasreadArticles: null,
         }
     },
     methods: {
@@ -167,10 +176,9 @@ export default {
                     });
             })
         },
-        drawerClosed() {
+        readlaterdrawerClosed() {
             // drawer 닫히면 emit 받아서 여기(navbar.vue)도 값 설정
             this.readlaterDrawer = false;
-
         },
         readLaterBtnClicked() {
             this.readlaterDrawer = !this.readlaterDrawer;
@@ -187,10 +195,41 @@ export default {
             })
 
         },
+        recentlyReadDrawerClosed() {
+            // drawer 닫히면 emit 받아서 여기(navbar.vue)도 값 설정
+            this.recentlyReadDrawer = false;
+        },
+        recentlyReadBtnClicked() {
+            this.recentlyReadDrawer = !this.recentlyReadDrawer;
+            firebase.auth().onAuthStateChanged((user) => {
+                const db = firebase.firestore();
+                db.collection('Userinfo').doc(user.uid).get()
+                    .then(doc => {
+                        this.markasreadArticles = doc.data().markasread
+                    })
+                    .catch((err) => {
+                        console.log('Error getting documents', err);
+                    });
+            })
+        },
+        dmark() {
+            firebase.auth().onAuthStateChanged((user) => {
+                const db = firebase.firestore();
+                db.collection('Userinfo').doc(user.uid).get()
+                    .then(doc => {
+                        this.markasreadArticles = doc.data().markasread
+                    })
+                    .catch((err) => {
+                        console.log('Error getting documents', err);
+                    });
+            })
+        },
         Category_move() {
             this.$router.push("/category_setting")
         },
-        test(){
+        test() {
+            console.log('test');
+
             this.editMode = !this.editMode
 
             if (this.editMode) {
@@ -427,18 +466,20 @@ export default {
     position: relative;
     right: 161px;
 } */
-.container-1:focus .icon, .container-1:active .icon {
+.container-1:focus .icon,
+.container-1:active .icon {
     transform: translateX(-105.5px)
 }
 
-.container-1 .icon:focus, .container-1 .icon:active {
+.container-1 .icon:focus,
+.container-1 .icon:active {
     transform: translateX(-105.5px)
 }
 
-.container-1 .icon:focus, .container-1 .icon:active:after {
+.container-1 .icon:focus,
+.container-1 .icon:active:after {
     transform: translateX(-105.5px)
 }
-
 
 .container-1 span#searchIcon:focus,
 .container-1 span#searchIcon:active {
@@ -451,14 +492,13 @@ export default {
     right: 270px;
 
 }
-.container-1:hover input#search{
+
+.container-1:hover input#search {
     /* width: 300px; */
 }
- 
 
-
-.container-1:hover .icon{
-  /* color: #93a2ad; */
+.container-1:hover .icon {
+    /* color: #93a2ad; */
 }
 
 /* .container-1 input#search:hover, .container-1 input#search:focus, .container-1 input#search:active{
