@@ -71,16 +71,28 @@
             </v-card>
         </v-flex>
 
-        <v-flex xs4>
-            <weather />
-        </v-flex>
+        <v-flex xs4 v-if="search=='Main'" hidden-md-and-down>
+      <weather/>
+      <br>
+      <v-card style="border-radius: 10px; width:100%;">
+        <topSource/>
+      </v-card>
+      <br>
+      <v-card style="border-radius: 10px; width:100%;">
+        <topKeyword/>
+      </v-card>
+    </v-flex>
 
-        <div v-if="this.parentDrawer===true">
-            <ArticleDetail :drawer=parentDrawer :detail=parentDetail @right_drawer="update">
-            </ArticleDetail>
-        </div>
-        <!-- </v-layout> -->
-    </v-layout>
+    <div v-if="this.parentDrawer===true">
+      <ArticleDetail
+       :drawer = parentDrawer
+       :detail = parentDetail
+       @right_drawer = "update"
+       >
+      </ArticleDetail>
+    </div>
+  <!-- </v-layout> -->
+  </v-layout>
 </v-container>
 </template>
 
@@ -94,6 +106,8 @@ import {
     Promise
 } from 'q'
 import ArticleDetail from '@/components/article/ArticleDetail'
+import topSource from '@/components/search/source/topSource'
+import topKeyword from '@/components/search/keyword/topKeyword'
 import weather from '../weather'
 import env from '../../../env.js'
 
@@ -103,10 +117,12 @@ import env from '../../../env.js'
 const NewsAPI = require('newsapi');
 const newsapi = new NewsAPI(env.data().api1);
 
-export default {
-    components: {
-        ArticleDetail,
-        weather,
+  export default {
+    components : {
+      ArticleDetail,
+      weather,
+      topSource,
+      topKeyword
     },
     props: ['type', 'follow'], // 새로 고침 시 url 파라미터 사용하여 api 호출
     data() {
@@ -160,8 +176,11 @@ export default {
                     }).then(res => {
                         res.articles.forEach(post => {
                             // console.log('post foreach 시작');
-
-                            if (post.urlToImage == null) {
+if (post.source.name=='Youtube.com') {
+                    post.content = ''
+                    post.urlToImage = 'https://img.youtube.com/vi/'+post.url.split('?v=')[1]+'/mqdefault.jpg'
+                  }
+                   else if (post.urlToImage == null) {
                                 post.urlToImage = this.defaultImage + post.source.name
                             }
                             post.mark_as_read = false
@@ -412,17 +431,17 @@ export default {
                     this.Dfollow_s = null
                     this.load_follower(false)
                 }
-                this.search = r[0].name
-            })
-            this.article = [{
-                header: 'today'
-            }]
-            this.page = 0
-            this.busy = false
-            this.topheadlinesArticle()
-        }
-    }
-}
+                this.search=r[0].name
+              })
+              this.article=[{header : 'today'}]
+              this.page=0
+              this.busy=false
+              if(!this.reqNone){
+                this.topheadlinesArticle()
+              }
+          }
+      }
+  }
 </script>
 
 <style scoped>
@@ -528,6 +547,6 @@ export default {
 }
 
 .pointer {
-    cursor: pointer
+  cursor:pointer
 }
 </style>

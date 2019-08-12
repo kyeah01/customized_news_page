@@ -10,8 +10,10 @@
             <div class="box" v-if="user">
                 <div class="container-1">
                     <br style="height: 20.8px;">
-                    <span class="icon"><i class="fa fa-search"></i></span>
-                    <input v-model="searchWord" type="search" id="search" placeholder="Search..." @keydown.enter="search" />
+                    <span class="icon" id="searchIcon"><i class="fa fa-search"></i></span>
+                    <!-- <input v-model="searchWord" type="search" id="search" placeholder="Search..." @keydown.enter="search" /> -->
+                    <input v-model="searchWord" type="search" id="search" :placeholder="placeholder" @click="changePlaceholder" @keydown.enter="search" />
+                    <!-- <input v-model="searchWord" type="search" id="searchClick" placeholder="Search in your feeds" @keydown.enter="search" /> -->
                 </div>
             </div>
 
@@ -34,12 +36,12 @@
             </v-list-tile>
         </v-list>
         <!-- </v-toolbar> -->
- 
+        <v-divider></v-divider> 
+        <div style="margin-top:10px"><div style="padding:10px 0px 10px 15px; cursor:pointer" @click="goto('article')"><v-icon>far fa-newspaper</v-icon><span>  &nbsp Main</span></div></div>
+        <div><div style="padding:10px 0px 10px 15px;"><v-icon>fas fa-check</v-icon><span>  &nbsp Recently Read</span></div></div>
+        <div style="margin-bottom:10px"><div style="padding:10px 0px 10px 15px;"><v-icon>far fa-bookmark</v-icon><span>  &nbsp&nbsp Read Later</span></div></div>
         <v-divider></v-divider>
-        <div style="margin:10px 0px 12px 10px;"><span style="margin:30px 0px 30px 10px; height:100px"><v-icon>far fa-newspaper</v-icon>  &nbsp Main</span></div>
-        <div style="margin:10px 0px 12px 10px;"><span style="margin:30px 0px 30px 10px; height:100px"><v-icon>fas fa-check</v-icon>  &nbsp Recently Read</span></div>
-        <div style="margin:10px 0px 12px 10px;"><span style="margin:30px 0px 30px 10px; height:100px"><v-icon>far fa-bookmark</v-icon>  &nbsp&nbsp Recently Read</span></div>
-        <v-divider></v-divider>
+
 
         <v-flex xs12>
             <v-btn class="ma-1" 
@@ -95,7 +97,7 @@ import firebase from 'firebase'
 // import GoogleLogin from './GoogleLogin'
 // import FacebookLogin from './FacebookLogin'
 import eventBus from '../eventBus'
-import Login from '@/components/Login'
+import Login from '@/components/login/Login'
 import manageArticleInNavbar from '@/components/manageArticleInNavbar'
 
 export default {
@@ -131,6 +133,8 @@ export default {
             editMode: false,
             editColor: "#999",
             editOutline:true,
+
+            placeholder: 'Search...'
         }
     },
     methods: {
@@ -197,9 +201,20 @@ export default {
         closeLeftDrawer() {
             this.drawer = !this.drawer
         },
-        // changePlaceholder() {
-        //     document.getElementById("search").placeholder = "Search in your feeds";
-        // }
+        changePlaceholder() {
+            $(function() {
+                var placeholder1 = $('#search');
+                placeholder1.focus(function(){
+                    placeholder1.val('Search in your feeds')
+                })
+                placeholder1.blur(function(){
+                    placeholder1.val('Search...')
+                })
+            })
+
+            // this.placeholder = "Search in your feeds"
+            document.getElementById("search").placeholder = "Search in your feeds";
+        }
     },
     created() {
         this.user = JSON.parse(sessionStorage.getItem('userInfo')) ? true : false
@@ -285,6 +300,7 @@ export default {
     height: 32px;
     position: absolute;
     top: 85%;
+    right: 0;
     /* background: #2b303b; */
     border: 1px solid rgba(0, 0, 0, 0.15);
     font-size: 10pt;
@@ -324,24 +340,70 @@ export default {
 .container-1 .icon {
     position: absolute;
     top: 35%;
+    /* right: 161px; */
     margin-left: 17px;
     margin-top: 17px;
     z-index: 1;
     color: #4f5b66;
+
+    -webkit-transition: background .55s ease;
+    -moz-transition: background .55s ease;
+    -ms-transition: background .55s ease;
+    -o-transition: background .55s ease;
+    transition: background .55s ease
 }
 
-.container-1 input#search:focus, .container-1 input#search:active{
+.container-1 input#search:focus, .container-1 input#search:active {
     outline: none;
+    /* box-shadow: 0 0 1px 1px #2bb24c; */
     width: 300px;
+    display: block;
 }
- 
+
+.container-1 input#search:focus, .container-1 input#search:active:after {
+    border: 1px solid #2bb24c;
+    border-radius: 5px;
+}
+
 .container-1:hover input#search{
     /* width: 300px; */
 }
  
-.container-1:hover .icon{
-  /* color: #93a2ad; */
+/* .container-1 .icon:focus, .container-1 .icon:active {
+    position: relative;
+    right: 161px;
+} */
+
+/* .container-1:hover .icon{
+    width: 300px;
+} */
+/* searchIcon */
+
+/* .container-1:active span#searchIcon{
+    position: absolute;
+    right: 500px;
 }
+
+.container-1:active:after span#searchIcon{
+    position: absolute;
+    right: 500px;
+} */
+
+
+.container-1 span#searchIcon:focus, .container-1 span#searchIcon:active{
+    position: absolute;
+    right: 270px;
+}
+
+.container-1 span#searchIcon:focus, .container-1 span#searchIcon:active:after{
+    position: absolute;
+    right: 270px;
+}
+
+/* .container-1:focus .icon .container-1:active .icon{
+    position: absolute;
+    right: 100px;
+} */
 
 /* .container-1 input#search:hover, .container-1 input#search:focus, .container-1 input#search:active{
   outline:none;

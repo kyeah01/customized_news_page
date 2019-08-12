@@ -34,14 +34,10 @@
                             </v-list-tile>
 
                             <v-divider />
-                            <v-footer class="followTile" @click="addFeed">
-                                <!-- <v-list-tile-action> -->
-                                <v-icon class="addIcon">add</v-icon>
-                                <!-- </v-list-tile-action> -->
-                                <!-- <v-list-tile-content class="followContent"> -->
-                                <span class="addFeed">New Feed</span>
-                                <!-- </v-list-tile-content> -->
-                            </v-footer>
+                            <v-list-tile class="followTile" @click="addFeed">
+                                 <v-icon class="addIcon">add</v-icon>
+                               <span class="addFeed">New Feed</span>
+                            </v-list-tile>
                         </v-list>
                     </div>
 
@@ -63,7 +59,7 @@
 import firebase from 'firebase'
 import EventBus from '@/eventBus'
 export default {
-    props: ['news', ],
+    props: ['news',"idx"],
     // news : 검색된 결과 news 정보 하나를 받아옴. ex) abc 검색 -> abc-news, abc-news-au 각각의 정보를 따로따로 가져옴.
     data: () => ({
         expand: false,
@@ -75,13 +71,16 @@ export default {
         search: null,
         caseSensitive: false,
 
-        closeDrawer: false
+        closeDrawer: false,
     }),
     created() {
         let newsId = this.news.id;
         let followSource = this.$store.state.followSource;
 
-        if(followSource[newsId] != null ) this.isFollowing = true;
+        if(followSource[newsId] != null ) {
+            this.isFollowing = true;
+            this.idx=-1
+        }
         else this.isFollowing = false;
 
     },
@@ -92,7 +91,6 @@ export default {
         unfollow(){
             // this.news : target news 정보
             // console.log(this.news);
-            
 
             delete this.$store.state.followSource[this.news.id];
 
@@ -102,6 +100,9 @@ export default {
             })
             this.$store.commit('loadRes');
             this.isFollowing = false;
+            this.idx=1;
+            var tmp=[this.news.id ,this.idx];
+            this.$emit('sign_follow',tmp)
         },
         isFollowCategory(category) {
             let followSource = this.$store.state.followSource;
@@ -145,6 +146,9 @@ export default {
             this.expand = !this.expand
 
             this.isFollowing = true;
+            this.idx=-1
+            var tmp=[newsId,this.idx];
+            this.$emit('sign_follow',tmp)
             // EventBus.$on('closeByDrawer', drawer => {
             //     this.expand = drawer
             // })

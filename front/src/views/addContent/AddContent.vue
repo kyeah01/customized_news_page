@@ -6,7 +6,7 @@
              :active_tab = parentActive_tab
             >
             </searchOptionSelector>
-                <v-flex my-5>
+                <v-flex my-5 xs9>
                     <div>
                         <p class="description">Discover the best sources for any topic</p>
                     </div>
@@ -28,12 +28,34 @@
     <!-- 메인에서 안보이게 처리 -->
     <v-layout row wrap v-if="resultSearch.length >= 1">
       <v-flex xs9>
-         <sourceList :sourceData="resultSearch" :searchKey="input"></sourceList>
+         <sourceList 
+         :sourceData="resultSearch" 
+         :searchKey="input"
+         @sign_sourceList="update_follow"
+         ></sourceList>
       </v-flex>
       <v-flex xs3>
         <topSource></topSource>
       </v-flex>
     </v-layout>
+
+    <!-- 스낵바 수정 -->
+        <v-snackbar
+          v-model="snackbar"
+          :bottom="y === 'bottom'"
+          :right="x === 'right'"
+          :timeout="timeout"
+        >
+          {{ text }}
+          <v-btn
+            color="pink"
+            flat
+            @click="snackbar = false"
+          >
+            Close
+          </v-btn>
+        </v-snackbar>
+
   </v-container>
 </template>
 
@@ -70,7 +92,13 @@ export default {
       resultSearch:[],
       
       parentActive_tab: 0,
-      noFeeds: 'No feeds with matching titles.'
+      noFeeds: 'No feeds with matching titles.',
+
+      snackbar : false,
+      y: 'bottom',
+      x: 'right',
+      timeout: 3000,
+      text: ''
     }
   },
   watch:{
@@ -156,11 +184,23 @@ export default {
           })
         }
       })
+    },
+     update_follow(tmp){
+       console.log("addcontent",tmp)
+       if(tmp[1]<0){
+         this.text=tmp[0]+" is Following"
+       }else{
+         console.log("addcontent unfollow",tmp)
+         this.text=tmp[0]+" is UnFollow"
+       }
+       this.snackbar=true
     }
   }
 }
 </script>
 
 <style lang="css" scoped>
-
+topSource {
+  padding-left: 48px;
+}
 </style>

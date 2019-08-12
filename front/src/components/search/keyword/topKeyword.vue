@@ -1,6 +1,6 @@
 <template>
 <v-container grid-list-xs class="topkeywordBox">
-    <v-layout column >
+    <v-layout column>
         <v-flex xs12>
             <v-subheader class="topkeywordTitle"><strong>Top Keyword</strong></v-subheader>
         </v-flex>
@@ -48,9 +48,7 @@ export default {
 
 <style>
 .topkeywordBox {
-    padding-top: 0px;
-    padding-left: 48px;
-    padding-right: 0px;
+    padding-left: 20px;
 }
 
 .topkeywordTitle {
