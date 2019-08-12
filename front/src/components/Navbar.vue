@@ -41,9 +41,12 @@
         <div><div style="padding:10px 0px 10px 15px;"><v-icon>fas fa-check</v-icon><span>  &nbsp Recently Read</span></div></div>
         <div style="margin-bottom:10px"><div style="padding:10px 0px 10px 15px;"><v-icon>far fa-bookmark</v-icon><span>  &nbsp&nbsp Read Later</span></div></div>
         <v-divider></v-divider>
+        <v-layout justify-space-between>
+            <v-flex style="margin:10px 0px 12px 10px;">Category</v-flex>
+            <v-icon @click="Category_move()" style="margin:10px 10px 12px 10px;">fas fa-cog</v-icon>
+        </v-layout>
 
-
-        <v-flex xs12>
+        <!-- <v-flex xs12>
             <v-btn class="ma-1" 
                     :class="[editMode ? 'edit-mode' : 'not-edit-mode']"
                     :outline='editOutline'
@@ -57,7 +60,7 @@
                     >
                 Edit
             </v-btn>
-        </v-flex>
+        </v-flex> -->
 
         <v-template v-if="!editMode">
         <v-treeview :items="vuexItemList" 
@@ -93,7 +96,7 @@
 </template>
 
 <script>
-import firebase from 'firebase'
+import firebase, { functions } from 'firebase'
 // import GoogleLogin from './GoogleLogin'
 // import FacebookLogin from './FacebookLogin'
 import eventBus from '../eventBus'
@@ -138,6 +141,9 @@ export default {
         }
     },
     methods: {
+        Category_move() {
+            this.$router.push("/category_setting")
+        },
         test(){
             this.editMode = !this.editMode
             
@@ -171,9 +177,9 @@ export default {
 
         init: async function () {
             var user = firebase.auth().currentUser
-            var tmp = firebase.firestore().collection("Userinfo").doc(user.uid).get()
+            firebase.firestore().collection("Userinfo").doc(user.uid).get()
                 .then(r => {
-                    tmp = r.data()
+                    const tmp = r.data()
 
                     this.$store.commit('loadUserinfoData', tmp)
                     this.$store.commit('loadRes')
