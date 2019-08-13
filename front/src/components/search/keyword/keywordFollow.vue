@@ -10,11 +10,11 @@
             </v-btn>
 
         </div>
-        <div class="followContent">
+        <div class="expandBox">
             <v-expand-transition>
                 <v-card v-show="expand" class="scroll">
                     <div v-if="addopen===false">
-                        <v-list flat>
+                        <v-list class="followExpand" flat>
                             <v-list-tile v-for="item in items" :key="item" @click="create(item)">
                                 <v-list-tile-action>
                                     <v-icon v-if="isFollowCategory(item)" color="#2bb24c">fas fa-rss</v-icon>
@@ -26,21 +26,17 @@
                                 </v-list-tile-content>
 
                                 <v-list-tile-action v-if="isFollowCategory(item)">
-                                    <v-btn @click.stop="unfollow(item)">
-                                        remove
+                                    <v-icon @click.stop="unfollow()">
+                                        fas fa-trash-alt
                                         <!-- <v-icon color="red lighten-1">info</v-icon> -->
-                                    </v-btn>
+                                    </v-icon>
                                 </v-list-tile-action>
                             </v-list-tile>
 
                             <v-divider />
-                            <v-list-tile @click="addFeed">
-                                <v-list-tile-action>
-                                    <v-icon>add</v-icon>
-                                </v-list-tile-action>
-                                <v-list-tile-content>
-                                    <v-list-tile-title>add New Feed</v-list-tile-title>
-                                </v-list-tile-content>
+                           <v-list-tile class="followTile" @click="addFeed">
+                                 <v-icon class="addIcon">add</v-icon>
+                               <span class="addFeed">New Feed</span>
                             </v-list-tile>
                         </v-list>
                     </div>
@@ -72,17 +68,20 @@ export default {
         newFeed: "",
         search: null,
         caseSensitive: false,
+
+        closeDrawer: false,
     }),
     methods: {
         unfollow(){
             delete this.$store.state.userKeyword[this.keyword];
-
             var user = firebase.auth().currentUser
             firebase.firestore().collection('Userinfo').doc(user.uid).update({
                 keyword : this.$store.state.userKeyword
             })
             this.$store.commit('loadRes');
             this.isFollowing = false;
+            var tmp=[this.keyword ,false];
+            this.$emit('sign_KeywordFollow',tmp)
         },
         isFollowCategory(category) {
             let userKeyword = this.$store.state.userKeyword;
@@ -120,8 +119,8 @@ export default {
             this.addopen = false
             this.expand = !this.expand
             this.isFollowing = true;
-            eventBus.$emit("snack", true)
-
+            var tmp=[this.keyword,true];
+            this.$emit('sign_KeywordFollow',tmp)
         },
         async keywordManage(keyword, user) {
             var db = firebase.firestore().collection('Keyword');
@@ -157,7 +156,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .following {
     text-align: center;
 }
@@ -168,6 +167,69 @@ export default {
 
 .following:hover::after {
     content: 'edit';
+    text-align: center;
 
+}
+.autocomplete-input {
+    border: 1px solid #eee;
+    border-radius: 8px;
+    width: 100%;
+    padding: 12px 12px 12px 48px;
+    box-sizing: border-box;
+    position: static;
+    font-size: 16px;
+    line-height: 1.5;
+    flex: 1;
+    background-color: #fff;
+    /* background-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNjY2IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PGNpcmNsZSBjeD0iMTEiIGN5PSIxMSIgcj0iOCIvPjxwYXRoIGQ9Ik0yMSAyMWwtNC00Ii8+PC9zdmc+"); */
+    background-image: url('../../../assets/search-solid.svg');
+
+    background-repeat: no-repeat;
+    background-position: 12px
+}
+
+.expandBox {
+    width: 100px;
+}
+
+.scroll {
+    overflow-y: auto;
+    position: absolute;
+    right: 25px;
+    /* height : 200px; */
+    width: 300px;
+    z-index: 1;
+
+    /* padding: 16px; */
+}
+
+.followExpand {
+    padding: 0px;
+}
+
+.followTile {
+    background-color: #ffffff;
+    padding: 8px;
+}
+
+.categoryIcon {
+    width: 20px;
+    font-size: 20px;
+    margin-right: 4px;
+}
+
+.addIcon {
+    color: #2bb24c !important;
+    font-size: 20px;
+    padding-left: 4px;
+}
+
+.addFeed {
+    color: #2bb24c;
+}
+
+.itemStyle {
+    /* padding: 8px; */
+    /* height: 40px; */
 }
 </style>

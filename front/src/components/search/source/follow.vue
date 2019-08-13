@@ -70,7 +70,6 @@ export default {
         isFollowing: false,
         search: null,
         caseSensitive: false,
-        already_open : false,
 
         closeDrawer: false,
     }),
@@ -83,9 +82,6 @@ export default {
         }
         else this.isFollowing = false;
 
-    },
-    mounted() {
-        // console.log('props news : ',this.news);
     },
     methods: {
         unfollow(){
@@ -149,11 +145,10 @@ export default {
                 this.sourcesManage(this.news, user);
     
                 this.addopen = false
-                this.expand = !this.expand
-    
                 this.isFollowing = true;
                 var tmp=[newsId,true];
                 this.$emit('sign_follow',tmp)
+                this.$store.state.follow_openIdx=-1
             } 
             // EventBus.$on('closeByDrawer', drawer => {
             //     this.expand = drawer

@@ -16,13 +16,22 @@
                 </div>
                 
             </div>
-            <v-select outline 
+            <!-- <div style="padding-top: 10px; height: 35px;"> -->
+            <br style="height: 20.8px;">
+            <!-- <v-select outline 
                                 color="#2bb24c" 
                                 v-model="searchSelected" 
                                 :items="searchMenuSelect"
+                                no-data-text="신문사"
                                 height="35px"
-                                width
+                                width="30px"
                                 ></v-select>
+            </div> -->
+            <select class="selectBox" name="snk" v-model="searchSelected">
+                <option value="신문사" selected="selected">신문사</option>
+                <option value="키워드">키워드</option>
+            </select>
+            <!-- </div> -->
             <v-btn @click="goto('test')" flat>Test Space</v-btn>
             <Login />
 
@@ -167,7 +176,8 @@ export default {
             readlaterArticles: null,
             recentlyReadDrawer: false,
             markasreadArticles: null,
-            searchSelected : "",
+            // searchSelected : "",
+            searchSelected : "신문사",
             searchMenuSelect : ['키워드', '신문사'],
         }
     },
@@ -189,6 +199,7 @@ export default {
             this.readlaterDrawer = false;
         },
         readLaterBtnClicked() {
+
             this.readlaterDrawer = !this.readlaterDrawer;
 
             firebase.auth().onAuthStateChanged((user) => {
@@ -365,9 +376,9 @@ export default {
     */
 }
 
-.container-1{
+/* .container-1{
     width: 100px !important;
-}
+} */
 .btn-edit {}
 
 .edit-mode {
@@ -407,7 +418,6 @@ export default {
 
 .container-1 {
     width: 192px;
-    /* width: 300px; */
     vertical-align: middle;
     white-space: nowrap;
     position: relative;
@@ -415,7 +425,6 @@ export default {
 
 .container-1 input#search {
     width: 192px;
-    /* width: 300px; */
     height: 32px;
     position: absolute;
     top: 85%;
@@ -427,9 +436,13 @@ export default {
     /* color: #63717f; */
     /* padding-left: 45px; */
     padding-left: 35px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+    /* -webkit-border-radius: 5px; */
+    /* -moz-border-radius: 5px; */
+    /* border-radius: 5px; */
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
 
     -webkit-transition: background .55s ease;
     -moz-transition: background .55s ease;
@@ -484,7 +497,11 @@ export default {
 .container-1 input#search:focus,
 .container-1 input#search:active:after {
     border: 1px solid #2bb24c;
-    border-radius: 5px;
+    /* border-radius: 5px; */
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
 }
 
 .container-1:hover input#search {
@@ -547,4 +564,28 @@ width: 300px;
 .container-1:hover .icon{
   color: #93a2ad;
 } */
+
+/* source & keyword selector */
+.selectBox {
+    margin-top: 17.5px;
+    height: 32px;
+    width: 90px;
+    color: #9E9E9E;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-left: none;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+
+    padding: .4em .5em;
+    background: url('../assets/arrow.png') no-repeat 90% 50%;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.selectBox::-ms-expand {
+    display: none;
+}
 </style>
