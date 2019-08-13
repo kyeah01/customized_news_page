@@ -34,7 +34,7 @@
           <v-list>
             <v-subheader>
               <i class="fa fa-search"></i>
-              <input v-model="admin_search" :placeholder="placeholder"/>
+              <input v-model="admin_search" :placeholder="placeholder"/>{{admin_search}}
             </v-subheader>
             
             <v-list-tile v-for="user in users">
@@ -112,7 +112,9 @@ export default {
   },
   watch: {
     admin_search: function() {
-      console.log(this.admin_search.length)
+      if (this.admin_search) {
+        console.log(this.admin_search.length)
+      }
     }
   }
 }

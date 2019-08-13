@@ -76,16 +76,36 @@ export default {
         closeDrawer: false,
     }),
     created() {
-        let newsId = this.news.id;
-        let followSource = this.$store.state.followSource;
+        // let newsId = this.news.id;
+        // let followSource = this.$store.state.followSource;
 
-        if(followSource[newsId] != null ) {
-            this.isFollowing = true;
-        }
-        else this.isFollowing = false;
-
+        // if(followSource[newsId] != null ) {
+        //     this.isFollowing = true;
+        // }
+        // else this.isFollowing = false;
+        this.init()
     },
     methods: {
+        init: async function() {
+            firebase.auth().onAuthStateChanged((user) => {
+                firebase.firestore().collection("Userinfo").doc(user.uid).get()
+                .then(r => {
+                    const tmp = r.data()
+
+                    this.$store.commit('loadUserinfoData', tmp)
+                    this.$store.commit('loadRes')
+
+                    let newsId = this.news.id;
+                    let followSource = this.$store.state.followSource;
+
+                    if(followSource[newsId] != null ) {
+                        this.isFollowing = true;
+                    }
+                    else this.isFollowing = false;
+
+                })
+            })
+        },
         unfollow(){
             // this.news : target news 정보
             // console.log(this.news);

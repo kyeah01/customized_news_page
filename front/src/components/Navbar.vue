@@ -14,7 +14,6 @@
                     
                     <input v-model="searchWord" type="search" id="search" :placeholder="placeholder" @click="changePlaceholder" @keydown.enter="search" />
                 </div>
-                
             </div>
             <!-- <div style="padding-top: 10px; height: 35px;"> -->
             <br style="height: 20.8px;">

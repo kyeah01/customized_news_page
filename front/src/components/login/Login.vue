@@ -94,7 +94,7 @@ import NavbarAvatar from '../NavbarAvatar'
 import {
     async
 } from 'q';
-// import eventBus from '../eventBus'
+import eventBus from '../../eventBus'
 
 export default {
     components: {
@@ -149,7 +149,8 @@ export default {
                 (user) => {
                     alert('로그인되었습니다. \nIDLE과 함께 똑똑한 하루 보내세요!')
                     sessionStorage.setItem('userInfo', JSON.stringify(user))
-                    this.user = user.user
+                    // this.user = user.user
+                    // this.userInfo = user.user
                     const time = new Date()
                     const date = time.getFullYear() + (time.getMonth() > 8 ? time.getMonth() + 1 : '0' + (time.getMonth() + 1)) + (time.getDate() > 9 ? time.getDate() : '0' + time.getDate())
                     firebase.firestore().collection('visitorStat').doc(date).update({
@@ -161,7 +162,7 @@ export default {
                     
                     this.init()
                     // this.$router.push('/article')
-                    // window.location.href = '/';
+                    window.location.href = '/';
                 },
                 (err) => {
                     if( err.code == 'auth/invalid-email'){
