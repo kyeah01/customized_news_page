@@ -84,6 +84,7 @@ import FirebaseService from '@/services/FirebaseService'
       Logout: function() {
         FirebaseService.Logout()
         sessionStorage.removeItem('userInfo')
+        sessionStorage.removeItem('categories')
         this.$store.commit('imageSoruceDestroy')
         window.location.href = '/'
       },

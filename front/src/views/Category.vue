@@ -149,9 +149,10 @@ export default {
         }
     },
     methods: {
-        category_move(title, List, type) {
-            let user = firebase.auth().currentUser;
-            let db = firebase.firestore().collection('Userinfo').doc(user.uid);
+        category_move (title, List, type) {
+            let userUid = JSON.parse(sessionStorage.getItem('userInfo')).user.uid
+            let db = firebase.firestore().collection('Userinfo').doc(userUid);
+
             if (type === 'source') {
                 for (var i in List) {
                     this.$store.state.followSource[List[i]] = title
@@ -171,16 +172,19 @@ export default {
                 this.$store.commit('loadRes')
             }
 
-            sessionStorage.setItem('categories' , JSON.stringify(this.$store.state.followList))
-            this.items = JSON.parse(sessionStorage.getItem('categories'))
+            sessionStorage.setItem('categories' , JSON.stringify({
+                "follow": this.$store.state.followSource,
+                "keyword": this.$store.state.userKeyword,
+            }))
+            this.items = this.$store.state.followList
 
             this.source_checkboxList = []
             this.keyword_checkboxList = []
 
         },
         category_delete(name, type) {
-            let user = firebase.auth().currentUser;
-            let db = firebase.firestore().collection('Userinfo').doc(user.uid);
+            let userUid = JSON.parse(sessionStorage.getItem('userInfo')).user.uid
+            let db = firebase.firestore().collection('Userinfo').doc(userUid);
             const select = confirm('삭제하시겠습니까?')
             if (select) {
                 // vuex에서 삭제하는 코드
@@ -195,13 +199,16 @@ export default {
                     // source 요소를 drag 했을 때.
                     delete this.$store.state.followSource[name]
                     db.update({
-                        keyword: this.$store.state.followSource
+                        follow: this.$store.state.followSource
                     })
                     this.$store.commit('loadRes')
                 }
 
-                sessionStorage.setItem('categories' , JSON.stringify(this.$store.state.followList))
-                this.items = JSON.parse(sessionStorage.getItem('categories'))
+                sessionStorage.setItem('categories' , JSON.stringify({
+                    "follow": this.$store.state.followSource,
+                    "keyword": this.$store.state.userKeyword,
+                }))
+                this.items = this.$store.state.followList
 
                 this.source_checkboxList = []
                 this.keyword_checkboxList = []
@@ -209,35 +216,21 @@ export default {
             }
         },
         vuexdata: async function() {
-            firebase.auth().onAuthStateChanged((user) => {
-                firebase.firestore().collection("Userinfo").doc(user.uid).get()
-                .then(r => {
-                    const tmp = r.data()
-
-                    this.$store.commit('loadUserinfoData', tmp)
-                    this.$store.commit('loadRes')
-                    this.items = this.$store.state.followList;
-
-                    sessionStorage.setItem('categories' , JSON.stringify(this.$store.state.followList))
-
-                    this.items.forEach(res => {
-                        this.select_name.push(res.name)
-                        this.move_categoty.push(res.name)
-                        res.children.forEach(data => {
-                            data.children.forEach(children => {
-                                if (children.type === 'source') {
-                                    this.category_structure_source.push([children.name, res.name, children.type])
-                                } else if (children.type === 'keyword') {
-                                    this.category_structure_keyword.push([children.name, res.name, children.type])
-                                }
-                                
-                            })
-                        })
+            this.items = this.$store.state.followList;
+            this.items.forEach(res => {
+                this.select_name.push(res.name)
+                this.move_categoty.push(res.name)
+                res.children.forEach(data => {
+                    data.children.forEach(children => {
+                        if (children.type === 'source') {
+                            this.category_structure_source.push([children.name, res.name, children.type])
+                        } else if (children.type === 'keyword') {
+                            this.category_structure_keyword.push([children.name, res.name, children.type])
+                        }
                     })
                 })
             })
 
-            
         }
     },
     mounted() {
@@ -250,7 +243,7 @@ export default {
         items: async function() {
             this.category_structure_source = []
             this.category_structure_keyword = []
-            sessionStorage.setItem('categories' , JSON.stringify(this.$store.state.followList))
+            // sessionStorage.setItem('categories' , JSON.stringify(this.$store.state.followList))
             this.items.forEach(res => {
                 this.select_name.push(res.name)
                 res.children.forEach(data => {
@@ -260,7 +253,6 @@ export default {
                         } else if (children.type === 'keyword') {
                             this.category_structure_keyword.push([children.name, res.name, children.type])
                         }
-                        
                     })
                 })
             })
