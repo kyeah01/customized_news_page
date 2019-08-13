@@ -1,6 +1,6 @@
 <template>
     <v-container class="category_container">
-        <h1 class="category_h1">Category Setting</h1>
+        <h1 class="category_h1">Organize Feeds</h1>
         <v-select
             v-model="select_name_model"
             return-object
