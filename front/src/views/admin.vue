@@ -18,10 +18,10 @@
 <!-- 
     <h2>전체 사용자 :{{ users.length }}명</h2> -->
 
-    <v-layout row>
+    <v-layout class="admin_layout" row>
       <v-flex>
         <v-card>
-          <v-toolbar color="teal" dark>
+          <v-toolbar color="green" dark>
             <v-toolbar-title class="text-xs-center">전체 사용자 :{{ users.length }}명</v-toolbar-title>
 
             <!-- <v-spacer></v-spacer> -->
@@ -31,12 +31,16 @@
             </v-btn> -->
           </v-toolbar>
 
-          <v-list subheader>
-            <v-subheader>사용자 목록</v-subheader>
+          <v-list>
+            <v-subheader>
+              <i class="fa fa-search"></i>
+              <input v-model="admin_search" :placeholder="placeholder"/>
+            </v-subheader>
+            
             <v-list-tile v-for="user in users">
 
               <v-list-tile-content>
-                <v-list-tile-title v-html="user.email"></v-list-tile-title>
+                <v-list-tile-title>{{user.email}}</v-list-tile-title>
               </v-list-tile-content>
 
               <v-list-tile-action>
@@ -75,6 +79,8 @@ export default {
   data() {
     return {
       users: [],
+      admin_search: '',
+      placeholder: 'Search user...',
     }
   },
   components: {
@@ -84,17 +90,30 @@ export default {
 
   },
   created() {
-    this.$http.get('/api/allusers').then(res => {
-      this.users = res.data
-      console.log(res)
-    })
+    this.init()
   },
   methods: {
-    Deleteuser(uid) {
-      this.$http.get(`/api/allusers/delete/${uid}`)
-      alert('회원탈퇴시켰습니다.')
-      window.location.href = '/admin';
+    init() {
+      this.$http.get('/api/allusers').then(res => {
+        this.users = res.data
+      })
     },
+    Deleteuser(uid) {
+      const judge = confirm('탈퇴시키겠습니까?')
+      if (judge) {
+        this.$http.get(`/api/allusers/delete/${uid}`)
+        alert("탈퇴되었습니다.")
+        this.init()
+      } else {
+        alert("취소하셨습니다.")
+      }
+      
+    },
+  },
+  watch: {
+    admin_search: function() {
+      console.log(this.admin_search.length)
+    }
   }
 }
 </script>
@@ -109,5 +128,8 @@ export default {
   }
   .admin_img {
     margin: 10px;
+  }
+  .admin_layout {
+    margin-top: 10px;
   }
 </style>

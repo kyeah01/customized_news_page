@@ -94,8 +94,11 @@
         <v-template v-if="!editMode">
             <v-treeview :items="vuexItemList" :active.sync="selectedItems" activatable transition open-all open-on-click item-key="id" return-object=true>
                 <template v-slot:prepend="{ item, open }">
-                    <v-icon v-if="item.id < 0">
+                    <v-icon v-if="item.type==='source'">
                         fas fa-rss
+                    </v-icon>
+                    <v-icon v-else-if="item.type==='keyword'">
+                        fab fa-google
                     </v-icon>
                     <v-icon v-else>
                         {{ open ? 'fas fa-folder-open' : 'fas fa-folder' }}
@@ -177,7 +180,7 @@ export default {
             markasreadArticles: null,
             // searchSelected : "",
             searchSelected : "신문사",
-            searchMenuSelect : ['키워드', '신문사'],
+            searchMenuSelect : ['키워드', '신문사']
         }
     },
     methods: {
@@ -198,7 +201,7 @@ export default {
             this.readlaterDrawer = false;
         },
         readLaterBtnClicked() {
-
+            this.selectedItems=[]
             this.readlaterDrawer = !this.readlaterDrawer;
 
             firebase.auth().onAuthStateChanged((user) => {
@@ -218,6 +221,7 @@ export default {
             this.recentlyReadDrawer = false;
         },
         recentlyReadBtnClicked() {
+            this.selectedItems=[]
             this.recentlyReadDrawer = !this.recentlyReadDrawer;
             firebase.auth().onAuthStateChanged((user) => {
                 const db = firebase.firestore();
@@ -267,6 +271,7 @@ export default {
             
         },
         goto: function (addr) {
+            this.selectedItems=[]
             this.$router.push('/' + addr)
         },
         Login: async function () {
@@ -332,6 +337,9 @@ export default {
 
             // this.placeholder = "Search in your feeds"
             document.getElementById("search").placeholder = "Search in your feeds";
+        },
+        out_treeview(){
+            this.selectedItems=[]
         }
     },
     created() {
@@ -356,7 +364,6 @@ export default {
         selectedItems: function () {
             var follow = this.selectedItems[0].name
             var type = this.selectedItems[0].type
-            console.log(follow, type);
 
             this.$router.push('/article/' + type + '/' + follow)
             eventBus.$emit("article", this.selectedItems)
