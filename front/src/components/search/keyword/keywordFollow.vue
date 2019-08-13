@@ -157,6 +157,11 @@ export default {
                 })
         },
     },
+    created() {
+        eventBus.$on('closeByDrawer', closeExpand => {
+            this.expand = false
+        })
+    }
     // destroyed() {
     //     if (!this.expand) {
     //         this.expand = false
