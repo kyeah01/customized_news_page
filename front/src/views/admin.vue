@@ -1,35 +1,65 @@
 <template>
   <v-container> 
-    <h1>Admin Page</h1>
+    <h1 class="admin_h1">Admin Page</h1>
     <v-layout wrap>
-      <v-flex xs4 sm4 md4 lg4 xl4>
+      <v-flex class="admin_flex" xs4 sm4 md4 lg4 xl4>
         <h2>신규 가입자 수</h2>
         <NewUserGraph/>
       </v-flex>
-      <v-flex xs4 sm4 md4 lg4 xl4>
+      <v-flex class="admin_flex" xs4 sm4 md4 lg4 xl4>
         <h2>전체 사용자 방문 수</h2>
         <TotalUserGraph/>
       </v-flex>
-      <v-flex xs4 sm4 md4 lg4 xl4>
+      <v-flex class="admin_flex" xs4 sm4 md4 lg4 xl4>
         <h2>전체 방문자 수</h2>
         <TotalVisitorGraph/>
       </v-flex>
     </v-layout>
+<!-- 
+    <h2>전체 사용자 :{{ users.length }}명</h2> -->
 
-    <h2>전체 사용자 :{{ users.length }}명</h2>
+    <v-layout row>
+      <v-flex>
+        <v-card>
+          <v-toolbar color="teal" dark>
+            <v-toolbar-title class="text-xs-center">전체 사용자 :{{ users.length }}명</v-toolbar-title>
+
+            <!-- <v-spacer></v-spacer> -->
+
+            <!-- <v-btn icon>
+              <v-icon>search</v-icon>
+            </v-btn> -->
+          </v-toolbar>
+
+          <v-list subheader>
+            <v-subheader>사용자 목록</v-subheader>
+            <v-list-tile v-for="user in users">
+
+              <v-list-tile-content>
+                <v-list-tile-title v-html="user.email"></v-list-tile-title>
+              </v-list-tile-content>
+
+              <v-list-tile-action>
+                <v-icon @click="Deleteuser(user.uid)" size="20">fas fa-trash-alt</v-icon>
+              </v-list-tile-action>
+            </v-list-tile>
+          </v-list>
+        </v-card>
+      </v-flex>
+    </v-layout>
 
 
-    <v-layout wrap>
+    <!-- <v-layout wrap>
       <v-flex v-for="user in users" xs3 sm3 md3 lg3 xl3>
           <v-card>
             <v-avatar size="150">
-              <v-img :src="user.photoURL"></v-img>
+              <v-img class="admin_img" :src="user.photoURL"></v-img>
             </v-avatar>
             <v-card-title>{{ user.email }}</v-card-title>
             <v-card-text><v-btn @click="Deleteuser(user.uid)">회원탈퇴</v-btn></v-card-text>
           </v-card> 
       </v-flex>
-    </v-layout>
+    </v-layout> -->
 
 
   </v-container>
@@ -56,6 +86,7 @@ export default {
   created() {
     this.$http.get('/api/allusers').then(res => {
       this.users = res.data
+      console.log(res)
     })
   },
   methods: {
@@ -68,3 +99,15 @@ export default {
 }
 </script>
 
+<style>
+  .admin_h1 {
+    margin-bottom: 10px;
+  }
+  .admin_flex {
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+  .admin_img {
+    margin: 10px;
+  }
+</style>

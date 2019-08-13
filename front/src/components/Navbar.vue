@@ -70,7 +70,6 @@
         <v-divider></v-divider>
 
         <v-flex xs12>
-            <v-btn class="ma-1" :class="[editMode ? 'edit-mode' : 'not-edit-mode']" :outline='editOutline' small absolute depressed right :color="editColor" style="z-index: 3" @click="test" />
             <v-layout justify-space-between>
                 <v-flex style="margin:10px 0px 12px 10px;">Category</v-flex>
                 <v-icon @click="Category_move()" style="margin:10px 10px 12px 10px;">fas fa-cog</v-icon>
