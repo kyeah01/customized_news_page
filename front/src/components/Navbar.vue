@@ -15,7 +15,6 @@
                     <input v-model="searchWord" type="search" id="search" :placeholder="placeholder" @blur="navbarSearchBlur" @focus="navbarSearchFocus" @keydown.enter="search">
                     </input>
                 </div>
-
             </div>
             <!-- <div style="padding-top: 10px; height: 35px;"> -->
             <br style="height: 20.8px;">
