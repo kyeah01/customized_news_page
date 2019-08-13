@@ -156,7 +156,6 @@ export default {
         async search() {
             if( this.searchByInput){
                 this.input=$('#input-search').val();
-                this.$router.push('/addKeyword/' + this.input)
             }
             
             // 입력한 키워드 검색결과에 따라 데이터베이스에 키워드 저장하기.
