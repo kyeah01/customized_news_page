@@ -156,7 +156,12 @@ export default {
 
                 })
         },
-    }
+    },
+    // destroyed() {
+    //     if (!this.expand) {
+    //         this.expand = false
+    //     }
+    // }
 }
 </script>
 
