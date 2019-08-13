@@ -7,7 +7,16 @@
   <input @change="upload" id="hiddenEvent" type="file"/>
   <v-btn input-value outline small text--grey id="file" @click="call" type="file" style="color: #757575; border: 1px solid rgba(0, 0, 0, 0.15);">choose file</v-btn>
   <v-btn outline small text--grey @click="remove" style="color: #757575; border: 1px solid rgba(0, 0, 0, 0.15);">remove image</v-btn>
-  <v-btn outline small text--grey @click="delete_account" style="color: #757575; border: 1px solid rgba(0, 0, 0, 0.15);">delete account</v-btn>
+  <v-hover>
+    <div slot-scope="{ hover }">
+      <div v-if="hover">
+        <v-btn text--grey small @click="delete_account" color="error" style="border: 1px solid rgba(0, 0, 0, 0.15);">delete account</v-btn>
+      </div>
+      <div v-else>
+        <v-btn outline text--grey small @click="delete_account" style="color: #757575; border: 1px solid rgba(0, 0, 0, 0.15);">delete account</v-btn>
+      </div>
+    </div>
+  </v-hover>
 </div>
 </template>
 
@@ -81,7 +90,6 @@ export default {
     },
     delete_account() {
       FirebaseService.Delete()
-      sessionStorage.removeItem('userInfo')
     },
     call : async function(){
       $('#hiddenEvent').click()
