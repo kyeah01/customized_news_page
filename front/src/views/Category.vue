@@ -4,7 +4,7 @@
         <v-select
             v-model="select_name_model"
             return-object
-            :items="select_name"
+            :items="select_name"    
             solo
         ></v-select>
         <v-card
@@ -12,29 +12,48 @@
             tile
         >
             <v-list three-line v-if="select_name_model == 'ALL'">
-                <v-subheader>SOURCE NAME</v-subheader>
+
+                <v-subheader>
+                    SOURCE NAME  
+                    <v-layout v-show="source_checkboxList.length > 0">
+                        <v-select v-model="move_categoty_model" :items="move_categoty"></v-select>
+                        <v-btn @click="category_move(move_categoty_model, source_checkboxList, 'source')">category move</v-btn>
+                    </v-layout>
+                   
+                </v-subheader>
+                
                 <div v-for="item in category_structure_source"> 
-
+                    
                     <v-list-tile>
-
+                        <v-checkbox v-model="source_checkboxList" :value="item[0]"></v-checkbox>
                         <v-list-tile-content>
+                            
                             <v-list-tile-title>{{item[0]}}</v-list-tile-title>
                             <v-list-tile-sub-title class="text--primary"><v-chip small color="green" text-color="white">{{item[1]}}</v-chip></v-list-tile-sub-title>
                         </v-list-tile-content>   
                         <v-list-tile-action> 
                             <v-icon @click="category_delete(item[0], item[2])" size="20">fas fa-trash-alt</v-icon>
                         </v-list-tile-action>
-        
                     </v-list-tile>
+                     
                 </div>
 
                 <v-divider></v-divider>
 
-                <v-subheader>KEYWORD NAME</v-subheader>
+                <v-subheader>
+                    KEYWORD NAME
+                    <v-layout v-show="keyword_checkboxList.length > 0">
+                        <v-select v-model="move_categoty_model" :items="move_categoty"></v-select>
+                        <v-btn @click="category_move(move_categoty_model, keyword_checkboxList, 'keyword')">category move</v-btn>
+                    </v-layout>
+                </v-subheader>
 
                 <div v-for="item in category_structure_keyword">
+
                     <v-list-tile>
-                
+
+                        <v-checkbox v-model="keyword_checkboxList" :value="item[0]"></v-checkbox>
+
                         <v-list-tile-content>
                             <v-list-tile-title>{{item[0]}}</v-list-tile-title>
                             <v-list-tile-sub-title class="text--primary"><v-chip small color="green" text-color="white">{{item[1]}}</v-chip></v-list-tile-sub-title>
@@ -49,11 +68,18 @@
 
 
             <v-list three-line v-else>
-                <v-subheader>SOURCE NAME</v-subheader>
+                <v-subheader>
+                    SOURCE NAME
+                    <v-layout v-show="source_checkboxList.length > 0">
+                        <v-select v-model="move_categoty_model" :items="move_categoty"></v-select>
+                        <v-btn @click="category_move(move_categoty_model, source_checkboxList, 'source')">category move</v-btn>
+                    </v-layout>
+                </v-subheader>
+
                 <div v-for="item in category_structure_source"> 
 
                     <v-list-tile v-show="select_name_model == item[1]">
-
+                        <v-checkbox v-model="source_checkboxList" :value="item[0]"></v-checkbox>
                         <v-list-tile-content>
                             <v-list-tile-title>{{item[0]}}</v-list-tile-title>
                             <v-list-tile-sub-title class="text--primary"><v-chip small color="green" text-color="white">{{item[1]}}</v-chip></v-list-tile-sub-title>
@@ -67,12 +93,18 @@
 
                 <v-divider></v-divider>
 
-                <v-subheader>KEYWORD NAME</v-subheader>
+                <v-subheader>
+                    KEYWORD NAME
+                    <v-layout v-show="keyword_checkboxList.length > 0">
+                        <v-select v-model="move_categoty_model" :items="move_categoty"></v-select>
+                        <v-btn @click="category_move(move_categoty_model, keyword_checkboxList, 'keyword')">category move</v-btn>
+                    </v-layout>
+                </v-subheader>
 
                 <div v-for="item in category_structure_keyword">
 
                     <v-list-tile v-show="select_name_model == item[1]">
-                
+                        <v-checkbox v-model="keyword_checkboxList" :value="item[0]"></v-checkbox>
                         <v-list-tile-content>
                             <v-list-tile-title>{{item[0]}}</v-list-tile-title>
                             <v-list-tile-sub-title class="text--primary"><v-chip small color="green" text-color="white">{{item[1]}}</v-chip></v-list-tile-sub-title>
@@ -102,9 +134,42 @@ export default {
             category_structure_keyword: [],
             select_name: ["ALL"],
             select_name_model: "ALL",
+            source_checkboxList: [],
+            keyword_checkboxList: [],
+            move_categoty: [],
+            move_categoty_model: '',
         }
     },
     methods: {
+        category_move(title, List, type) {
+            let user = firebase.auth().currentUser;
+            let db = firebase.firestore().collection('Userinfo').doc(user.uid);
+            if (type === 'source') {
+                for (var i in List) {
+                    this.$store.state.followSource[List[i]] = title
+                }
+                db.update({
+                    follow: this.$store.state.followSource
+                })
+                this.$store.commit('loadRes')
+
+            } else if (type === 'keyword') {
+                for (var i in List) {
+                    this.$store.state.userKeyword[List[i]] = title
+                }
+                db.update({
+                    keyword: this.$store.state.userKeyword
+                })
+                this.$store.commit('loadRes')
+            }
+
+            sessionStorage.setItem('categories' , JSON.stringify(this.$store.state.followList))
+            this.items = JSON.parse(sessionStorage.getItem('categories'))
+
+            this.source_checkboxList = []
+            this.keyword_checkboxList = []
+
+        },
         category_delete(name, type) {
             let user = firebase.auth().currentUser;
             let db = firebase.firestore().collection('Userinfo').doc(user.uid);
@@ -141,6 +206,7 @@ export default {
             this.items = JSON.parse(sessionStorage.getItem('categories'))
             this.items.forEach(res => {
                 this.select_name.push(res.name)
+                this.move_categoty.push(res.name)
                 res.children.forEach(data => {
                     data.children.forEach(children => {
                         if (children.type === 'source') {
@@ -178,6 +244,10 @@ export default {
                     })
                 })
             })
+        },
+        select_name_model: function() {
+            this.source_checkboxList = []
+            this.keyword_checkboxList = []
         }
     }
 }
