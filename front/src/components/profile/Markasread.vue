@@ -17,7 +17,7 @@
         <section class="container630 centered">
           <h1>
             <div class="kicker">Preview</div>
-            <div class="heading">Mark as read</div>
+            <div class="heading">Recently read</div>
           </h1>
               
               <v-flex xs12 v-for="(item, index) in deleteKey" :key="item.title">
@@ -36,7 +36,7 @@
                                   <!-- </div> -->
                                   <v-spacer></v-spacer>
                                   <div>
-                                    <v-icon @click="delete_from_DB(item, index)">fas fa-trash-alt</v-icon>
+                                    <v-icon id="trash" @click="delete_from_DB(item, index)">fas fa-trash-alt</v-icon>
                                       <!-- <v-icon id="check" @click="mark_as_read(item)">fas fa-check</v-icon> -->
                                       <!-- <v-icon id="bookmark" v-if="!item.read_later" @click="read_later(item)">far fa-bookmark</v-icon> -->
                                       <!-- <v-icon id="bookmark" v-else @click="read_later(item)" style="color:#2bb24c;">far fa-bookmark</v-icon> -->
@@ -46,11 +46,7 @@
                                   </div>
                                 </v-layout>
                                 
-                                  <div id="author" @click="open_Detaildrawer(item)">
-                                    <span id="read_later" v-if="item.read_later">Read later</span>
-                                    <span id="dot" v-if="item.read_later">·</span>
-                                    {{item.author}}
-                                  </div>
+                                  <div id="author" @click="open_Detaildrawer(item)">{{item.author}}</div>
                                   <!-- <span id="description">{{item.description}}</span> -->
                                   <span id="description" @click="open_Detaildrawer(item)">{{item.description}}</span>
 
@@ -145,9 +141,62 @@ export default {
   },
   computed : {
     deleteKey(){
-      return this.markasreadArticles
+      return this.markasreadArticles.slice().reverse()
     }
   }
 
 }
 </script>
+
+<style scoped>
+/* list */
+#articleImage {
+  border-radius: 0.2rem;
+  margin-top: 24px;
+  margin-left: 16px;
+}
+
+#title {
+  display: inline-block;
+  font-size: 16px !important;
+  letter-spacing: -.04em !important;
+  line-height: 1.25em !important;
+  margin-bottom: 0.25rem !important;
+  text-decoration: none !important;
+  width: 72% !important;
+  font-weight: 500;
+}
+
+#author {
+  color: #9e9e9e;
+  font-size: 13px !important;
+  line-height: 18px !important;
+  margin-left: -4px !important;
+  margin-bottom: 0 !important;
+  margin-top: 0.25rem !important;
+  max-height: 54px !important;
+}
+
+#description {
+  color: #9e9e9e;
+  font-size: 13px !important;
+  line-height: 18px !important;
+  margin-left: -4px !important;
+  margin-bottom: 0 !important;
+  margin-top: 0.25rem !important;
+  max-height: 54px !important;
+
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 3 !important; 
+  -webkit-box-orient: vertical !important;
+  word-break: break-word !important;
+  line-height: 1.2em !important;
+  height: 3.6em !important;
+}
+
+#trash {
+    font-size: 16px;
+}
+</style>

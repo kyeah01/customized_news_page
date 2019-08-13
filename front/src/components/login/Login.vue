@@ -1,173 +1,217 @@
 <template>
-  <div>
+<div>
     <div v-if="!userInfo" style="line-height: 60px;">
-      <v-btn
-        flat
-        @click.stop="dialog2 = true"
-        >
-        Login
-      </v-btn>
-      <v-dialog
-        v-model="dialog2"
-        max-width="400"
-        >
-        <v-card>
-          <v-card-title class="headline">Login</v-card-title>
+        <v-btn flat @click.stop="dialog2 = true">
+            Login
+        </v-btn>
+        <v-dialog v-model="dialog2" max-width="400">
+            <v-card>
+                <v-card-title class="headline">Login</v-card-title>
 
-          <v-card-text>
-            <input style="width:100%; height:50px;" type="text" v-model="email" placeholder="Email" @keyup.enter="Login"><br>
-            <input style="width:100%; height:50px;" type="password" v-model="password" placeholder="Password" @keyup.enter="Login"><br>
-          </v-card-text>
-
-          <v-card-actions>
-            <v-spacer></v-spacer>
-
-            <v-btn
-                color="green darken-1"
-                flat="flat"
-                @click="dialog2 = false"
-                v-on:click="Login"
-            >
-                Login
-            </v-btn>
-          </v-card-actions>
-          <v-flex text-xl-center text-lg-center text-md-center text-sm-center text-xs-center>
-            <GoogleLogin/>
-            <FacebookLogin/>
-            <p>You don't have an account? You can 
-              <v-btn flat @click.stop="dialog1 = true">
-                create one
-              </v-btn>
-            </p>
-            <v-dialog
-            v-model="dialog1"
-            max-width="500"
-            >
-              <v-card>
-                <v-card-title class="headline">Sign Up</v-card-title>
                 <v-card-text>
-                  <input style="width:100%; height:50px;" type="text" v-model="email" placeholder="Email" @keyup.enter="SignUp"><br>
-                  <input style="width:100%; height:50px;" type="password" v-model="password" placeholder="Password" @keyup.enter="SignUp"><br>
+                    <input style="width:100%; height:50px;" type="text" v-model="email" placeholder="Email" @keyup.enter="Login"><br>
+                    <input style="width:100%; height:50px;" type="password" v-model="password" placeholder="Password" @keyup.enter="Login"><br>
                 </v-card-text>
 
                 <v-card-actions>
-                  <v-spacer></v-spacer>
+                    <v-spacer></v-spacer>
 
-                  <v-btn
-                      color="green darken-1"
-                      flat="flat"
-                      v-on:click="SignUp"
-                  >
-                      Sign Up
-                  </v-btn>
+                    <v-btn color="green darken-1" flat="flat" @click="dialog2 = false" v-on:click="Login">
+                        Login
+                    </v-btn>
                 </v-card-actions>
-              </v-card>
-            </v-dialog>
-          </v-flex>
-        </v-card>
-      </v-dialog>
+                <v-flex text-xl-center text-lg-center text-md-center text-sm-center text-xs-center>
+                    <GoogleLogin />
+                    <FacebookLogin />
+                    <p>You don't have an account? You can
+                        <v-btn flat @click.stop="dialog1 = true">
+                            create one
+                        </v-btn>
+                    </p>
+                    <v-dialog v-model="dialog1" max-width="500">
+                        <v-card>
+                            <v-card-title class="headline">Sign Up</v-card-title>
+                            <v-card-text>
+                                <!-- <input style="width:100%; height:50px;" type="text" v-model="email" placeholder="Email" @keyup.enter="SignUp"><br> -->
+                                <!-- <input style="width:100%; height:50px;" type="password" v-model="password" placeholder="Password" @keyup.enter="SignUp"><br> -->
+                                <v-text-field  
+                                            :rules="[rules.emailMatch]" 
+                                            name="input-10-2" 
+                                            label="Email Address" 
+                                            hint="input your email address" 
+                                            v-model="email"
+                                            color="green"
+                                           ></v-text-field>
+                                <v-text-field :append-icon="pwShow ? 'visibility' : 'visibility_off'" 
+                                            :rules="[rules.same, rules.min]" 
+                                            :type="pwShow ? 'text' : 'password'" 
+                                            name="input-10-2" 
+                                            label="Password" 
+                                            hint="At least 8 characters" 
+                                            v-model="password"
+                                            color="green"
+                                            @click:append="pwShow = !pwShow"></v-text-field>
+                                <v-text-field :append-icon="pwShow ? 'visibility' : 'visibility_off'" 
+                                            :rules="[rules.min, rules.same]" 
+                                            :type="pwShow ? 'text' : 'password'" 
+                                            name="input-10-2" 
+                                            label="Repeat Password" 
+                                            color="green"
+                                            v-model="repeatPassword"
+                                            @click:append="pwShow = !pwShow"></v-text-field>
+                            </v-card-text>
+
+                            <v-card-actions>
+                                <v-spacer></v-spacer>
+
+                                <v-btn color="green darken-1" flat="flat" v-on:click="SignUp">
+                                    Sign Up
+                                </v-btn>
+                            </v-card-actions>
+                        </v-card>
+                    </v-dialog>
+                </v-flex>
+            </v-card>
+        </v-dialog>
     </div>
     <div v-else style="line-height: 60px;">
-      <NavbarAvatar v-if="userInfo"/>
+        <NavbarAvatar v-if="userInfo" />
     </div>
-  </div>
+</div>
 </template>
-
 
 <script>
 import firebase from 'firebase'
 import GoogleLogin from './GoogleLogin'
 import FacebookLogin from './FacebookLogin'
 import NavbarAvatar from '../NavbarAvatar'
-
+import {
+    async
+} from 'q';
+// import eventBus from '../eventBus'
 
 export default {
     components: {
-      GoogleLogin,
-      FacebookLogin,
-      NavbarAvatar,
+        GoogleLogin,
+        FacebookLogin,
+        NavbarAvatar,
     },
-    data () {
-      return {
-        userInfo: '',
-        email: '',
-        password: '',
-        signupemail: '',
-        signuppassword: '',
-        dialog1: false,
-        dialog2: false,
-      }
+    data() {
+        return {
+            user: '',
+            userInfo: '',
+            email: '',
+            password: '',
+            signupemail: '',
+            signuppassword: '',
+            dialog1: false,
+            dialog2: false,
+            
+            pwShow : false,
+            repeatPassword : '',
+            // password: 'Password',
+            rules: {
+                required: value => !!value || 'Required.',
+                min: v => v.length >= 6 || 'Min 6 characters',
+                same : v=> v == this.password || '비밀번호가 일치하지 않습니다.',
+                emailMatch : v=>{
+                  var regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+                  if (regExp.test(v)) return true;
+                  else return 'email 형식이 맞지 않아요';
+                }
+                // emailMatch: () => ('The email and password you entered don\'t match'),
+            },
+        }
     },
     methods: {
-      Login: async function() {
-        await firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
-          (user) => {
-            alert('Well done ! You are now connected')
-            sessionStorage.setItem('userInfo', JSON.stringify(user))
-            const time = new Date()
-            const date = time.getFullYear() + (time.getMonth() > 8 ? time.getMonth()+1 : '0'+(time.getMonth()+1)) + (time.getDate()>9 ? time.getDate() : '0'+time.getDate())
-            firebase.firestore().collection('visitorStat').doc(date).update({
-              totalUser: firebase.firestore.FieldValue.arrayUnion(user.user.email),
-            })
-            this.$store.commit('imageSoruceUpdate', user.user.photoURL)
-            this.email = ''
-            this.password = ''
+        init: async function () {
+            var user = firebase.auth().currentUser
+            await firebase.firestore().collection("Userinfo").doc(user.uid).get()
+                .then(r => {
+                    const tmp = r.data()
+
+                    this.$store.commit('loadUserinfoData', tmp)
+                    this.$store.commit('loadRes')
+                    sessionStorage.setItem('categories', JSON.stringify(this.$store.state.followList))
+                })
             window.location.href = '/';
-          },
-          (err) => {
-            alert('Oops, ' + err.message)
-            this.dialog2 = true
-          }
-        )
-      },
-      SignUp: function() {
-        firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(
-          (cred, user) => {
-            alert('created!!')
-            const time = new Date()
-            const date = time.getFullYear() + (time.getMonth() > 8 ? time.getMonth()+1 : '0'+(time.getMonth()+1)) + (time.getDate()>9 ? time.getDate() : '0'+time.getDate())
-            firebase.firestore().collection('visitorStat').doc(date).update({
-              newCreatedUser: firebase.firestore.FieldValue.increment(1),
-            })
-            this.Login()
-            this.dialog1 = false
-            firebase.firestore().collection('Userinfo').doc(cred.user.uid).set({
-              keyword: {},
-              markasread: [],
-              readlater: [],
-              sourceFollow : [],
-              follow : {},
-              followInfo : {}
-            })      
-          },
-          (err) => {
-            alert('Oops, ' + err.message)
-            this.dialog1 = true
-          }
-        );
-      },
-      Enter: function() {
-        if (window.event.keyCode == 13) {
-            Login();
+
+        },
+        Login: async function () {
+            await firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
+                (user) => {
+                    alert('Well done ! You are now connected')
+                    sessionStorage.setItem('userInfo', JSON.stringify(user))
+                    this.user = user.user
+                    const time = new Date()
+                    const date = time.getFullYear() + (time.getMonth() > 8 ? time.getMonth() + 1 : '0' + (time.getMonth() + 1)) + (time.getDate() > 9 ? time.getDate() : '0' + time.getDate())
+                    firebase.firestore().collection('visitorStat').doc(date).update({
+                        totalUser: firebase.firestore.FieldValue.arrayUnion(user.user.email),
+                    })
+                    this.$store.commit('imageSoruceUpdate', user.user.photoURL)
+                    this.email = ''
+                    this.password = ''
+                    this.init()
+                    // this.$router.push('/article')
+                    // window.location.href = '/';
+                },
+                (err) => {
+                    alert('Oops, ' + err.message)
+                    this.dialog2 = true
+                }
+            )
+        },
+        SignUp: function () {
+            firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(
+                (cred, user) => {
+                    alert('created!!')
+                    const time = new Date()
+                    const date = time.getFullYear() + (time.getMonth() > 8 ? time.getMonth() + 1 : '0' + (time.getMonth() + 1)) + (time.getDate() > 9 ? time.getDate() : '0' + time.getDate())
+                    firebase.firestore().collection('visitorStat').doc(date).update({
+                        newCreatedUser: firebase.firestore.FieldValue.increment(1),
+                    })
+                    this.Login()
+                    this.dialog1 = false
+                    firebase.firestore().collection('Userinfo').doc(cred.user.uid).set({
+                        keyword: {},
+                        markasread: [],
+                        readlater: [],
+                        sourceFollow: [],
+                        follow: {},
+                        followInfo: {}
+                    })
+                },
+                (err) => {
+                    alert('Oops, ' + err.message)
+                    this.dialog1 = true
+                }
+            );
+        },
+        Enter: function () {
+            if (window.event.keyCode == 13) {
+                Login();
+            }
         }
-      }
     },
-    created () {
-      this.userInfo = JSON.parse(sessionStorage.getItem('userInfo'))
+    created() {
+        this.userInfo = JSON.parse(sessionStorage.getItem('userInfo'))
     },
     watch: {
-      dialog1: function() {
-        if (!this.dialog1) {
-          this.email = ''
-          this.password = ''
+        dialog1: function () {
+            if (!this.dialog1) {
+                this.email = '';
+                this.password = '';
+                this.repeatPassword = '';
+
+            }
+        },
+        dialog2: function () {
+            if (!this.dialog2) {
+                this.email = '';
+                this.password = '';
+                this.repeatPassword = '';
+            }
         }
-      },
-      dialog2: function() {
-        if (!this.dialog2) {
-          this.email = ''
-          this.password = ''
-        }
-      }
     }
 
 }

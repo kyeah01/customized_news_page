@@ -25,36 +25,32 @@
                     <v-card v-else :key="item.title">
                         <v-layout row>
                             <v-flex>
-                                <img id="articleImage" v-bind:src="item.urlToImage" style="width:130px; height:78px;" @click="call(item)">
+                                <img id="articleImage" v-bind:src="item.urlToImage"  @click="call(item)" style="width:130px; height:78px;">
                             </v-flex>
 
                             <v-flex>
                                 <v-card-title primary-title>
                                     <v-layout row>
                                         <!-- <div> -->
-                                        <span class="headline pointer" id="title" v-if="!item.mark_as_read" @click="call(item)">{{item.title}}</span>
-                                        <span class="headline pointer" id="title" v-else style="color:#888888;" @click="call(item)">{{item.title}}</span>
+                                        <span class="headline pointer" id="title" @click="call(item)" v-if="!item.mark_as_read">{{item.title}}</span>
+                                        <span class="headline pointer" id="title" @click="call(item)" v-else style="color:#888888;">{{item.title}}</span>
                                         <!-- </div> -->
                                         <v-spacer></v-spacer>
                                         <div>
-                                            <v-icon id="check" v-if="item.mark_as_read" style="color:#2bb24c;" @click="mark_as_read(item)">fas fa-check</v-icon>
-                                            <v-icon id="check" v-else @click="mark_as_read(item)">fas fa-check</v-icon>
+                                            <!-- <v-icon id="check" v-if="item.mark_as_read" style="color:#2bb24c;" @click="mark_as_read(item)">fas fa-check</v-icon> -->
+                                            <!-- <v-icon id="check" v-else @click="mark_as_read(item)">fas fa-check</v-icon> -->
                                             <v-icon id="bookmark" v-if="!item.read_later" @click="read_later(item)">far fa-bookmark</v-icon>
                                             <v-icon id="bookmark" v-else @click="read_later(item)" style="color:#2bb24c;">far fa-bookmark</v-icon>
-
-                                            <!-- <v-icon @click="read_later(item)">far fa-bookmark</v-icon>
-                  <v-icon @click="read_later(item)">far fa-bookmark</v-icon> -->
-                                            <!-- <v-btn class="border-green" flat color="light-green accent-4">Follow</v-btn> -->
                                         </div>
                                     </v-layout>
 
-                                    <div id="author" @click="call(item)">
+                                    <div id="author">
                                         <span id="read_later" v-if="item.read_later">Read later</span>
                                         <span id="dot" class="pointer" v-if="item.read_later">·</span>
                                         {{item.author}}
                                     </div>
                                     <!-- <span id="description">{{item.description}}</span> -->
-                                    <span id="description" @click="call(item)" class="pointer">{{item.content}}</span>
+                                    <span id="description" class="pointer" @click="call(item)">{{item.content}}</span>
 
                                 </v-card-title>
                             </v-flex>
@@ -71,28 +67,24 @@
             </v-card>
         </v-flex>
 
-        <v-flex xs4 v-if="search=='Main'" hidden-md-and-down>
-      <weather/>
-      <br>
-      <v-card style="border-radius: 10px; width:100%;">
-        <topSource/>
-      </v-card>
-      <br>
-      <v-card style="border-radius: 10px; width:100%;">
-        <topKeyword/>
-      </v-card>
-    </v-flex>
+        <v-flex xs4 id="info" v-if="search=='Main'" hidden-md-and-down>
+            <weather />
+            <br>
+            <v-card style="border-radius: 10px; width:100%;">
+                <topSource />
+            </v-card>
+            <br>
+            <v-card style="border-radius: 10px; width:100%;">
+                <topKeyword />
+            </v-card>
+        </v-flex>
 
-    <div v-if="this.parentDrawer===true">
-      <ArticleDetail
-       :drawer = parentDrawer
-       :detail = parentDetail
-       @right_drawer = "update"
-       >
-      </ArticleDetail>
-    </div>
-  <!-- </v-layout> -->
-  </v-layout>
+        <div v-if="this.parentDrawer===true">
+            <ArticleDetail :drawer=parentDrawer :detail=parentDetail @right_drawer="update">
+            </ArticleDetail>
+        </div>
+        <!-- </v-layout> -->
+    </v-layout>
 </v-container>
 </template>
 
@@ -117,12 +109,12 @@ import env from '../../../env.js'
 const NewsAPI = require('newsapi');
 const newsapi = new NewsAPI(env.data().api1);
 
-  export default {
-    components : {
-      ArticleDetail,
-      weather,
-      topSource,
-      topKeyword
+export default {
+    components: {
+        ArticleDetail,
+        weather,
+        topSource,
+        topKeyword
     },
     props: ['type', 'follow'], // 새로 고침 시 url 파라미터 사용하여 api 호출
     data() {
@@ -176,11 +168,10 @@ const newsapi = new NewsAPI(env.data().api1);
                     }).then(res => {
                         res.articles.forEach(post => {
                             // console.log('post foreach 시작');
-if (post.source.name=='Youtube.com') {
-                    post.content = ''
-                    post.urlToImage = 'https://img.youtube.com/vi/'+post.url.split('?v=')[1]+'/mqdefault.jpg'
-                  }
-                   else if (post.urlToImage == null) {
+                            if (post.source.name == 'Youtube.com') {
+                                post.content = ''
+                                post.urlToImage = 'https://img.youtube.com/vi/' + post.url.split('?v=')[1] + '/mqdefault.jpg'
+                            } else if (post.urlToImage == null) {
                                 post.urlToImage = this.defaultImage + post.source.name
                             }
                             post.mark_as_read = false
@@ -190,8 +181,8 @@ if (post.source.name=='Youtube.com') {
                                 if (bool) post.mark_as_read = true;
                             })
 
-                            this.isReadLater(post).then(bool =>{
-                              if( bool ) post.read_later = true;
+                            this.isReadLater(post).then(bool => {
+                                if (bool) post.read_later = true;
                             })
 
                             // console.log('isMarkAsRead 끝');
@@ -265,7 +256,6 @@ if (post.source.name=='Youtube.com') {
                 return post.url == markAsReadUrl;
             });
 
-
             if (isMask) return true;
             else return false;
 
@@ -293,7 +283,6 @@ if (post.source.name=='Youtube.com') {
                 return post.url == element.url;
             });
 
-
             if (isMask) return true;
             else return false;
         },
@@ -308,6 +297,7 @@ if (post.source.name=='Youtube.com') {
             // 또한, topheadlines는 from, to를 통해 날짜 필터링 검색이 가능합니다.
         },
         call: function (item) {
+            this.mark_as_read(item)
             this.parentDetail = item
             this.parentDrawer = !this.parentDrawer
         },
@@ -316,9 +306,6 @@ if (post.source.name=='Youtube.com') {
         },
         mark_as_read(item) {
             var user = firebase.auth().currentUser
-            // item.mark_as_read = !item.mark_as_read
-            // console.log('mark_as_read', item.mark_as_read)
-            // console.log(user.uid)
             if (!item.mark_as_read) {
                 firebase.firestore().collection('Userinfo').doc(user.uid).update({
                     markasread: firebase.firestore.FieldValue.arrayUnion(item)
@@ -347,18 +334,6 @@ if (post.source.name=='Youtube.com') {
         },
         read_later(item) {
             var user = firebase.auth().currentUser
-            // console.log('어떤 index?', index)
-            console.log('url check', item.url)
-
-            console.log('정체는?', firebase.firestore().collection('Userinfo').doc(user.uid))
-            // item.read_later = !item.read_later
-            // this.read_later_value = !this.read_later_value
-            // console.log('read_later', item.read_later)
-            // console.log('article정보2', this.article)
-            // console.log('read_later_value', this.read_later_value)
-            // console.log('user정보', user)
-            // console.log('userdata', firebase.firestore().collection('Userinfo').doc(user.uid))
-            // console.log(user.uid)
             if (!item.read_later) {
                 firebase.firestore().collection('Userinfo').doc(user.uid).update({
                     readlater: firebase.firestore.FieldValue.arrayUnion(item)
@@ -431,17 +406,19 @@ if (post.source.name=='Youtube.com') {
                     this.Dfollow_s = null
                     this.load_follower(false)
                 }
-                this.search=r[0].name
-              })
-              this.article=[{header : 'today'}]
-              this.page=0
-              this.busy=false
-              if(!this.reqNone){
+                this.search = r[0].name
+            })
+            this.article = [{
+                header: 'today'
+            }]
+            this.page = 0
+            this.busy = false
+            if (!this.reqNone) {
                 this.topheadlinesArticle()
-              }
-          }
-      }
-  }
+            }
+        }
+    }
+}
 </script>
 
 <style scoped>
@@ -547,6 +524,14 @@ if (post.source.name=='Youtube.com') {
 }
 
 .pointer {
-  cursor:pointer
+    cursor: pointer
 }
+
+@media (min-width:1264px) and (max-width:1418px){
+    #info{
+        display : none
+    }
+}
+
+
 </style>

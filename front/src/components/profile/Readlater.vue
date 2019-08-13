@@ -11,7 +11,7 @@
       <v-btn
       flat
       @click="close">
-        X
+        X 
       </v-btn>
         <section class="container630 centered">
           <h1>
@@ -31,7 +31,7 @@
                                 <v-layout row>
                                   <!-- <div> -->
                                     <span class="headline" id="title" v-if="!item.mark_as_read" @click="open_Detaildrawer(item)">{{item.title}}</span>
-                                    <span class="headline" id="title" v-else style="color:#888888;"@click="open_Detaildrawer(item)">{{item.title}}</span>
+                                    <span class="headline" id="title" v-else style="color:#888888;" @click="open_Detaildrawer(item)">{{item.title}}</span>
                                   <!-- </div> -->
                                   <v-spacer></v-spacer>
                                   <div>
@@ -96,13 +96,14 @@
 import firebase from 'firebase'
 import FirebaseService from '@/services/FirebaseService'
 import 'firebase/firestore'
-import { watch } from 'fs';
 import ArticleDetail from '@/components/article/ArticleDetail'
 
 export default {
   props : ['drawer', 'readlaterArticles'],
   components : {
     ArticleDetail
+  },
+  mounted(){
   },
   data(){
     return{
@@ -112,16 +113,21 @@ export default {
     }
   },
   watch: {
-      drawer: function() {
+    drawer : function() {
       if (!this.drawer) {
-        console.log(this.val)
-        if (this.val) {
-          this.$emit('right_drawer', 'close')
-        } else {
-          this.$emit('right_drawer', 'save')
-        }
+        this.$emit('right_drawer', 'update')
       }
     }
+    // drawer: function() {
+    //   if (!this.drawer) {
+    //     this.$emit('readLater_drawer_false')
+    //     if (this.val) {
+    //       this.$emit('right_drawer', 'close')
+    //     } else {
+    //       this.$emit('right_drawer', 'save')
+    //     }
+    //   }
+    // }
   },
   methods: {
       delete_from_DB(item, index) {
@@ -154,7 +160,7 @@ export default {
   },
   computed : {
     deleteKey(){
-      return this.readlaterArticles
+      return this.readlaterArticles.slice().reverse()
     }
   }
 }
