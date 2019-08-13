@@ -160,7 +160,9 @@ export default {
   },
   computed : {
     deleteKey(){
-      return this.readlaterArticles.slice().reverse()
+      if( this.readlaterArticles != null)
+        return this.readlaterArticles.slice().reverse();
+      else return [];
     }
   }
 }

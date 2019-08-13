@@ -90,8 +90,7 @@
                 Edit
             </v-btn>-->
         </v-flex>
-
-        <v-template v-if="!editMode">
+        <v-template v-if="vuexItemList.length > 0">
             <v-treeview :items="vuexItemList" :active.sync="selectedItems" activatable transition open-all open-on-click item-key="id" return-object=true>
                 <template v-slot:prepend="{ item, open }">
                     <v-icon v-if="item.type==='source'">
@@ -107,7 +106,17 @@
             </v-treeview>
         </v-template>
 
-        <manageArticleInNavbar v-else></manageArticleInNavbar>
+        <v-template v-else>
+            <v-container style="height:300px; border: dashed #848484;">
+                <v-layout style="height:160px;" align-center justify-center>
+                    <v-icon large style="font-size: 90px; color:#A4A4A4;">fas fa-rss</v-icon>
+                </v-layout>
+                <p style="text-align:center; color:#A4A4A4; margin-bottom:4px;">Keep up with your favorite sources<br>and keyword alert</p>
+                <v-layout align-center justify-center>
+                    <v-btn outline small style="font-size: 10px; color:#A4A4A4;" @click="goto('addContent')">CREATE YOUR FIRST FEED</v-btn>
+                </v-layout>
+            </v-container>
+        </v-template>
 
     </v-navigation-drawer>
     <div class="btn-addContent" :class="[drawer ? 'btn-addContent-open' : 'btn-addContent-close']">
@@ -132,7 +141,6 @@ import firebase, {
 // import FacebookLogin from './FacebookLogin'
 import eventBus from '../eventBus'
 import Login from '@/components/login/Login'
-import manageArticleInNavbar from '@/components/manageArticleInNavbar'
 import readlater from '@/components/profile/Readlater'
 import Markasread from '@/components/profile/Markasread'
 
@@ -141,7 +149,6 @@ export default {
         // GoogleLogin,
         // FacebookLogin,
         Login,
-        manageArticleInNavbar,
         readlater,
         Markasread
     },
@@ -168,7 +175,7 @@ export default {
             items: null,
             userInfo: null,
             selectedItems: [],
-            editMode: false,
+            // editMode: false,
             editColor: "#999",
             editOutline: true,
 
@@ -188,7 +195,7 @@ export default {
     methods: {
         navbarSearchBlur() {
             this.isFocusOnNavSearch = false;
-            this.placeholder= 'Sarch...';
+            this.placeholder= 'Search...';
         },
         navbarSearchFocus() {
             this.isFocusOnNavSearch = true;
@@ -259,19 +266,19 @@ export default {
         Category_move() {
             this.$router.push("/category_setting")
         },
-        test() {
-            // console.log('test');
+        // test() {
+        //     // console.log('test');
 
-            this.editMode = !this.editMode
+        //     this.editMode = !this.editMode
 
-            if (this.editMode) {
-                this.editColor = "#ff5722";
-                this.editOutline = false;
-            } else {
-                this.editColor = "#999";
-                this.editOutline = true;
-            }
-        },
+        //     if (this.editMode) {
+        //         this.editColor = "#ff5722";
+        //         this.editOutline = false;
+        //     } else {
+        //         this.editColor = "#999";
+        //         this.editOutline = true;
+        //     }
+        // },
         search: function () {
             if (this.searchSelected == '신문사') {
                 this.$router.push('/addcontent/' + this.searchWord)
@@ -401,10 +408,10 @@ export default {
     transform: translateX(-300px);
 }
 
-.test {
+/* .test {
     display: block;
     width: 100%;
-}
+} */
 
 .box {
     /* margin: 100px auto; */

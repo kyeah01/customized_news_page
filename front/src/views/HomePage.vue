@@ -3,7 +3,7 @@
     <div>
       <v-container>
         <carousel-3d :controls-visible="true" :controls-prev-html="'&#10092;'" :controls-next-html="'&#10093;'" 
-                    :controls-width="30" :controls-height="60" :clickable="false" :width="600" :height="430"
+                    :controls-width="30" :controls-height="60" :clickable="false" :width="600" :height="400"
                     :autoplay="true" :autoplay-timeout="3000" @after-slide-change="isTop(i)">
           <slide v-for="(slide, i) in slides" :index="i" style="border:0;" class="elevation-15">
             <template slot-scope="{ index, isCurrent, leftIndex, rightIndex }">

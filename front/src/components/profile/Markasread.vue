@@ -141,7 +141,9 @@ export default {
   },
   computed : {
     deleteKey(){
-      return this.markasreadArticles.slice().reverse()
+      if( this.markasreadArticles != null )
+        return this.markasreadArticles.slice().reverse()
+      else return [];
     }
   }
 

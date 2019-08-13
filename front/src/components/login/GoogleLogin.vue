@@ -53,7 +53,6 @@ export default {
                             readlater: [],
                             sourceFollow : [],
                             follow : {},
-                            followInfo : {}
                         })   
                     }
                 })
