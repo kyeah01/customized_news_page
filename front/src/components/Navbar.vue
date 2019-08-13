@@ -10,9 +10,11 @@
             <div class="box" v-if="user">
                 <div class="container-1">
                     <br style="height: 20.8px;">
-                    <span class="icon" id="searchIcon"><i class="fa fa-search"></i></span>
                     
-                    <input v-model="searchWord" type="search" id="search" :placeholder="placeholder" @click="changePlaceholder" @keydown.enter="search" />
+                    <span class="icon" :class="{ focusOnNavSearch : isFocusOnNavSearch}" id="searchIcon"><i class="fa fa-search"></i></span>
+                    <input v-model="searchWord" type="search" id="search" :placeholder="placeholder" @click="changePlaceholder" @keydown.enter="search" >
+                        
+                    </input>
                 </div>
             </div>
             <!-- <div style="padding-top: 10px; height: 35px;"> -->
@@ -176,9 +178,11 @@ export default {
             readlaterArticles: null,
             recentlyReadDrawer: false,
             markasreadArticles: null,
+
             // searchSelected : "",
             searchSelected : "신문사",
-            searchMenuSelect : ['키워드', '신문사']
+            searchMenuSelect : ['키워드', '신문사'],
+            isFocusOnNavSearch : false,
         }
     },
     methods: {
@@ -324,10 +328,12 @@ export default {
                 var placeholder1 = $('#search');
                 placeholder1.focus(function () {
                     // placeholder1.val('Search in your feeds')
+                    that.isFocusOnNavSearch = true;
                     document.getElementById("search").placeholder = "Search in your feeds";
                 })
                 placeholder1.blur(function () {
                     // placeholder1.val('Search...')
+                    that.isFocusOnNavSearch = false;
                     document.getElementById("search").placeholder = "Search...";
                     that.searchWord = ''
                 })
@@ -516,32 +522,41 @@ export default {
     position: relative;
     right: 161px;
 } */
-.container-1:focus .icon,
+/* .container-1:focus .icon,
 .container-1:active .icon {
     transform: translateX(-105.5px)
+} */
+
+.container-1:focus > .icon{
+    transform: translateX(-105.5px);
+    color:red;
 }
 
-.container-1 .icon:focus,
+.focusOnNavSearch{
+    transform: translateX(-105.5px);
+}
+/* #search > .icon{
+        color:red;
+
+} */
+
+/* .container-1 .icon:focus,
 .container-1 .icon:active {
     transform: translateX(-105.5px)
-}
+} */
 
-.container-1 .icon:focus,
-.container-1 .icon:active:after {
-    transform: translateX(-105.5px)
-}
 
-.container-1 span#searchIcon:focus,
+/* .container-1 span#searchIcon:focus,
 .container-1 span#searchIcon:active {
     position: absolute;
     right: 270px;
-}
+} */
 
-.container-1 span#searchIcon:active:after {
+/* .container-1 span#searchIcon:active:after {
     position: absolute;
     right: 270px;
 
-}
+} */
 
 .container-1:hover input#search {
     /* width: 300px; */
