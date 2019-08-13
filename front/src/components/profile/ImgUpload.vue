@@ -81,7 +81,7 @@ export default {
     },
     delete_account() {
       FirebaseService.Delete()
-      
+      sessionStorage.removeItem('userInfo')
     },
     call : async function(){
       $('#hiddenEvent').click()

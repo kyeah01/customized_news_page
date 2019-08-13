@@ -124,7 +124,6 @@ export default {
   },
   methods : {
     test(){
-      console.log('몇번?',this.dir)
       this.parentDrawer = !this.parentDrawer
       eventBus.$emit("leftDrawer", !this.navSign)
       if (this.dir == 1) {

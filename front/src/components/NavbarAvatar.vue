@@ -73,7 +73,7 @@ import FirebaseService from '@/services/FirebaseService'
       user: '',
       items: [
         { name: 'Profile Page', url: '/profile'}, 
-        { name: 'Keyword Setting', url: '/'},
+        { name: 'Category Setting', url: '/category_setting'},
         ],
 
     }),

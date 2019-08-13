@@ -5,40 +5,33 @@
         <carousel-3d :controls-visible="true" :controls-prev-html="'&#10092;'" :controls-next-html="'&#10093;'" 
                     :controls-width="30" :controls-height="60" :clickable="false" :width="600" :height="430"
                     :autoplay="true" :autoplay-timeout="3000" @after-slide-change="isTop(i)">
-          <slide v-for="(slide, i) in slides" :index="i" style="border:0;">
+          <slide v-for="(slide, i) in slides" :index="i" style="border:0;" class="elevation-15">
             <template slot-scope="{ index, isCurrent, leftIndex, rightIndex }">
-              <img :data-index="index" :class="{ 'elevation-24': isCurrent }" :src="slide.img">
+              <img :data-index="index" :class="{ current: isCurrent }" :src="slide.img">
             </template>
           </slide>
         </carousel-3d>
-      </v-container>
-
-      <v-container>
         <v-layout justify-center>
-          <v-card style="height:auto; width:38vw; padding-top:10px" class="elevation-24">
-            <v-img src="https://user-images.githubusercontent.com/45934061/62856062-d8812b80-bd2e-11e9-8739-80e5f83a1658.PNG" alt="main Img"/>
-          </v-card>
-        </v-layout>
-        <v-layout justify-center>
-          <blockquote class="blockquote" style="text-align:center; padding:50px 0 10px 0;">
-            Keep up with all the topics that matter to you.<br>All in one place, <strong>"IDLE"</strong>.
+          <blockquote class="blockquote" style="text-align:center; padding:20px 0 10px 0;">
+            세상의 모든 뉴스를 한자리에서 받아보세요. <br><strong>"IDLE"</strong>.
           </blockquote>
         </v-layout>
         <v-layout justify-center>
-          <!-- <img src="https://cdn.pixabay.com/photo/2018/07/01/13/28/announcement-3509489_1280.jpg" alt="신문" width="50%"> -->
           <v-btn large dark color="success">GET STARTED FOR FREE</v-btn>
         </v-layout>
         <br>
         <br>
       </v-container>
     </div>
-    <div>
+    <div style="background-color:#F2F2F2;">
+      <br>
+      <br>
       <v-container>
         <h1>FOR YOUR CONVENIENCE,</h1>
         <p class="blockquote" style="padding-left:0px;">모든 컨텐츠를 한번에 받아보세요</p>
       </v-container>
     </div>
-    <div style="background-color:#F2F2F2;">
+    <div>
       <br>
       <br>
       <v-container style="text-align: right;">
@@ -46,8 +39,6 @@
       
         <p class="blockquote">원하는 키워드가 들어간 기사를 구독하세요</p>
         <v-layout row justify-end>
-          <!-- <img src="https://cdn.pixabay.com/photo/2017/02/06/00/22/keywords-letters-2041816_1280.jpg" alt="키워드" width="50%" style="padding-left:24px;"> -->
-
         </v-layout>
       </v-container>
       <br>
@@ -57,9 +48,8 @@
       <br>
       <br>
       <v-container>
-        <h1>FOR YOUR PREFERENCE,</h1>
-        <p class="blockquote">좋아하는 신문사의 기사를 구독하세요</p>
-        <!-- <img src="https://cdn.pixabay.com/p hoto/2018/07/01/13/28/announcement-3509489_1280.jpg" alt="신문" width="50%" style="padding-left:24px;"> -->
+        <h1 style="color:white;text-shadow: 0 0 2px #BDBDBD;">FOR YOUR PREFERENCE,</h1>
+        <p class="blockquote" style="padding-left:0px;color:white;text-shadow: 0 0 2px #BDBDBD;">좋아하는 신문사의 기사를 구독하세요</p>
       </v-container>
     </div>  
       <v-layout>
@@ -91,9 +81,15 @@ export default {
       path : '/',
       words:null,
       slides : [
-        {img:'https://user-images.githubusercontent.com/45934061/62856062-d8812b80-bd2e-11e9-8739-80e5f83a1658.PNG'},
-        {img:''},
-        {img:''},
+        {
+          img:'https://user-images.githubusercontent.com/45934061/62856062-d8812b80-bd2e-11e9-8739-80e5f83a1658.PNG',
+          },
+        {
+          img:'https://user-images.githubusercontent.com/45934061/62918418-81389500-bdda-11e9-8689-4259ba433019.PNG',
+          },
+        {
+          img:'',
+          },
       ]
     }
   },

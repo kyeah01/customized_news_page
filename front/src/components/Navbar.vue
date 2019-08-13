@@ -32,8 +32,7 @@
                 <option value="키워드">키워드</option>
             </select>
             <!-- </div> -->
-            <v-btn @click="goto('test')" flat>Test Space</v-btn>
-            <Login />
+            <Login style="padding-left:20px"/>
 
         </v-toolbar-items>
     </v-toolbar>
