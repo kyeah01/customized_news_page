@@ -6,10 +6,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    followKeyword: [],
     followSource : {},
     followReturn : {},
-    followinfo : {},
     imgSrc: '',
 
     userKeyword : {},
@@ -26,13 +24,10 @@ export default new Vuex.Store({
   mutations: {
     loadUserinfoData(state, fromDB){
       state.followSource = fromDB.follow;
-      state.followinfo = fromDB.followInfo;
       state.userKeyword = fromDB.keyword;
-      state.followKeyword = Object.keys(state.followinfo);
-
     },
-    loadRes(state){
-      console.log('loadRes start');
+    loadRes (state){
+      // console.log('loadRes start');
       
       state.userCategorys = [];
       let followList = [];
@@ -137,9 +132,9 @@ export default new Vuex.Store({
         state.followList = followList
 
         //followList
-            console.log(followList);
+          // console.log(followList);
             
-          console.log('loadRes end');
+          // console.log('loadRes end');
     },
     updateFollowList(state, data) {
       state.followList = data

@@ -87,7 +87,7 @@
 </template>
 
 <script>
-import firebase from 'firebase'
+import firebase, { firestore, functions, auth }  from 'firebase'
 import GoogleLogin from './GoogleLogin'
 import FacebookLogin from './FacebookLogin'
 import NavbarAvatar from '../NavbarAvatar'
@@ -131,38 +131,35 @@ export default {
         }
     },
     methods: {
-        init: async function () {
-            var user = firebase.auth().currentUser
-            await firebase.firestore().collection("Userinfo").doc(user.uid).get()
-                .then(r => {
-                    const tmp = r.data()
-
-                    this.$store.commit('loadUserinfoData', tmp)
-                    this.$store.commit('loadRes')
-                    sessionStorage.setItem('categories', JSON.stringify(this.$store.state.followList))
-                })
-            // window.location.href = '/';
-
-        },
         Login: async function () {
             await firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
                 (user) => {
                     alert('로그인되었습니다. \nIDLE과 함께 똑똑한 하루 보내세요!')
                     sessionStorage.setItem('userInfo', JSON.stringify(user))
-                    // this.user = user.user
-                    // this.userInfo = user.user
-                    const time = new Date()
-                    const date = time.getFullYear() + (time.getMonth() > 8 ? time.getMonth() + 1 : '0' + (time.getMonth() + 1)) + (time.getDate() > 9 ? time.getDate() : '0' + time.getDate())
-                    firebase.firestore().collection('visitorStat').doc(date).update({
-                        totalUser: firebase.firestore.FieldValue.arrayUnion(user.user.email),
+                    this.user = user.user
+
+                    // admin인지 확인하는 과정을 거치고나서
+                    auth().onAuthStateChanged(function(user) {
+                        user.getIdTokenResult().then(idTokenResult => {
+                            if (idTokenResult.claims.admin === true) {
+                                sessionStorage.setItem('IsAdmin', true)
+                            } else {
+                                sessionStorage.setItem('IsAdmin', false)
+                            }
+                        })
                     })
-                    this.$store.commit('imageSoruceUpdate', user.user.photoURL)
+
+                    // 방문자체크
+                    this.visitorCheck()
                     this.email = ''
                     this.password = ''
                     
-                    this.init()
-                    // this.$router.push('/article')
-                    window.location.href = '/';
+                    firebase.firestore().collection("Userinfo").doc(this.user.uid).get()
+                        .then(r => {
+                            const tmp = r.data()
+                            sessionStorage.setItem('categories', JSON.stringify(tmp))
+                            window.location.href = '/';
+                        })
                 },
                 (err) => {
                     if( err.code == 'auth/invalid-email'){
@@ -178,7 +175,7 @@ export default {
                         console.log('auth/wrong-password');
                         this.loginErrorMessage = '잘못된 비밀번호 입니다.';
                     }
-                    alert('Oops, ' + err.message)
+                    alert('Oops, ' + this.loginErrorMessage)
 
                     this.dialog2 = true
                 }
@@ -214,7 +211,14 @@ export default {
             if (window.event.keyCode == 13) {
                 Login();
             }
-        }
+        },
+        visitorCheck () {
+            const time = new Date()
+            const date = time.getFullYear() + (time.getMonth() > 8 ? time.getMonth() + 1 : '0' + (time.getMonth() + 1)) + (time.getDate() > 9 ? time.getDate() : '0' + time.getDate())
+            firebase.firestore().collection('visitorStat').doc(date).update({
+                totalUser: firebase.firestore.FieldValue.arrayUnion(this.user.email),
+            })
+        },
     },
     created() {
         this.userInfo = JSON.parse(sessionStorage.getItem('userInfo'))

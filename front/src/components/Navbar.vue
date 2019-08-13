@@ -165,7 +165,7 @@ export default {
             // navbar search
             searchWord: "",
 
-            items: [],
+            items: null,
             userInfo: null,
             selectedItems: [],
             editMode: false,
@@ -290,22 +290,19 @@ export default {
             )
         },
 
-        init: async function () {
-            var user = firebase.auth().currentUser
-            firebase.firestore().collection("Userinfo").doc(user.uid).get()
-                .then(r => {
-                    const tmp = r.data()
+        // init: async function () {
+        //     let userUid = JSON.parse(sessionStorage.getItem('userInfo')).user.uid
+        //     firebase.firestore().collection("Userinfo").doc(userUid).get()
+        //         .then(r => {
+        //             const tmp = r.data()
 
-                    this.$store.commit('loadUserinfoData', tmp)
-                    this.$store.commit('loadRes')
-                    this.items = this.$store.state.followList;
-                })
-        },
+        //             this.$store.commit('loadUserinfoData', tmp)
+        //             this.$store.commit('loadRes')
+        //         })
+        // },
         call: function () {
-            if (this.drawer == false && firebase.auth().currentUser != null) {
-                this.init()
-            } else {
-                this.items = null
+            if (this.drawer == false && sessionStorage.hasOwnProperty('userInfo')) {
+                this.items = this.$store.state.followList
             }
             this.drawer = !this.drawer
 

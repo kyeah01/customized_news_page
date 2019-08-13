@@ -32,52 +32,20 @@ export default {
     isLogin: function () {
       if (sessionStorage.hasOwnProperty('userInfo')) {
         this.userInfo = JSON.parse(sessionStorage.getItem('userInfo'))
-        // admin인지 확인하는 과정을 거치고나서
-        auth().onAuthStateChanged(function(user) {
-          user.getIdTokenResult().then(idTokenResult => {
-            if (idTokenResult.claims.admin === true) {
-              sessionStorage.setItem('IsAdmin', true)
-            } else {
-              sessionStorage.setItem('IsAdmin', false)
-            }
-          })
-        })
-
 
         // session storage는 하나의 딕셔너리
         // 값이 존재하는지 아닌지 확인하는거는 hasOwnProperty
         // 값이 어떻게 존재하는지 아는거는 getItem
         this.$store.commit('imageSoruceUpdate', this.userInfo.user.photoURL)
-        this.followCheck()
+        this.$store.commit('loadUserinfoData', JSON.parse(sessionStorage.getItem('categories')))
+        this.$store.commit('loadRes')
       } else {
         if (firebase.auth().currentUser) {
           FirebaseService.logout()
         }
       }
     },
-    followCheck: function (userInfo) {
-      if (sessionStorage.hasOwnProperty('followList')) {
-        const followList = JSON.parse(sessionStorage.getItem('followList'))
-        } else {
-          const followList = {}
-      // DB에서 불러와서 object 생성.
-        firestore().collection("Userinfo").doc(this.userInfo.user.uid).get()
-          .then(docs => {
-            const res = docs.data().follow
-            for (const key in res) {
-              if (followList.hasOwnProperty(res[key])) {
-                followList[res[key]].push(key)
-              } else {
-                followList[res[key]] = [key,]
-              }
-            }
-          })
-        // session storage에 값 생성(followList라는 이름으로.)
-        sessionStorage.setItem('followList', JSON.stringify(followList))
-      }
-      // vuex에 넣는 작업 해야함.
-      this.$store.commit('updateFollowList', followList)
-    },
+
   },
   created () {
     this.translater()
