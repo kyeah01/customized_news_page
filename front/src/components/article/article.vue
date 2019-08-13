@@ -143,7 +143,6 @@ export default {
         }
     },
     methods: {
-
         topheadlinesArticle: async function () {
             // 한번에 불러 올 수 있는 최대가 1~100사이의 수이고, 한번에 20개를 호출하기때문에 5번만 호출가능.
             if (this.page < 5) {
@@ -222,13 +221,11 @@ export default {
         async isMarkAsRead(post) {
             // console.log('isMarkAsRead start');
 
-            var user = firebase.auth().currentUser;
+            var userUid = JSON.parse(sessionStorage.getItem('userInfo')).user.uid
             var db = firebase.firestore();
             var isMask = false;
             var markAsRead = null;
-            
-            
-            await db.collection("Userinfo").doc(user.uid).get().then(function (doc) {
+            await db.collection("Userinfo").doc(userUid).get().then(function (doc) {
                 if (doc.exists) {
                     markAsRead = doc.data().markasread;
                 } else {
@@ -253,11 +250,10 @@ export default {
 
         },
         async isReadLater(post) {
-            var user = firebase.auth().currentUser;
+            var userUid = JSON.parse(sessionStorage.getItem('userInfo')).user.uid
             var isMask = false;
             var readlater = null;
-            
-            await firebase.firestore().collection("Userinfo").doc(user.uid).get().then(function (doc) {
+            await firebase.firestore().collection("Userinfo").doc(userUid).get().then(function (doc) {
                 if (doc.exists) {
                     readlater = doc.data().readlater;
                 } else {
@@ -298,17 +294,14 @@ export default {
             this.parentDrawer = !this.parentDrawer
         },
         mark_as_read(item) {
-            var user = firebase.auth().currentUser
-            console.log('hi, there');
-            
-            console.log(user);
+            var userUid = JSON.parse(sessionStorage.getItem('userInfo')).user.uid
             if (!item.mark_as_read) {
-                firebase.firestore().collection('Userinfo').doc(user.uid).update({
+                firebase.firestore().collection('Userinfo').doc(userUid).update({
                     markasread: firebase.firestore.FieldValue.arrayUnion(item)
                 })
                 item.mark_as_read = !item.mark_as_read
             } else {
-                let delMarkasreadItemFromDB = firebase.firestore().collection('Userinfo').doc(user.uid).get()
+                let delMarkasreadItemFromDB = firebase.firestore().collection('Userinfo').doc(userUid).get()
                     .then(doc => {
                         if (!doc.exists) {
                             console.log('No such document!');
@@ -317,7 +310,7 @@ export default {
                             doc.data().markasread.forEach(delItem => {
                                 if (item.url == delItem.url) {
                                     firebase.auth().onAuthStateChanged((user) => {
-                                        firebase.firestore().collection('Userinfo').doc(user.uid).update({
+                                        firebase.firestore().collection('Userinfo').doc(userUid).update({
                                             markasread: firebase.firestore.FieldValue.arrayRemove(item)
                                         })
                                     })
@@ -329,14 +322,14 @@ export default {
             }
         },
         read_later(item) {
-            var user = firebase.auth().currentUser
+            var userUid = JSON.parse(sessionStorage.getItem('userInfo')).user.uid
             if (!item.read_later) {
-                firebase.firestore().collection('Userinfo').doc(user.uid).update({
+                firebase.firestore().collection('Userinfo').doc(userUid).update({
                     readlater: firebase.firestore.FieldValue.arrayUnion(item)
                 })
                 item.read_later = !item.read_later
             } else {
-                let delReadlaterItemFromDB = firebase.firestore().collection('Userinfo').doc(user.uid).get()
+                let delReadlaterItemFromDB = firebase.firestore().collection('Userinfo').doc(userUid).get()
                     .then(doc => {
                         if (!doc.exists) {
                             console.log('No such document!');
@@ -345,7 +338,7 @@ export default {
                             doc.data().readlater.forEach(delItem => {
                                 if (item.url == delItem.url) {
                                     firebase.auth().onAuthStateChanged((user) => {
-                                        firebase.firestore().collection('Userinfo').doc(user.uid).update({
+                                        firebase.firestore().collection('Userinfo').doc(userUid).update({
                                             readlater: firebase.firestore.FieldValue.arrayRemove(item)
                                         })
                                     })
