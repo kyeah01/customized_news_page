@@ -150,9 +150,9 @@ export default {
         });
     },
     search(){
-      if( this.searchByInput )
+      if( this.searchByInput ) {
         this.input=$('#input-search').val();
-        this.$router.push('/addcontent/' + this.input)
+      }
       // var input = document.getElementById("input-search").value
       
       // if( this.searchWord != null ) input = this.searchWord;
