@@ -14,6 +14,7 @@
                     <span class="icon" :class="{ focusOnNavSearch : isFocusOnNavSearch}" id="searchIcon"><i class="fa fa-search"></i></span>
                     <input v-model="searchWord" type="search" id="search" :placeholder="placeholder" @blur="navbarSearchBlur" @focus="navbarSearchFocus" @keydown.enter="search">
                     </input>
+                    
                 </div>
             </div>
             <!-- <div style="padding-top: 10px; height: 35px;"> -->
