@@ -27,7 +27,7 @@
                                 width="30px"
                                 ></v-select>
             </div> -->
-            <select class="selectBox" name="snk" v-model="searchSelected">
+            <select class="selectBox" name="snk" v-model="searchSelected" v-if="user">
                 <option value="신문사" selected="selected">신문사</option>
                 <option value="키워드">키워드</option>
             </select>
@@ -317,17 +317,17 @@ export default {
             this.drawer = !this.drawer
         },
         changePlaceholder() {
+            let that = this;
             $(function () {
                 var placeholder1 = $('#search');
                 placeholder1.focus(function () {
                     // placeholder1.val('Search in your feeds')
                     document.getElementById("search").placeholder = "Search in your feeds";
-                    this.searchWord = ''
                 })
                 placeholder1.blur(function () {
                     // placeholder1.val('Search...')
                     document.getElementById("search").placeholder = "Search...";
-                    this.searchWord = ''
+                    that.searchWord = ''
                 })
             })
 
