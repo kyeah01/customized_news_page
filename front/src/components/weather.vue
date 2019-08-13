@@ -12,7 +12,7 @@
     }),
     watch : {},
     created () {
-      console.log('a', document)
+      // console.log('a', document)
       this.weather(document,'script','weatherwidget-io-js')
     },
     methods: {

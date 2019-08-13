@@ -86,7 +86,6 @@ export default {
         this.init()
 
         EventBus.$on('closeByDrawer', closeExpand => {
-            console.log('뭘까요?', closeExpand)
             if (this.$store.state.follow_openIdx != -1) {
                 this.$store.state.follow_openIdx = -1
             }

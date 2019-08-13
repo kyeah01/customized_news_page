@@ -117,7 +117,7 @@ export default {
   props : ['drawer','detail'],
   methods : {
     close(){
-      console.log(this.detail)
+      // console.log(this.detail)
       this.drawer=!this.drawer
       this.$emit('right_drawer', 'closeDetail')
     }

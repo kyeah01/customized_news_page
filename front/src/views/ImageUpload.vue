@@ -49,13 +49,10 @@ export default {
       xmlHttpRequest.onreadystatechange = () => {
 
         if (xmlHttpRequest.readyState == 4) {
-          console.log("3")
-
           if (xmlHttpRequest.status == 200) {
-            console.log("4");
             var result = JSON.parse(xmlHttpRequest.responseText);
             this.imageSrc = result.data.link;
-            console.log(this.imageSrc)
+            // console.log(this.imageSrc)
 
             var userinfo = firebase.auth().currentUser
 
@@ -83,7 +80,7 @@ export default {
 
     },
     remove() {
-      console.log("remove")
+      // console.log("remove")
       this.imageSrc = "https://source.unsplash.com/random"
 
       var userinfo = firebase.auth().currentUser

@@ -86,7 +86,6 @@ export default {
   },
   methods: {
     onGroupsChange: function onGroupsChange(groups, event) {
-        console.log('그룹이 뭐지', this.groups)
         // this.groups = this.groups
     }
     // onGroupsChange(e) {
