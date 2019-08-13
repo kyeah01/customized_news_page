@@ -107,8 +107,6 @@
             </v-treeview>
         </v-template>
 
-        <manageArticleInNavbar v-else></manageArticleInNavbar>
-
     </v-navigation-drawer>
     <div class="btn-addContent" :class="[drawer ? 'btn-addContent-open' : 'btn-addContent-close']">
         <v-btn to="/addContent" block flat color="#2bb24c" @click="closeLeftDrawer">
@@ -132,7 +130,6 @@ import firebase, {
 // import FacebookLogin from './FacebookLogin'
 import eventBus from '../eventBus'
 import Login from '@/components/login/Login'
-import manageArticleInNavbar from '@/components/manageArticleInNavbar'
 import readlater from '@/components/profile/Readlater'
 import Markasread from '@/components/profile/Markasread'
 
@@ -141,7 +138,6 @@ export default {
         // GoogleLogin,
         // FacebookLogin,
         Login,
-        manageArticleInNavbar,
         readlater,
         Markasread
     },
@@ -188,7 +184,7 @@ export default {
     methods: {
         navbarSearchBlur() {
             this.isFocusOnNavSearch = false;
-            this.placeholder= 'Sarch...';
+            this.placeholder= 'Search...';
         },
         navbarSearchFocus() {
             this.isFocusOnNavSearch = true;
