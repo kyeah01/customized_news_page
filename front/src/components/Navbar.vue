@@ -296,10 +296,14 @@ export default {
             $(function () {
                 var placeholder1 = $('#search');
                 placeholder1.focus(function () {
-                    placeholder1.val('Search in your feeds')
+                    // placeholder1.val('Search in your feeds')
+                    document.getElementById("search").placeholder = "Search in your feeds";
+                    this.searchWord = ''
                 })
                 placeholder1.blur(function () {
-                    placeholder1.val('Search...')
+                    // placeholder1.val('Search...')
+                    document.getElementById("search").placeholder = "Search...";
+                    this.searchWord = ''
                 })
             })
 
