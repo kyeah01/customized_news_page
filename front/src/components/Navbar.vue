@@ -199,7 +199,7 @@ export default {
         },
         navbarSearchFocus() {
             this.isFocusOnNavSearch = true;
-            this.placeholder = 'Search in your feeds';
+            this.placeholder = 'Search in sources and keywords';
         },
         dread() {
             firebase.auth().onAuthStateChanged((user) => {
