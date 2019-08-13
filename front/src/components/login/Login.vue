@@ -35,7 +35,7 @@
                                 <!-- <input style="width:100%; height:50px;" type="text" v-model="email" placeholder="Email" @keyup.enter="SignUp"><br> -->
                                 <!-- <input style="width:100%; height:50px;" type="password" v-model="password" placeholder="Password" @keyup.enter="SignUp"><br> -->
                                 <v-text-field  
-                                            :rules="[ rules.emailMatch]" 
+                                            :rules="[rules.emailMatch]" 
                                             name="input-10-2" 
                                             label="Email Address" 
                                             hint="input your email address" 
@@ -57,6 +57,7 @@
                                             name="input-10-2" 
                                             label="Repeat Password" 
                                             color="green"
+                                            v-model="repeatPassword"
                                             @click:append="pwShow = !pwShow"></v-text-field>
                             </v-card-text>
 
@@ -111,7 +112,7 @@ export default {
             // password: 'Password',
             rules: {
                 required: value => !!value || 'Required.',
-                min: v => v.length >= 6 || 'Min 8 characters',
+                min: v => v.length >= 6 || 'Min 6 characters',
                 same : v=> v == this.password || '비밀번호가 일치하지 않습니다.',
                 emailMatch : v=>{
                   var regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
@@ -198,14 +199,17 @@ export default {
     watch: {
         dialog1: function () {
             if (!this.dialog1) {
-                this.email = ''
-                this.password = ''
+                this.email = '';
+                this.password = '';
+                this.repeatPassword = '';
+
             }
         },
         dialog2: function () {
             if (!this.dialog2) {
-                this.email = ''
-                this.password = ''
+                this.email = '';
+                this.password = '';
+                this.repeatPassword = '';
             }
         }
     }
