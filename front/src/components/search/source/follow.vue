@@ -107,7 +107,6 @@ export default {
 
         },
         open: function () {
-            
             EventBus.$emit('closeByFollow', this.closeDrawer)
             this.items = this.$store.state.userCategorys
 
@@ -146,11 +145,10 @@ export default {
                 this.sourcesManage(this.news, user);
     
                 this.addopen = false
-                this.expand = !this.expand
-    
                 this.isFollowing = true;
                 var tmp=[newsId,true];
                 this.$emit('sign_follow',tmp)
+                this.$store.state.follow_openIdx=-1
             } 
             // EventBus.$on('closeByDrawer', drawer => {
             //     this.expand = drawer
