@@ -317,17 +317,17 @@ export default {
             this.drawer = !this.drawer
         },
         changePlaceholder() {
+            let that = this;
             $(function () {
                 var placeholder1 = $('#search');
                 placeholder1.focus(function () {
                     // placeholder1.val('Search in your feeds')
                     document.getElementById("search").placeholder = "Search in your feeds";
-                    this.searchWord = ''
                 })
                 placeholder1.blur(function () {
                     // placeholder1.val('Search...')
                     document.getElementById("search").placeholder = "Search...";
-                    this.searchWord = ''
+                    that.searchWord = ''
                 })
             })
 
