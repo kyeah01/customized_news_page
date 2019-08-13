@@ -316,8 +316,9 @@ export default {
                 this.items = null
             }
             this.drawer = !this.drawer
-
-            // eventBus.$emit('closeByDrawer', this.drawer)
+            
+            // 햄버거 클릭 시 follow expand 닫히게
+            eventBus.$emit('closeByDrawer', this.drawer)
         },
         moveSourceDetail: function (j) {
             alert(j)
