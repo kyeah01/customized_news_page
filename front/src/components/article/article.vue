@@ -375,27 +375,8 @@ export default {
                         this.follower = r.data().users_num
                     })
             }
-        }
-    },
-    //navbar 클릭 X , 새로고침 시 url get,
-    mounted() {
-        if (Object.keys(this.$route.params).length === 0 && JSON.stringify(this.$route.params) === JSON.stringify({})) {
-            this.reqNone = true
-        } else {
-            if (this.$route.params.type === this.$store.state.sourceSubTitle) {
-                this.Dfollow_s = this.$route.params.follow //bbc-news
-                this.load_follower(true)
-            } else {
-                this.Dfollow_q = this.$route.params.follow
-                this.load_follower(false)
-            }
-            this.search = this.$route.params.follow
-            this.type = this.$route.params.type
-        }
-    },
-    //navbar 클릭으로 article 정보 변환시(eventbus)
-    watch: {
-        ['search' || 'type']: function () {
+        },
+        loadArticleByUrl(){
             eventBus.$on('article', r => {
                 if (r[0].type === this.$store.state.sourceSubTitle) {
                     this.Dfollow_s = r[0].name
@@ -416,6 +397,31 @@ export default {
             if (!this.reqNone) {
                 this.topheadlinesArticle()
             }
+        }
+    },
+    //navbar 클릭 X , 새로고침 시 url get,
+    mounted() {
+        if (Object.keys(this.$route.params).length === 0 && JSON.stringify(this.$route.params) === JSON.stringify({})) {
+            this.reqNone = true
+        } else {
+            if (this.$route.params.type === this.$store.state.sourceSubTitle) {
+                this.Dfollow_s = this.$route.params.follow //bbc-news
+                this.load_follower(true)
+            } else {
+                this.Dfollow_q = this.$route.params.follow
+                this.load_follower(false)
+            }
+            this.search = this.$route.params.follow
+            this.type = this.$route.params.type
+        }
+    },
+    //navbar 클릭으로 article 정보 변환시(eventbus)
+    watch: {
+        search : function(){
+            this.loadArticleByUrl();
+        },
+        type : function(){
+            this.loadArticleByUrl();
         }
     }
 }
