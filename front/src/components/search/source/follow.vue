@@ -2,14 +2,14 @@
 <v-layout wrap overflow>
     <v-flex shrink>
         <div>
-            <v-btn v-if="isFollowing" small outline color="#9e9e9e" class="following" @click="open">
+            <v-btn v-if="isFollowing" small outline color="#9e9e9e" class="following" @click="unfollow">
                 <span>Following</span>
             </v-btn>
             <v-btn v-else small outline class="green green--text" @click="open">
                 follow
             </v-btn>
         </div>
-        <div class="expandBox">
+        <div class="expandBox" v-if="!isFollowing">
             <v-expand-transition>
                 <v-card v-show="expand" class="scroll" v-if="this.$store.state.follow_openIdx===this.idx">
                     <div v-if="addopen===false">
@@ -198,15 +198,15 @@ export default {
     text-align: center;
 }
 
-.following:hover span {
+/* .following:hover span {
     display: none;
-}
+} */
 
-.following:hover::after {
+/* .following:hover::after {
     content: 'edit';
     text-align: center;
+} */
 
-}
 .autocomplete-input {
     border: 1px solid #eee;
     border-radius: 8px;
