@@ -139,7 +139,9 @@ export default {
             Dfollow_s: null,
             reqNone: false,
             follower: 'XX',
-            defaultImage: 'https://via.placeholder.com/300x300/FFFFFF/000000?text='
+            defaultImage: 'https://via.placeholder.com/300x300/FFFFFF/000000?text=',
+            markAsRead : [],
+            readlater : [],
         }
     },
     methods: {
@@ -163,12 +165,12 @@ export default {
                             } else if (post.urlToImage == null) {
                                 post.urlToImage = this.defaultImage + post.source.name
                             }
-                            post.mark_as_read = false
+                            // post.mark_as_read = false
                             post.read_later = false
 
-                            this.isMarkAsRead(post).then(bool => {
-                                if (bool) post.mark_as_read = true;
-                            })
+                            // this.isMarkAsRead(post).then(bool => {
+                            //     if (bool) post.mark_as_read = true;
+                            // })
 
                             this.isReadLater(post).then(bool => {
                                 if (bool) post.read_later = true;
@@ -202,7 +204,7 @@ export default {
                             if (post.urlToImage == null) {
                                 post.urlToImage = this.defaultImage + post.source.name
                             }
-                            post.mark_as_read = false
+                            // post.mark_as_read = false
                             post.read_later = false
                             this.article.push(post)
                             this.article.push({
@@ -221,22 +223,22 @@ export default {
         async isMarkAsRead(post) {
             // console.log('isMarkAsRead start');
 
-            var userUid = JSON.parse(sessionStorage.getItem('userInfo')).user.uid
-            var db = firebase.firestore();
+            // var userUid = JSON.parse(sessionStorage.getItem('userInfo')).user.uid
+            // var db = firebase.firestore();
             var isMask = false;
-            var markAsRead = null;
-            await db.collection("Userinfo").doc(userUid).get().then(function (doc) {
-                if (doc.exists) {
-                    markAsRead = doc.data().markasread;
-                } else {
-                    // doc.data() will be undefined in this case
-                    console.log("No such document!");
-                }
-            }).catch(function (error) {
-                console.error("Error getting document:", error);
-            });
+            // var markAsRead = null;
+            // await db.collection("Userinfo").doc(userUid).get().then(function (doc) {
+            //     if (doc.exists) {
+            //         this.markAsRead = doc.data().markasread;
+            //     } else {
+            //         // doc.data() will be undefined in this case
+            //         console.log("No such document!");
+            //     }
+            // }).catch(function (error) {
+            //     console.error("Error getting document:", error);
+            // });
 
-            isMask = markAsRead.some(function (element) {
+            isMask = this.markAsRead.some(function (element) {
                 let markAsReadUrl = element.url;
                 // 데이터베이스 안에서 markasread 된 article인지 url로 비교.
                 // 일치하는 값이 있으면 즉시 true return. 
@@ -250,21 +252,21 @@ export default {
 
         },
         async isReadLater(post) {
-            var userUid = JSON.parse(sessionStorage.getItem('userInfo')).user.uid
+            // var userUid = JSON.parse(sessionStorage.getItem('userInfo')).user.uid
             var isMask = false;
-            var readlater = null;
-            await firebase.firestore().collection("Userinfo").doc(userUid).get().then(function (doc) {
-                if (doc.exists) {
-                    readlater = doc.data().readlater;
-                } else {
-                    // doc.data() will be undefined in this case
-                    console.log("No such document!");
-                }
-            }).catch(function (error) {
-                console.error("Error getting document:", error);
-            });
+            // var readlater = null;
+            // await firebase.firestore().collection("Userinfo").doc(userUid).get().then(function (doc) {
+            //     if (doc.exists) {
+            //         readlater = doc.data().readlater;
+            //     } else {
+            //         // doc.data() will be undefined in this case
+            //         console.log("No such document!");
+            //     }
+            // }).catch(function (error) {
+            //     console.error("Error getting document:", error);
+            // });
 
-            isMask = readlater.some(function (element) {
+            isMask = this.readlater.some(function (element) {
                 // 데이터베이스 안에서 markasread 된 article인지 url로 비교.
                 // 일치하는 값이 있으면 즉시 true return. 
                 // javascript break키워드가 없어서 some method 사용.
@@ -286,7 +288,7 @@ export default {
             // 또한, topheadlines는 from, to를 통해 날짜 필터링 검색이 가능합니다.
         },
         call: function (item) {
-            // this.mark_as_read(item)
+            this.mark_as_read(item)
             this.parentDetail = item
             this.parentDrawer = !this.parentDrawer
         },
@@ -295,31 +297,31 @@ export default {
         },
         mark_as_read(item) {
             var userUid = JSON.parse(sessionStorage.getItem('userInfo')).user.uid
-            if (!item.mark_as_read) {
+            // if (!item.mark_as_read) {
                 firebase.firestore().collection('Userinfo').doc(userUid).update({
                     markasread: firebase.firestore.FieldValue.arrayUnion(item)
                 })
-                item.mark_as_read = !item.mark_as_read
-            } else {
-                let delMarkasreadItemFromDB = firebase.firestore().collection('Userinfo').doc(userUid).get()
-                    .then(doc => {
-                        if (!doc.exists) {
-                            console.log('No such document!');
-                        } else {
-                            console.log('Document data:', doc.data());
-                            doc.data().markasread.forEach(delItem => {
-                                if (item.url == delItem.url) {
-                                    firebase.auth().onAuthStateChanged((user) => {
-                                        firebase.firestore().collection('Userinfo').doc(userUid).update({
-                                            markasread: firebase.firestore.FieldValue.arrayRemove(item)
-                                        })
-                                    })
-                                }
-                            })
-                        }
-                        item.mark_as_read = !item.mark_as_read
-                    })
-            }
+                // item.mark_as_read = !item.mark_as_read
+            // } else {
+            //     let delMarkasreadItemFromDB = firebase.firestore().collection('Userinfo').doc(userUid).get()
+            //         .then(doc => {
+            //             if (!doc.exists) {
+            //                 console.log('No such document!');
+            //             } else {
+            //                 console.log('Document data:', doc.data());
+            //                 doc.data().markasread.forEach(delItem => {
+            //                     if (item.url == delItem.url) {
+            //                         firebase.auth().onAuthStateChanged((user) => {
+            //                             firebase.firestore().collection('Userinfo').doc(userUid).update({
+            //                                 markasread: firebase.firestore.FieldValue.arrayRemove(item)
+            //                             })
+            //                         })
+            //                     }
+            //                 })
+            //             }
+            //             item.mark_as_read = !item.mark_as_read
+            //         })
+            // }
         },
         read_later(item) {
             var userUid = JSON.parse(sessionStorage.getItem('userInfo')).user.uid
@@ -389,7 +391,7 @@ export default {
         }
     },
     //navbar 클릭 X , 새로고침 시 url get,
-    mounted() {
+    async mounted() {
         if (Object.keys(this.$route.params).length === 0 && JSON.stringify(this.$route.params) === JSON.stringify({})) {
             this.reqNone = true
         } else {
@@ -403,6 +405,40 @@ export default {
             this.search = this.$route.params.follow
             // this.type = this.$route.params.type
         }
+
+        //user markAsRead 로드
+        var userUid = JSON.parse(sessionStorage.getItem('userInfo')).user.uid
+        var db = firebase.firestore();
+        let that = this;
+        await db.collection("Userinfo").doc(userUid).get().then(function (doc) {
+                if (doc.exists) {
+                    that.markAsRead = doc.data().markasread;
+                } else {
+                    // doc.data() will be undefined in this case
+                    console.log("No such document!");
+                }
+            }).catch(function (error) {
+                console.error("Error getting document:", error);
+            });
+
+        // user recently read
+        await db.collection("Userinfo").doc(userUid).get().then(function (doc) {
+                if (doc.exists) {
+                    that.readlater = doc.data().readlater;
+                } else {
+                    // doc.data() will be undefined in this case
+                    console.log("No such document!");
+                }
+            }).catch(function (error) {
+                console.error("Error getting document:", error);
+            });
+            console.log(userUid);
+            
+            console.log(this.markAsRead);
+            console.log(this.readlater);
+            
+            
+
     },
     //navbar 클릭으로 article 정보 변환시(eventbus)
     watch: {
