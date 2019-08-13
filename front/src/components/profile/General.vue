@@ -57,7 +57,7 @@ export default {
     methods :{
         test(){
           this.$emit('right_drawer')
-          console.log('right_drawer')
+          // console.log('right_drawer')
         }
     },
     data(){

@@ -107,7 +107,7 @@ import ProfileCard from '@/components/profile/ProfileCard'
           this.diffDate.min=this.eDate.min-this.sDate.min
           this.diffDate.second=this.eDate.second-this.sDate.second
           
-          console.log('before')
+          // console.log('before')
           firebase.firestore().collection('Users').add({
             Email : user.email,
             Uid : user.uid,
@@ -116,7 +116,7 @@ import ProfileCard from '@/components/profile/ProfileCard'
             exitTime : this.eDate,
             diffTime : this.diffDate
           })
-          console.log('end')
+          // console.log('end')
         }
   }
 </script>

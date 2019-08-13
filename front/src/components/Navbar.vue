@@ -260,7 +260,7 @@ export default {
             this.$router.push("/category_setting")
         },
         test() {
-            console.log('test');
+            // console.log('test');
 
             this.editMode = !this.editMode
 
@@ -313,8 +313,9 @@ export default {
                 this.items = this.$store.state.followList
             }
             this.drawer = !this.drawer
-
-            // eventBus.$emit('closeByDrawer', this.drawer)
+            
+            // 햄버거 클릭 시 follow expand 닫히게
+            eventBus.$emit('closeByDrawer', this.drawer)
         },
         moveSourceDetail: function (j) {
             alert(j)
