@@ -9,6 +9,7 @@
                 <v-card-title class="headline">Login</v-card-title>
 
                 <v-card-text>
+                    <span class="errorMessage">{{loginErrorMessage}}</span>
                     <input style="width:100%; height:50px;" type="text" v-model="email" placeholder="Email" @keyup.enter="Login"><br>
                     <input style="width:100%; height:50px;" type="password" v-model="password" placeholder="Password" @keyup.enter="Login"><br>
                 </v-card-text>
@@ -41,24 +42,29 @@
                                             hint="input your email address" 
                                             v-model="email"
                                             color="green"
+                                            @keyup.enter="SignUp"
                                            ></v-text-field>
                                 <v-text-field :append-icon="pwShow ? 'visibility' : 'visibility_off'" 
-                                            :rules="[rules.same, rules.min]" 
+                                            :rules="[rules.required, rules.same, rules.min]" 
                                             :type="pwShow ? 'text' : 'password'" 
                                             name="input-10-2" 
                                             label="Password" 
-                                            hint="At least 8 characters" 
+                                            hint="At least 6 characters" 
                                             v-model="password"
                                             color="green"
-                                            @click:append="pwShow = !pwShow"></v-text-field>
-                                <v-text-field :append-icon="pwShow ? 'visibility' : 'visibility_off'" 
-                                            :rules="[rules.min, rules.same]" 
+                                            @click:append="pwShow = !pwShow"
+                                            @keyup.enter="SignUp"
+                                            ></v-text-field>
+                                <!-- <v-text-field :append-icon="pwShow ? 'visibility' : 'visibility_off'" 
+                                            :rules="[rules.required, rules.min, rules.same]" 
                                             :type="pwShow ? 'text' : 'password'" 
                                             name="input-10-2" 
                                             label="Repeat Password" 
                                             color="green"
                                             v-model="repeatPassword"
-                                            @click:append="pwShow = !pwShow"></v-text-field>
+                                            @click:append="pwShow = !pwShow"
+                                            @keyup.enter="SignUp"
+                                            ></v-text-field> -->
                             </v-card-text>
 
                             <v-card-actions>
@@ -109,6 +115,7 @@ export default {
             
             pwShow : false,
             repeatPassword : '',
+            loginErrorMessage : ' ',
             // password: 'Password',
             rules: {
                 required: value => !!value || 'Required.',
@@ -134,13 +141,13 @@ export default {
                     this.$store.commit('loadRes')
                     sessionStorage.setItem('categories', JSON.stringify(this.$store.state.followList))
                 })
-            window.location.href = '/';
+            // window.location.href = '/';
 
         },
         Login: async function () {
             await firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
                 (user) => {
-                    alert('Well done ! You are now connected')
+                    alert('로그인되었습니다. \nIDLE과 함께 똑똑한 하루 보내세요!')
                     sessionStorage.setItem('userInfo', JSON.stringify(user))
                     this.user = user.user
                     const time = new Date()
@@ -151,12 +158,27 @@ export default {
                     this.$store.commit('imageSoruceUpdate', user.user.photoURL)
                     this.email = ''
                     this.password = ''
+                    
                     this.init()
                     // this.$router.push('/article')
                     // window.location.href = '/';
                 },
                 (err) => {
+                    if( err.code == 'auth/invalid-email'){
+                        console.log('uth/invalid-email');
+                        this.loginErrorMessage = '잘못된 이메일 형식입니다.';
+                    }else if( err.code == 'auth/user-disabled'){
+                        console.log('auth/user-disabled');
+                        this.loginErrorMessage = '이용 불가 계정입니다.';
+                    }else if(err.code == 'auth/user-not-found'){
+                        console.log('auth/user-not-found');
+                        this.loginErrorMessage = '회원가입 되지 않은 이메일입니다.';
+                    }else if(err.code == 'auth/wrong-password'){
+                        console.log('auth/wrong-password');
+                        this.loginErrorMessage = '잘못된 비밀번호 입니다.';
+                    }
                     alert('Oops, ' + err.message)
+
                     this.dialog2 = true
                 }
             )
@@ -164,7 +186,7 @@ export default {
         SignUp: function () {
             firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(
                 (cred, user) => {
-                    alert('created!!')
+                    alert('회원가입되었습니다. \n잠깐 기다리시면 자동으로 로그인됩니다.')
                     const time = new Date()
                     const date = time.getFullYear() + (time.getMonth() > 8 ? time.getMonth() + 1 : '0' + (time.getMonth() + 1)) + (time.getDate() > 9 ? time.getDate() : '0' + time.getDate())
                     firebase.firestore().collection('visitorStat').doc(date).update({
@@ -216,3 +238,8 @@ export default {
 
 }
 </script>
+<style scoped>
+.errorMessage{
+    color : red;
+}
+</style>

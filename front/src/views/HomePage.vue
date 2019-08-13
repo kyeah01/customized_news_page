@@ -1,35 +1,63 @@
 <template lang="html">
 <div>
-  <v-container>
-    <!-- title -->
-    <v-layout row>
-      <v-flex xs12>
-        Discover the best sources for any topic
-      </v-flex>
-    </v-layout>
-    <v-layout>
+    <div>
+      <v-container>
+        <carousel-3d :controls-visible="true" :controls-prev-html="'&#10092;'" :controls-next-html="'&#10093;'" 
+                    :controls-width="30" :controls-height="60" :clickable="false" :width="600" :height="430"
+                    :autoplay="true" :autoplay-timeout="3000" @after-slide-change="isTop(i)">
+          <slide v-for="(slide, i) in slides" :index="i" style="border:0;" class="elevation-15">
+            <template slot-scope="{ index, isCurrent, leftIndex, rightIndex }">
+              <img :data-index="index" :class="{ current: isCurrent }" :src="slide.img">
+            </template>
+          </slide>
+        </carousel-3d>
+        <v-layout justify-center>
+          <blockquote class="blockquote" style="text-align:center; padding:20px 0 10px 0;">
+            세상의 모든 뉴스를 한자리에서 받아보세요. <br><strong>"IDLE"</strong>.
+          </blockquote>
+        </v-layout>
+        <v-layout justify-center>
+          <v-btn large dark color="success">GET STARTED FOR FREE</v-btn>
+        </v-layout>
+        <br>
+        <br>
+      </v-container>
+    </div>
+    <div style="background-color:#F2F2F2;">
+      <br>
+      <br>
+      <v-container>
+        <h1>FOR YOUR CONVENIENCE,</h1>
+        <p class="blockquote" style="padding-left:0px;">모든 컨텐츠를 한번에 받아보세요</p>
+      </v-container>
+    </div>
+    <div>
+      <br>
+      <br>
+      <v-container style="text-align: right;">
+        <h1>JUST FOR YOU,</h1>
+      
+        <p class="blockquote">원하는 키워드가 들어간 기사를 구독하세요</p>
+        <v-layout row justify-end>
+        </v-layout>
+      </v-container>
+      <br>
+      <br>
+    </div>
+    <div style="background-color:#2bb24c;">
+      <br>
+      <br>
+      <v-container>
+        <h1 style="color:white;text-shadow: 0 0 2px #BDBDBD;">FOR YOUR PREFERENCE,</h1>
+        <p class="blockquote" style="padding-left:0px;color:white;text-shadow: 0 0 2px #BDBDBD;">좋아하는 신문사의 기사를 구독하세요</p>
+      </v-container>
+    </div>  
+      <v-layout>
       <v-flex>
-        <v-form>
-          <v-text-field
-            outline
-            label="Prepend inner"
-            prepend-inner-icon="place"
-          ></v-text-field>
 
-
-          <!-- search-box start -->
-          <div id="autocomplete" class="autocomplete">
-            <input class="autocomplete-input" placeholder="Search by topic" aria-label="Search by topic">
-            <ul class="autocomplete-result-list"></ul>
-          </div>
-          <!-- search-box end -->
-        </v-form>
       </v-flex>
     </v-layout>
-  <GitGraph/>
 
-  </v-container>
-  <Footer/>
   </div>
 </template>
 
@@ -39,6 +67,8 @@ import FirebaseService from '@/services/FirebaseService'
 import 'firebase/firestore'
 import GitGraph from '../components/GitGraph'
 import Footer from '../components/Footer'
+import { Carousel3d, Slide } from 'vue-carousel-3d';
+
 
 //user log
 import timeCheck from '../timeCheck'
@@ -49,12 +79,23 @@ export default {
       sDate : null,
       eDate : null,
       path : '/',
-      words:null
+      words:null,
+      slides : [
+        {
+          img:'https://user-images.githubusercontent.com/45934061/62856062-d8812b80-bd2e-11e9-8739-80e5f83a1658.PNG',
+          },
+        {
+          img:'https://user-images.githubusercontent.com/45934061/62918418-81389500-bdda-11e9-8689-4259ba433019.PNG',
+          },
+        {
+          img:'',
+          },
+      ]
     }
   },
   components: {
-    GitGraph,
-    Footer,
+    Carousel3d,
+    Slide,
   },
   created (){
     this.sDate = timeCheck()

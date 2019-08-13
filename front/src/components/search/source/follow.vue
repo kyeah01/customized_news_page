@@ -2,14 +2,14 @@
 <v-layout wrap overflow>
     <v-flex shrink>
         <div>
-            <v-btn v-if="isFollowing" small outline color="#9e9e9e" class="following" @click="open">
+            <v-btn v-if="isFollowing" small outline color="#9e9e9e" class="following" @click="unfollow">
                 <span>Following</span>
             </v-btn>
             <v-btn v-else small outline class="green green--text" @click="open">
                 follow
             </v-btn>
         </div>
-        <div class="expandBox">
+        <div class="expandBox" v-if="!isFollowing">
             <v-expand-transition>
                 <v-card v-show="expand" class="scroll" v-if="this.$store.state.follow_openIdx===this.idx">
                     <div v-if="addopen===false">
@@ -17,20 +17,21 @@
                         <v-list class="followExpand" flat>
                             <v-list-tile v-for="item in items" :key="item" @click="create(item)" class="itemStyle">
                                 <v-list-tile-action>
-                                    <v-icon v-if="isFollowCategory(item)" color="#2bb24c">fas fa-rss</v-icon>
-                                    <v-icon v-else>fas fa-rss</v-icon>
+                                    <!-- <v-icon v-if="isFollowCategory(item)" color="#2bb24c">fas fa-rss</v-icon> -->
+                                    <!-- <v-icon v-else>fas fa-rss</v-icon> -->
+                                    <v-icon>fas fa-folder</v-icon>
                                 </v-list-tile-action>
 
                                 <v-list-tile-content>
                                     <v-list-tile-title>{{item}}</v-list-tile-title>
                                 </v-list-tile-content>
 
-                                <v-list-tile-action v-if="isFollowCategory(item)">
-                                    <v-icon @click.stop="unfollow()">
-                                        fas fa-trash-alt
+                                <!-- <v-list-tile-action v-if="isFollowCategory(item)"> -->
+                                    <!-- <v-icon @click.stop="unfollow()"> -->
+                                        <!-- fas fa-trash-alt -->
                                         <!-- <v-icon color="red lighten-1">info</v-icon> -->
-                                    </v-icon>
-                                </v-list-tile-action>
+                                    <!-- </v-icon> -->
+                                <!-- </v-list-tile-action> -->
                             </v-list-tile>
 
                             <v-divider />
@@ -41,7 +42,7 @@
                         </v-list>
                     </div>
 
-                    <div v-else>
+                    <div v-else class="addFeedBox">
                         <span class="title font-weight-bold.font-italic">Feed Name</span>
                         <input v-model="newFeed" class="autocomplete-input" placeholder="New Topic Name" autofocus>
                         <v-btn @click="create(newFeed)" class="success">Create</v-btn>
@@ -198,15 +199,15 @@ export default {
     text-align: center;
 }
 
-.following:hover span {
+/* .following:hover span {
     display: none;
-}
+} */
 
-.following:hover::after {
+/* .following:hover::after {
     content: 'edit';
     text-align: center;
+} */
 
-}
 .autocomplete-input {
     border: 1px solid #eee;
     border-radius: 8px;
@@ -268,5 +269,13 @@ export default {
 .itemStyle {
     /* padding: 8px; */
     /* height: 40px; */
+}
+
+.addFeedBox {
+    padding: 16px;
+}
+
+.addFeedBox > span {
+    font-size: 14px !important;
 }
 </style>
