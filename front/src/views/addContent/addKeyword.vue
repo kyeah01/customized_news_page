@@ -19,13 +19,30 @@
     </v-layout>
     <v-layout row wrap>
         <v-flex xs9>
-            <keywordView :isFollowing="isFollowing" v-show="keywordInfo.word != ''" :keywordInfo="keywordInfo" />
+            <keywordView :isFollowing="isFollowing" @sign_keywordView="update_follow" v-show="keywordInfo.word != ''" :keywordInfo="keywordInfo" />
         </v-flex>
         <!-- 메인에서 안보이게 처리 -->
         <v-flex xs3 v-if="keywordInfo.word.length >= 1">
             <topKeyword />
         </v-flex>
     </v-layout>
+
+    <!-- 스낵바 수정 -->
+    <v-snackbar
+        v-model="snackbar"
+        :bottom="y === 'bottom'"
+        :right="x === 'right'"
+        :timeout="timeout"
+    >
+        {{ text }}
+        <v-btn
+        color="pink"
+        flat
+        @click="snackbar = false"
+        >
+        Close
+        </v-btn>
+    </v-snackbar>
 
    
 </v-container>
@@ -77,7 +94,7 @@ export default {
             y: 'bottom',
             x: 'right',
             timeout: 3000,
-            text: 'Success Modify',
+            text: '',
         }
     },
     computed :{
@@ -194,6 +211,15 @@ export default {
                 }
             })
         },
+       update_follow(tmp){
+        if(tmp[1]){
+            this.text=tmp[0]+" is Following"
+        }else{
+            console.log("addcontent unfollow",tmp)
+            this.text=tmp[0]+" is UnFollowed"
+        }
+        this.snackbar=true
+        }
     }
 }
 </script>
