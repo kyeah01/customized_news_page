@@ -23,17 +23,17 @@
                 <v-flex xs8>
                   <div class="form profile mb-2">
                     <div class="text-fields">
-                      <div class="field">
+                      <div class="field" @click="alertMessage">
                         <label>Your given name</label>
-                        <v-text-field label="Outline" single-line outline style="border-color: rgba(0, 0, 0, 0.15)"></v-text-field>
+                        <v-text-field label="Lorem Ipsum is simply dummy text of the printing and typesetting industry." single-line outline disabled style="border-color: rgba(0, 0, 0, 0.15)"></v-text-field>
                       </div>
-                      <div class="field">
+                      <div class="field" @click="alertMessage">
                         <label>Your family name</label>
-                        <v-text-field label="Outline" single-line outline style="border-color: rgba(0, 0, 0, 0.15)"></v-text-field>
+                        <v-text-field label="Lorem Ipsum is simply dummy text of the printing and typesetting industry." single-line outline disabled style="border-color: rgba(0, 0, 0, 0.15)"></v-text-field>
                       </div>
-                      <div class="field">
+                      <div class="field" @click="alertMessage2">
                         <label>Email address</label>
-                        <v-text-field label="Outline" v-bind:value=email single-line outline></v-text-field>
+                        <v-text-field label="Outline" v-bind:value=email single-line outline disabled></v-text-field>
                       </div>
                     </div>
                   </div>
@@ -116,6 +116,12 @@ export default {
       dontSaveNClose (){
         this.$emit('right_drawer')
       },
+      alertMessage() {
+        alert('현재는 수정할 수 없습니다.')
+      },
+      alertMessage2() {
+        alert('이메일은 수정할 수 없습니다.')
+      }
     },
     created(){
        firebase.auth().onAuthStateChanged((user) => {                   
