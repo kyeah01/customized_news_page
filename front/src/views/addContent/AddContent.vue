@@ -98,14 +98,17 @@ export default {
       y: 'bottom',
       x: 'right',
       timeout: 3000,
-      text: ''
+      text: '',
+
+      searchByInput :false,
     }
   },
   watch:{
     searchWord:function(newVal){
       this.input = newVal;
-      
+      this.searchByInput = false;
       this.search();
+      this.searchByInput = true;
     }
   },
   created (){
@@ -122,8 +125,10 @@ export default {
   //navbar에서 검색했을 때 router url 파라메터로 어떤 입력했는지 받아와서 검색실행
     this.input = this.searchWord;
     if( this.searchWord != null){
+      this.searchByInput = false;
       this.search();
     }
+    this.searchByInput = true;
    },
   destroyed(){
     this.eDate = timeCheck()
@@ -145,8 +150,8 @@ export default {
         });
     },
     search(){
-      var a=$('#input-search').val();
-      this.input=a      
+      if( this.searchByInput )
+        this.input=$('#input-search').val();
       // var input = document.getElementById("input-search").value
       
       // if( this.searchWord != null ) input = this.searchWord;
@@ -162,7 +167,6 @@ export default {
         this.resultSearch = this.noFeeds
       } else {
         this.resultSearch = []
-        console.log('this.resultSearch', this.resultSearch)
         this.sources.forEach(element =>{
           if( element.name.toLowerCase().indexOf(this.input.toLowerCase()) != -1 ){
             this.resultSearch.push(element)

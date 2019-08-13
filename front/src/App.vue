@@ -91,6 +91,11 @@ export default {
 </script>
 
 <style>
+ .v-text-field--box .v-input__slot, .v-text-field--outline .v-input__slot{
+  min-height: auto !important;
+  display: flex !important;
+  align-items: center !important;
+}
 .mouse{
     cursor:pointer;
 }
