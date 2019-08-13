@@ -113,16 +113,21 @@ export default {
     }
   },
   watch: {
-      drawer: function() {
+    drawer : function() {
       if (!this.drawer) {
-        this.$emit('readLater_drawer_false')
-        if (this.val) {
-          this.$emit('right_drawer', 'close')
-        } else {
-          this.$emit('right_drawer', 'save')
-        }
+        this.$emit('right_drawer', 'update')
       }
     }
+    // drawer: function() {
+    //   if (!this.drawer) {
+    //     this.$emit('readLater_drawer_false')
+    //     if (this.val) {
+    //       this.$emit('right_drawer', 'close')
+    //     } else {
+    //       this.$emit('right_drawer', 'save')
+    //     }
+    //   }
+    // }
   },
   methods: {
       delete_from_DB(item, index) {
@@ -143,7 +148,7 @@ export default {
         this.controller = false
       },
       close(){
-        this.drawer = false;
+        this.drawer = !this.drawer
         if(this.detailDrawer){
           this.closeDetail()
         }
