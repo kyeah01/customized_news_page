@@ -12,7 +12,11 @@
                     <v-layout row wrap>
                         <v-flex xs12 wrap class="keywordTitle">
                             <span class="headline">{{keyword}}</span>
-                            <keywordFollow class="follow" :keyword="keyword" :isFollowing="isFollowing">
+                            <keywordFollow class="follow" 
+                            :keyword="keyword" 
+                            :isFollowing="isFollowing"
+                            @sign_KeywordFollow="update_follow"
+                            >
                             </keywordFollow>
                         </v-flex>
                         <v-flex xs12 class="search-content-color">
@@ -73,6 +77,9 @@ export default {
             })
 
         },
+        update_follow(tmp){
+            this.$emit('sign_keywordView',tmp)
+        }
     },
     computed: {
         keyword() {

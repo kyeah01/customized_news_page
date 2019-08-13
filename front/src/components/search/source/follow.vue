@@ -70,7 +70,6 @@ export default {
         isFollowing: false,
         search: null,
         caseSensitive: false,
-        already_open : false,
 
         closeDrawer: false,
     }),
@@ -83,9 +82,6 @@ export default {
         }
         else this.isFollowing = false;
 
-    },
-    mounted() {
-        // console.log('props news : ',this.news);
     },
     methods: {
         unfollow(){
@@ -111,6 +107,7 @@ export default {
 
         },
         open: function () {
+            
             EventBus.$emit('closeByFollow', this.closeDrawer)
             this.items = this.$store.state.userCategorys
 
