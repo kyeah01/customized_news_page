@@ -115,7 +115,7 @@ export default {
   watch: {
     drawer : function() {
       if (!this.drawer) {
-        this.$emit('right_drawer', 'update')
+        this.$emit('readLater_drawer_false')
       }
     }
     // drawer: function() {

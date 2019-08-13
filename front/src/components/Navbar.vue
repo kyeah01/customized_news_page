@@ -189,6 +189,7 @@ export default {
             this.readlaterDrawer = false;
         },
         readLaterBtnClicked() {
+
             this.readlaterDrawer = !this.readlaterDrawer;
 
             firebase.auth().onAuthStateChanged((user) => {
