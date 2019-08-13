@@ -98,18 +98,18 @@ export default {
 }
 </script>
 
-<style>
-    #image {
-        height: 118px;
-        width: 118px;
-        border-radius: 50%;
-    }
+<style scoped>
+#image {
+    height: 118px;
+    width: 118px;
+    border-radius: 50%;
+}
 
-    .picture-upload div button .v-btn__content {
-      color: #757575;
-    } 
+.picture-upload div button .v-btn__content {
+  color: #757575;
+} 
 
-    #hiddenEvent{
-      display: none
-    }
+#hiddenEvent{
+  display: none
+}
 </style>
