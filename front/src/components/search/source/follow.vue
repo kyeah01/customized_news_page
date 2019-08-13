@@ -166,9 +166,7 @@ export default {
     
                 firebase.firestore().collection('Userinfo').doc(user.uid).update({
                     follow: this.$store.state.followSource,
-                    followInfo: this.$store.state.followinfo
                 })
-                this.$store.state.followKeyword = Object.keys(this.$store.state.followinfo)
                 this.$store.commit('loadRes')
     
                 this.sourcesManage(this.news, user);
@@ -183,9 +181,6 @@ export default {
             // EventBus.$on('closeByDrawer', drawer => {
             //     this.expand = drawer
             // })
-        },
-        getFollowKeyword() {
-
         },
         async sourcesManage(news, user) {
             var db = firebase.firestore().collection('Sources');
