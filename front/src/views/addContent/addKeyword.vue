@@ -54,6 +54,7 @@ import searchOptionSelector from '@/components/search/searchOptionSelector'
 import keywordView from '@/components/search/keyword/keywordView'
 import topKeyword from '@/components/search/keyword/topKeyword'
 import eventBus from '../../eventBus'
+import env from '../../../env.js'
 
 //user log
 import timeCheck from '@/timeCheck'
@@ -159,7 +160,7 @@ export default {
             }
             
             // 입력한 키워드 검색결과에 따라 데이터베이스에 키워드 저장하기.
-            await this.$axios.get(`https://newsapi.org/v2/everything?q=${this.input}&apiKey=9a26146bdfbb4679a1c5fcd25d168a8b`)
+            await this.$axios.get(`https://newsapi.org/v2/everything?q=${this.input}&apiKey=`+env.data().api)
                 .then(response => {
                     this.keywordInfo['apiResponse'] = response.data;
                     this.keywordInfo['word'] = this.input;
