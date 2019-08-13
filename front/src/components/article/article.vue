@@ -107,7 +107,7 @@ import env from '../../../env.js'
 
 // news api 로드
 const NewsAPI = require('newsapi');
-const newsapi = new NewsAPI(env.data().api1);
+const newsapi = new NewsAPI(env.data().api);
 
 export default {
     components: {
