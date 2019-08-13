@@ -140,7 +140,7 @@ export default {
         Login: async function () {
             await firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
                 (user) => {
-                    alert('Well done ! You are now connected')
+                    alert('로그인되었습니다. \nIDLE과 함께 똑똑한 하루 보내세요!')
                     sessionStorage.setItem('userInfo', JSON.stringify(user))
                     this.user = user.user
                     const time = new Date()
@@ -164,7 +164,7 @@ export default {
         SignUp: function () {
             firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(
                 (cred, user) => {
-                    alert('created!!')
+                    alert('회원가입되었습니다. \n잠깐 기다리시면 자동으로 로그인됩니다.')
                     const time = new Date()
                     const date = time.getFullYear() + (time.getMonth() > 8 ? time.getMonth() + 1 : '0' + (time.getMonth() + 1)) + (time.getDate() > 9 ? time.getDate() : '0' + time.getDate())
                     firebase.firestore().collection('visitorStat').doc(date).update({
