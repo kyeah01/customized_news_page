@@ -34,7 +34,7 @@
           <v-list>
             <v-subheader>
               <i class="fa fa-search"></i>
-              <input v-model="admin_search" :placeholder="placeholder"/>{{admin_search}}
+              <input style="margin: 4px; height: 70%;" v-model="admin_search" :placeholder="placeholder"/>
             </v-subheader>
             
             <v-list-tile v-for="user in users">
@@ -79,6 +79,7 @@ export default {
   data() {
     return {
       users: [],
+      backup: [],
       admin_search: '',
       placeholder: 'Search user...',
     }
@@ -96,6 +97,7 @@ export default {
     init() {
       this.$http.get('/api/allusers').then(res => {
         this.users = res.data
+        this.backup = res.data
       })
     },
     Deleteuser(uid) {
@@ -107,14 +109,27 @@ export default {
       } else {
         alert("취소하셨습니다.")
       }
-      
+
     },
+    search() {
+      if (this.admin_search) {
+        this.users = []
+        for (var i in this.backup) {
+          if (this.backup[i].email.indexOf(this.admin_search) !== -1) {
+            this.users.push(this.backup[i])
+          }
+        }
+       
+    
+
+      } else {
+        this.users = this.backup
+      }
+    }
   },
   watch: {
     admin_search: function() {
-      if (this.admin_search) {
-        console.log(this.admin_search.length)
-      }
+      this.search()
     }
   }
 }
