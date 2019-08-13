@@ -260,7 +260,7 @@ export default {
             this.$router.push("/category_setting")
         },
         test() {
-            console.log('test');
+            // console.log('test');
 
             this.editMode = !this.editMode
 

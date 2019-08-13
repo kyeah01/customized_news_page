@@ -178,7 +178,7 @@ export default {
                         console.log('auth/wrong-password');
                         this.loginErrorMessage = '잘못된 비밀번호 입니다.';
                     }
-                    alert('Oops, ' + err.message)
+                    // alert('Oops, ' + err.message)
 
                     this.dialog2 = true
                 }

@@ -159,7 +159,6 @@ export default {
       
 
       // 검색 결과 분기
-      console.log('이건가?', this.input)
       if (!this.input) {
         // 검색어 없는 경우
         this.resultSearch = this.noFeeds
@@ -194,7 +193,7 @@ export default {
        if(tmp[1]){
          this.text=tmp[0]+" is Following"
        }else{
-         console.log("addcontent unfollow",tmp)
+        //  console.log("addcontent unfollow", tmp)
          this.text=tmp[0]+" is UnFollowed"
        }
        this.snackbar=true
