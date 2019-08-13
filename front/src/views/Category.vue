@@ -14,114 +14,204 @@
         >
             <v-list two-line v-if="select_name_model == 'ALL'">
 
-                <v-subheader>
-
-                    <h3>SOURCE NAME</h3> 
-            
-    
+                <v-layout style="height:64px">
+                    <v-flex xs7>
+                        <v-subheader>
+                            <h3>SOURCE NAME</h3> 
+                        </v-subheader>
+                    </v-flex>
                     <v-layout v-show="source_checkboxList.length > 0">
-                        <v-select class="select" v-model="move_categoty_source_model" :items="move_categoty"></v-select>
-                        <v-btn class="category_btn" flat color="green" @click="category_move(move_categoty_source_model, source_checkboxList, 'source')">category move</v-btn>
+                        <v-flex xs5>
+                            <v-select class="select" v-model="move_categoty_source_model" :items="move_categoty"></v-select>
+                        </v-flex>
+                        <v-flex xs4 justify-end>
+                            <v-btn class="category_btn" flat color="green" @click="category_move(move_categoty_source_model, source_checkboxList, 'source')">category move</v-btn>
+                        </v-flex>
                     </v-layout>
-                   
-                </v-subheader>
+                </v-layout>
+
+                <v-layout style="padding-left:16px">
+                    <v-flex xs1/>
+                    <v-flex xs4>name</v-flex>
+                    <v-flex xs3>feed name</v-flex>
+                    <v-flex xs1><p></p></v-flex>
+                </v-layout>
                 
                 <div v-for="item in category_structure_source"> 
-                    
                     <v-list-tile>
-                        <v-checkbox v-model="source_checkboxList" :value="item[0]">
-                        </v-checkbox>
-                        <v-list-tile-content>
-                            
-                            <v-list-tile-title>{{item[0]}}</v-list-tile-title>
-                            <v-list-tile-sub-title class="text--primary"><v-chip small color="green" text-color="white">{{item[1]}}</v-chip></v-list-tile-sub-title>
-                        </v-list-tile-content>   
-                        <v-list-tile-action> 
-                            <v-icon @click="category_delete(item[0], item[2])" size="20">fas fa-trash-alt</v-icon>
-                        </v-list-tile-action>
+                        <v-layout>
+                            <!-- 체크박스 -->
+                            <v-flex xs1><v-checkbox v-model="source_checkboxList" :value="item[0]"></v-checkbox></v-flex>
+                            <!-- 등록된 source 이름 -->
+                            <v-flex xs4><v-list-tile-content>
+                                {{item[0]}}
+                            </v-list-tile-content></v-flex>
+                            <!-- 해당 source가 등록되어있는 category 이름 -->
+                            <v-flex xs3 align-self-center style="padding-left:8px">
+                                <v-list-tile-sub-content>
+                                    {{ item[1] }}
+                                </v-list-tile-sub-content>
+                            </v-flex>
+                            <v-spacer/>
+                            <v-flex xs1 align-self-center>
+                                <v-list-tile-action> 
+                                    <v-icon @click="category_delete(item[0], item[2])" size="20">fas fa-trash-alt</v-icon>
+                                </v-list-tile-action>
+                            </v-flex>
+                        </v-layout>
                     </v-list-tile>
-                     
+                    
                 </div>
 
                 <v-divider></v-divider>
 
-                <v-subheader>
-                    <h3>KEYWORD NAME</h3>
+                <v-layout style="height:64px">
+                    <v-flex xs7>
+                        <v-subheader>
+                            <h3>KEYWORD NAME</h3> 
+                        </v-subheader>
+                    </v-flex>
                     <v-layout v-show="keyword_checkboxList.length > 0">
-                        <v-select class="select" v-model="move_categoty_keyword_model" :items="move_categoty"></v-select>
-                        <v-btn class="category_btn" flat color="green" @click="category_move(move_categoty_keyword_model, keyword_checkboxList, 'keyword')">category move</v-btn>
+                        <v-flex xs5>
+                            <v-select class="select" v-model="move_categoty_keyword_model" :items="move_categoty"></v-select>
+                        </v-flex>
+                        <v-flex xs4 justify-end>
+                            <v-btn class="category_btn" flat color="green" @click="category_move(move_categoty_keyword_model, keyword_checkboxList, 'keyword')">category move</v-btn>
+                        </v-flex>
                     </v-layout>
-                </v-subheader>
+                </v-layout>
+
+                <v-layout style="padding-left:16px">
+                    <v-flex xs1/>
+                    <v-flex xs4>name</v-flex>
+                    <v-flex xs3>feed name</v-flex>
+                    <v-flex xs1><p></p></v-flex>
+                </v-layout>
 
                 <div v-for="item in category_structure_keyword">
-
                     <v-list-tile>
-
-                        <v-checkbox v-model="keyword_checkboxList" :value="item[0]"></v-checkbox>
-
-                        <v-list-tile-content>
-                            <v-list-tile-title>{{item[0]}}</v-list-tile-title>
-                            <v-list-tile-sub-title class="text--primary"><v-chip small color="green" text-color="white">{{item[1]}}</v-chip></v-list-tile-sub-title>
-                        </v-list-tile-content>    
-                        <v-icon @click="category_delete(item[0], item[2])" size="20">fas fa-trash-alt</v-icon>
-                        
-                    
+                        <v-layout>
+                            <!-- 체크박스 -->
+                            <v-flex xs1><v-checkbox v-model="keyword_checkboxList" :value="item[0]"/></v-flex>
+                            <!-- 등록된 source 이름 -->
+                            <v-flex xs4><v-list-tile-content>
+                                {{item[0]}}
+                            </v-list-tile-content></v-flex>
+                            <!-- 해당 source가 등록되어있는 category 이름 -->
+                            <v-flex xs3 align-self-center style="padding-left:8px">
+                                <v-list-tile-sub-content>
+                                    {{ item[1] }}
+                                </v-list-tile-sub-content>
+                            </v-flex>
+                            <v-spacer/>
+                            <v-flex xs1 align-self-center>
+                                <v-list-tile-action> 
+                                    <v-icon @click="category_delete(item[0], item[2])" size="20">fas fa-trash-alt</v-icon>
+                                </v-list-tile-action>
+                            </v-flex>
+                        </v-layout>
                     </v-list-tile>
                 </div>
-    
             </v-list>
 
-
             <v-list two-line v-else>
-                <v-subheader>
-                    <h3>SOURCE NAME</h3>
+                <v-layout style="height:64px">
+                    <v-flex xs7>
+                        <v-subheader>
+                            <h3>SOURCE NAME</h3> 
+                        </v-subheader>
+                    </v-flex>
                     <v-layout v-show="source_checkboxList.length > 0">
-                        <v-select class="select" v-model="move_categoty_source_model" :items="move_categoty"></v-select>
-                        <v-btn class="category_btn" flat color="green" @click="category_move(move_categoty_source_model, source_checkboxList, 'source')">category move</v-btn>
+                        <v-flex xs5>
+                            <v-select class="select" v-model="move_categoty_source_model" :items="move_categoty"></v-select>
+                        </v-flex>
+                        <v-flex xs4 justify-end>
+                            <v-btn class="category_btn" flat color="green" @click="category_move(move_categoty_source_model, source_checkboxList, 'source')">category move</v-btn>
+                        </v-flex>
                     </v-layout>
-                </v-subheader>
+                </v-layout>
+
+                <v-layout style="padding-left:16px">
+                    <v-flex xs1/>
+                    <v-flex xs4>name</v-flex>
+                    <v-flex xs3>feed name</v-flex>
+                    <v-flex xs1><p></p></v-flex>
+                </v-layout>
 
                 <div v-for="item in category_structure_source"> 
-
                     <v-list-tile v-show="select_name_model == item[1]">
-                        <v-checkbox v-model="source_checkboxList" :value="item[0]">
-                        </v-checkbox>
-                        <v-list-tile-content>
-                            <v-list-tile-title>{{item[0]}}</v-list-tile-title>
-                            <v-list-tile-sub-title class="text--primary"><v-chip small color="green" text-color="white">{{item[1]}}</v-chip></v-list-tile-sub-title>
-                        </v-list-tile-content>   
-                            
-                        <v-list-tile-action> 
-                            <v-icon @click="category_delete(item[0], item[2])" size="20">fas fa-trash-alt</v-icon>
-                        </v-list-tile-action>
-        
+                        <v-layout>
+                            <!-- 체크박스 -->
+                            <v-flex xs1> <v-checkbox v-model="source_checkboxList" :value="item[0]"/></v-flex>
+                            <!-- 등록된 source 이름 -->
+                            <v-flex xs4><v-list-tile-content>
+                                {{item[0]}}
+                            </v-list-tile-content></v-flex>
+                            <!-- 해당 source가 등록되어있는 category 이름 -->
+                            <v-flex xs3 align-self-center style="padding-left:8px">
+                                <v-list-tile-sub-content>
+                                    {{ item[1] }}
+                                </v-list-tile-sub-content>
+                            </v-flex>
+                            <v-spacer/>
+                            <v-flex xs1 align-self-center>
+                                <v-list-tile-action> 
+                                    <v-icon @click="category_delete(item[0], item[2])" size="20">fas fa-trash-alt</v-icon>
+                                </v-list-tile-action>
+                            </v-flex>
+                        </v-layout>
                     </v-list-tile>
                 </div>
 
                 <v-divider></v-divider>
 
-                <v-subheader>
-                    <h3>KEYWORD NAME</h3>
+                <v-layout style="height:64px">
+                    <v-flex xs7>
+                        <v-subheader>
+                            <h3>KEYWORD NAME</h3> 
+                        </v-subheader>
+                    </v-flex>
                     <v-layout v-show="keyword_checkboxList.length > 0">
-                        <v-select class="select" v-model="move_categoty_keyword_model" :items="move_categoty"></v-select>
-                        <v-btn class="category_btn" flat color="green" @click="category_move(move_categoty_keyword_model, keyword_checkboxList, 'keyword')">category move</v-btn>
+                        <v-flex xs5>
+                            <v-select class="select" v-model="move_categoty_keyword_model" :items="move_categoty"/>
+                        </v-flex>
+                        <v-flex xs4 justify-end>
+                            <v-btn class="category_btn" flat color="green" @click="category_move(move_categoty_keyword_model, keyword_checkboxList, 'keyword')">category move</v-btn>
+                        </v-flex>
                     </v-layout>
-                </v-subheader>
+                </v-layout>
+
+                <v-layout style="padding-left:16px">
+                    <v-flex xs1/>
+                    <v-flex xs4>name</v-flex>
+                    <v-flex xs3>feed name</v-flex>
+                    <v-flex xs1><p></p></v-flex>
+                </v-layout>
 
                 <div v-for="item in category_structure_keyword">
-
                     <v-list-tile v-show="select_name_model == item[1]">
-                        <v-checkbox v-model="keyword_checkboxList" :value="item[0]"></v-checkbox>
-                        <v-list-tile-content>
-                            <v-list-tile-title>{{item[0]}}</v-list-tile-title>
-                            <v-list-tile-sub-title class="text--primary"><v-chip small color="green" text-color="white">{{item[1]}}</v-chip></v-list-tile-sub-title>
-                        </v-list-tile-content>    
-                        <v-icon @click="category_delete(item[0], item[2])" size="20">fas fa-trash-alt</v-icon>
-                        
-                    
+                        <v-layout>
+                            <!-- 체크박스 -->
+                            <v-flex xs1><v-checkbox v-model="keyword_checkboxList" :value="item[0]"/></v-flex>
+                            <!-- 등록된 source 이름 -->
+                            <v-flex xs4><v-list-tile-content>
+                                {{item[0]}}
+                            </v-list-tile-content></v-flex>
+                            <!-- 해당 source가 등록되어있는 category 이름 -->
+                            <v-flex xs3 align-self-center style="padding-left:8px">
+                                <v-list-tile-sub-content>
+                                    {{ item[1] }}
+                                </v-list-tile-sub-content>
+                            </v-flex>
+                            <v-spacer/>
+                            <v-flex xs1 align-self-center>
+                                <v-list-tile-action> 
+                                    <v-icon @click="category_delete(item[0], item[2])" size="20">fas fa-trash-alt</v-icon>
+                                </v-list-tile-action>
+                            </v-flex>
+                        </v-layout>
                     </v-list-tile>
                 </div>
-    
             </v-list>
         </v-card>
     </v-container>
