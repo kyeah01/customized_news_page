@@ -9,6 +9,7 @@
                 <v-card-title class="headline">Login</v-card-title>
 
                 <v-card-text>
+                    <span class="errorMessage">{{loginErrorMessage}}</span>
                     <input style="width:100%; height:50px;" type="text" v-model="email" placeholder="Email" @keyup.enter="Login"><br>
                     <input style="width:100%; height:50px;" type="password" v-model="password" placeholder="Password" @keyup.enter="Login"><br>
                 </v-card-text>
@@ -109,6 +110,7 @@ export default {
             
             pwShow : false,
             repeatPassword : '',
+            loginErrorMessage : ' ',
             // password: 'Password',
             rules: {
                 required: value => !!value || 'Required.',
@@ -134,7 +136,7 @@ export default {
                     this.$store.commit('loadRes')
                     sessionStorage.setItem('categories', JSON.stringify(this.$store.state.followList))
                 })
-            window.location.href = '/';
+            // window.location.href = '/';
 
         },
         Login: async function () {
@@ -151,12 +153,27 @@ export default {
                     this.$store.commit('imageSoruceUpdate', user.user.photoURL)
                     this.email = ''
                     this.password = ''
+                    
                     this.init()
                     // this.$router.push('/article')
                     // window.location.href = '/';
                 },
                 (err) => {
+                    if( err.code == 'auth/invalid-email'){
+                        console.log('uth/invalid-email');
+                        this.loginErrorMessage = '잘못된 이메일 형식입니다.';
+                    }else if( err.code == 'auth/user-disabled'){
+                        console.log('auth/user-disabled');
+                        this.loginErrorMessage = '이용 불가 계정입니다.';
+                    }else if(err.code == 'auth/user-not-found'){
+                        console.log('auth/user-not-found');
+                        this.loginErrorMessage = '회원가입 되지 않은 이메일입니다.';
+                    }else if(err.code == 'auth/wrong-password'){
+                        console.log('auth/wrong-password');
+                        this.loginErrorMessage = '잘못된 비밀번호 입니다.';
+                    }
                     alert('Oops, ' + err.message)
+
                     this.dialog2 = true
                 }
             )
@@ -216,3 +233,8 @@ export default {
 
 }
 </script>
+<style scoped>
+.errorMessage{
+    color : red;
+}
+</style>
