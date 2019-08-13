@@ -19,13 +19,6 @@
               </ProfileCard>
            </v-flex>
         </v-layout>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <v-btn>키워드, 카테고리 수정+삭제</v-btn>
     </v-container>
 </template>
 
