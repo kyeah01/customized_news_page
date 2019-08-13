@@ -45,7 +45,8 @@
                     <div v-else class="addFeedBox">
                         <span class="title font-weight-bold.font-italic">Feed Name</span>
                         <input v-model="newFeed" class="autocomplete-input" placeholder="New Topic Name" autofocus>
-                        <v-btn @click="create(newFeed)" class="success">Create</v-btn>
+                        <v-btn disabled @click="create(newFeed)" class="success" v-if="!newFeed">Create</v-btn>
+                        <v-btn @click="create(newFeed)" class="success" v-else>Create</v-btn>
                         <v-btn @click="before" class="normal">Before</v-btn>
                     </div>
                 </v-card>
@@ -126,6 +127,7 @@ export default {
         },
         before: function () {
             this.addopen = false
+            this.newFeed = ""
         },
         create: async function (newFeed) {
             // follow (abc - IT)
@@ -150,7 +152,8 @@ export default {
                 var tmp=[newsId,true];
                 this.$emit('sign_follow',tmp)
                 this.$store.state.follow_openIdx=-1
-            } 
+            }
+            this.newFeed = ""
             // EventBus.$on('closeByDrawer', drawer => {
             //     this.expand = drawer
             // })
