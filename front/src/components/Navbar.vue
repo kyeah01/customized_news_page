@@ -10,13 +10,12 @@
             <div class="box" v-if="user">
                 <div class="container-1">
                     <br style="height: 20.8px;">
-                    
+
                     <span class="icon" :class="{ focusOnNavSearch : isFocusOnNavSearch}" id="searchIcon"><i class="fa fa-search"></i></span>
-                    <input v-model="searchWord" type="search" id="search" :placeholder="placeholder" @click="changePlaceholder" @keydown.enter="search" >
-                        
+                    <input v-model="searchWord" type="search" id="search" :placeholder="placeholder" @blur="navbarSearchBlur" @focus="navbarSearchFocus" @keydown.enter="search">
                     </input>
                 </div>
-                
+
             </div>
             <!-- <div style="padding-top: 10px; height: 35px;"> -->
             <br style="height: 20.8px;">
@@ -34,7 +33,7 @@
                 <option value="키워드">키워드</option>
             </select>
             <!-- </div> -->
-            <Login style="padding-left:20px"/>
+            <Login style="padding-left:20px" />
 
         </v-toolbar-items>
     </v-toolbar>
@@ -181,12 +180,20 @@ export default {
             markasreadArticles: null,
 
             // searchSelected : "",
-            searchSelected : "신문사",
-            searchMenuSelect : ['키워드', '신문사'],
-            isFocusOnNavSearch : false,
+            searchSelected: "신문사",
+            searchMenuSelect: ['키워드', '신문사'],
+            isFocusOnNavSearch: false,
         }
     },
     methods: {
+        navbarSearchBlur() {
+            this.isFocusOnNavSearch = false;
+            this.placeholder= 'Sarch...';
+        },
+        navbarSearchFocus() {
+            this.isFocusOnNavSearch = true;
+            this.placeholder = 'Search in your feeds';
+        },
         dread() {
             firebase.auth().onAuthStateChanged((user) => {
                 const db = firebase.firestore();
@@ -204,7 +211,7 @@ export default {
             this.readlaterDrawer = false;
         },
         readLaterBtnClicked() {
-            this.selectedItems=[]
+            this.selectedItems = []
             this.readlaterDrawer = !this.readlaterDrawer;
 
             firebase.auth().onAuthStateChanged((user) => {
@@ -224,7 +231,7 @@ export default {
             this.recentlyReadDrawer = false;
         },
         recentlyReadBtnClicked() {
-            this.selectedItems=[]
+            this.selectedItems = []
             this.recentlyReadDrawer = !this.recentlyReadDrawer;
             firebase.auth().onAuthStateChanged((user) => {
                 const db = firebase.firestore();
@@ -266,15 +273,15 @@ export default {
             }
         },
         search: function () {
-            if( this.searchSelected == '신문사'){
+            if (this.searchSelected == '신문사') {
                 this.$router.push('/addcontent/' + this.searchWord)
-            }else if( this.searchSelected == '키워드'){
+            } else if (this.searchSelected == '키워드') {
                 this.$router.push('/addKeyword/' + this.searchWord)
             }
-            
+
         },
         goto: function (addr) {
-            this.selectedItems=[]
+            this.selectedItems = []
             this.$router.push('/' + addr)
         },
         Login: async function () {
@@ -323,28 +330,8 @@ export default {
         closeLeftDrawer() {
             this.drawer = !this.drawer
         },
-        changePlaceholder() {
-            let that = this;
-            $(function () {
-                var placeholder1 = $('#search');
-                placeholder1.focus(function () {
-                    // placeholder1.val('Search in your feeds')
-                    that.isFocusOnNavSearch = true;
-                    document.getElementById("search").placeholder = "Search in your feeds";
-                })
-                placeholder1.blur(function () {
-                    // placeholder1.val('Search...')
-                    that.isFocusOnNavSearch = false;
-                    document.getElementById("search").placeholder = "Search...";
-                    that.searchWord = ''
-                })
-            })
-
-            // this.placeholder = "Search in your feeds"
-            document.getElementById("search").placeholder = "Search in your feeds";
-        },
-        out_treeview(){
-            this.selectedItems=[]
+        out_treeview() {
+            this.selectedItems = []
         }
     },
     created() {
@@ -378,7 +365,7 @@ export default {
 </script>
 
 <style lang="css" scoped>
-.v-input__slot{
+.v-input__slot {
     /* 
         app.vue에 선언되어 있음... 
         v-input__slot 여기서 안먹는것 같음.
@@ -528,14 +515,15 @@ export default {
     transform: translateX(-105.5px)
 } */
 
-.container-1:focus > .icon{
+.container-1:focus>.icon {
     transform: translateX(-105.5px);
-    color:red;
+    color: red;
 }
 
-.focusOnNavSearch{
+.focusOnNavSearch {
     transform: translateX(-105.5px);
 }
+
 /* #search > .icon{
         color:red;
 
@@ -545,7 +533,6 @@ export default {
 .container-1 .icon:active {
     transform: translateX(-105.5px)
 } */
-
 
 /* .container-1 span#searchIcon:focus,
 .container-1 span#searchIcon:active {
