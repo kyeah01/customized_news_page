@@ -27,7 +27,7 @@
                                 width="30px"
                                 ></v-select>
             </div> -->
-            <select class="selectBox" name="snk" v-model="searchSelected">
+            <select class="selectBox" name="snk" v-model="searchSelected" v-if="user">
                 <option value="신문사" selected="selected">신문사</option>
                 <option value="키워드">키워드</option>
             </select>
