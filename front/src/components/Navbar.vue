@@ -27,7 +27,7 @@
                                 width="30px"
                                 ></v-select>
             </div> -->
-            <select class="selectBox" name="snk" v-model="searchSelected">
+            <select class="selectBox" name="snk" v-model="searchSelected" v-if="user">
                 <option value="신문사" selected="selected">신문사</option>
                 <option value="키워드">키워드</option>
             </select>
@@ -70,7 +70,6 @@
         <v-divider></v-divider>
 
         <v-flex xs12>
-            <v-btn class="ma-1" :class="[editMode ? 'edit-mode' : 'not-edit-mode']" :outline='editOutline' small absolute depressed right :color="editColor" style="z-index: 3" @click="test" />
             <v-layout justify-space-between>
                 <v-flex style="margin:10px 0px 12px 10px;">Category</v-flex>
                 <v-icon @click="Category_move()" style="margin:10px 10px 12px 10px;">fas fa-cog</v-icon>
@@ -95,8 +94,11 @@
         <v-template v-if="!editMode">
             <v-treeview :items="vuexItemList" :active.sync="selectedItems" activatable transition open-all open-on-click item-key="id" return-object=true>
                 <template v-slot:prepend="{ item, open }">
-                    <v-icon v-if="item.id < 0">
+                    <v-icon v-if="item.type==='source'">
                         fas fa-rss
+                    </v-icon>
+                    <v-icon v-else-if="item.type==='keyword'">
+                        fab fa-google
                     </v-icon>
                     <v-icon v-else>
                         {{ open ? 'fas fa-folder-open' : 'fas fa-folder' }}
@@ -178,7 +180,7 @@ export default {
             markasreadArticles: null,
             // searchSelected : "",
             searchSelected : "신문사",
-            searchMenuSelect : ['키워드', '신문사'],
+            searchMenuSelect : ['키워드', '신문사']
         }
     },
     methods: {
@@ -199,7 +201,7 @@ export default {
             this.readlaterDrawer = false;
         },
         readLaterBtnClicked() {
-
+            this.selectedItems=[]
             this.readlaterDrawer = !this.readlaterDrawer;
 
             firebase.auth().onAuthStateChanged((user) => {
@@ -219,6 +221,7 @@ export default {
             this.recentlyReadDrawer = false;
         },
         recentlyReadBtnClicked() {
+            this.selectedItems=[]
             this.recentlyReadDrawer = !this.recentlyReadDrawer;
             firebase.auth().onAuthStateChanged((user) => {
                 const db = firebase.firestore();
@@ -268,6 +271,7 @@ export default {
             
         },
         goto: function (addr) {
+            this.selectedItems=[]
             this.$router.push('/' + addr)
         },
         Login: async function () {
@@ -317,22 +321,25 @@ export default {
             this.drawer = !this.drawer
         },
         changePlaceholder() {
+            let that = this;
             $(function () {
                 var placeholder1 = $('#search');
                 placeholder1.focus(function () {
                     // placeholder1.val('Search in your feeds')
                     document.getElementById("search").placeholder = "Search in your feeds";
-                    this.searchWord = ''
                 })
                 placeholder1.blur(function () {
                     // placeholder1.val('Search...')
                     document.getElementById("search").placeholder = "Search...";
-                    this.searchWord = ''
+                    that.searchWord = ''
                 })
             })
 
             // this.placeholder = "Search in your feeds"
             document.getElementById("search").placeholder = "Search in your feeds";
+        },
+        out_treeview(){
+            this.selectedItems=[]
         }
     },
     created() {
@@ -357,7 +364,6 @@ export default {
         selectedItems: function () {
             var follow = this.selectedItems[0].name
             var type = this.selectedItems[0].type
-            console.log(follow, type);
 
             this.$router.push('/article/' + type + '/' + follow)
             eventBus.$emit("article", this.selectedItems)

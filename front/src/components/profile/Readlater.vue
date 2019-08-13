@@ -115,7 +115,7 @@ export default {
   watch: {
     drawer : function() {
       if (!this.drawer) {
-        this.$emit('readLater_drawer_false')
+        this.$emit('right_drawer', 'update')
       }
     }
     // drawer: function() {
@@ -160,7 +160,7 @@ export default {
   },
   computed : {
     deleteKey(){
-      return this.readlaterArticles
+      return this.readlaterArticles.slice().reverse()
     }
   }
 }

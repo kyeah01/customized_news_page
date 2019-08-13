@@ -1,18 +1,23 @@
 <template>
     <div>
-    <div v-if="drawer">
-    <v-navigation-drawer
-            app
-            stateless
-            v-model="drawer"
-            right
-            style="width:83vw"
+      <div v-if="drawer">
+        <v-navigation-drawer
+          app
+          temporary
+          v-model="drawer"
+          right
+          style="width:83vw"
           >
+          <v-btn
+          flat
+          @click="close">
+            X 
+          </v-btn>
             <section class="container630 centered">
-                <h1>
-                  <div class="kicker">Manage account</div>
-                  <div class="heading">Your profile</div>
-                </h1>
+              <h1>
+                <div class="kicker">Manage account</div>
+                <div class="heading">Your profile</div>
+              </h1>
 
               <v-layout row wrap>
                 <v-flex xs8>
@@ -36,29 +41,29 @@
 
                 <v-flex xs4>
                   <div>
-                  <div class="field picture-upload">
-                    <label>Your profile picture</label>
+                    <div class="field picture-upload">
+                      <label>Your profile picture</label>
+                    </div>
+                      
+                    <ImgUpload></ImgUpload>
+                      
                   </div>
-                  
-                  <ImgUpload></ImgUpload>
-                  
-                </div>
                 </v-flex>
               </v-layout>
-                <v-btn class="green white--text" @click="saveTheChange">Save changes</v-btn>
-                <v-btn class="red white--text" @click="dontSaveNClose">Close</v-btn>
+              <v-btn class="green white--text" @click="saveTheChange">Save changes</v-btn>
+              <v-btn class="red white--text" @click="dontSaveNClose">Close</v-btn>
             </section>
           </v-navigation-drawer>
-    </div>
-    <div v-else>
+        </div>
+        <div v-else>
           <v-navigation-drawer
             app
             stateless
             v-model="drawer"
             right
           >
-          </v-navigation-drawer>
-    </div>
+        </v-navigation-drawer>
+      </div>
     </div>
 </template>
 
@@ -86,6 +91,9 @@ export default {
       })
     },
     methods :{
+      close() {
+        this.drawer = !this.drawer
+      },
       saveTheChange(){
         // drawer 값 전달하여 navigation drawer를 작동하게 함.
         this.saveTheImg()

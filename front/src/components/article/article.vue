@@ -67,7 +67,7 @@
             </v-card>
         </v-flex>
 
-        <v-flex xs4 v-if="search=='Main'" hidden-md-and-down>
+        <v-flex xs4 id="info" v-if="search=='Main'" hidden-md-and-down>
             <weather />
             <br>
             <v-card style="border-radius: 10px; width:100%;">
@@ -526,4 +526,12 @@ export default {
 .pointer {
     cursor: pointer
 }
+
+@media (min-width:1264px) and (max-width:1418px){
+    #info{
+        display : none
+    }
+}
+
+
 </style>
