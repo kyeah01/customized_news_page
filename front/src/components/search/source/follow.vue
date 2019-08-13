@@ -214,6 +214,7 @@ export default {
                 })
         }
     },
+    // follow expand 페이지 이동 시 닫히게 수정
     destroyed() {
         if (this.$store.state.follow_openIdx != -1) {
             this.$store.state.follow_openIdx = -1
