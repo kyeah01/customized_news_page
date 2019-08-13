@@ -1,12 +1,13 @@
 <template>
-    <v-container>
-        <h1>Category Setting</h1>
+    <v-container class="category_container">
+        <h1 class="category_h1">Category Setting</h1>
         <v-select
             v-model="select_name_model"
             return-object
             :items="select_name"    
             solo
         ></v-select>
+
         <v-card
             class="mx-auto"
             tile
@@ -14,10 +15,13 @@
             <v-list two-line v-if="select_name_model == 'ALL'">
 
                 <v-subheader>
+
                     <h3>SOURCE NAME</h3> 
-                    <v-layout wrap v-show="source_checkboxList.length > 0">
-                        <v-select v-model="move_categoty_model" :items="move_categoty"></v-select>
-                        <v-btn @click="category_move(move_categoty_model, source_checkboxList, 'source')">category move</v-btn>
+            
+    
+                    <v-layout v-show="source_checkboxList.length > 0">
+                        <v-select class="select" v-model="move_categoty_source_model" :items="move_categoty"></v-select>
+                        <v-btn class="category_btn" flat color="green" @click="category_move(move_categoty_source_model, source_checkboxList, 'source')">category move</v-btn>
                     </v-layout>
                    
                 </v-subheader>
@@ -44,8 +48,8 @@
                 <v-subheader>
                     <h3>KEYWORD NAME</h3>
                     <v-layout v-show="keyword_checkboxList.length > 0">
-                        <v-select v-model="move_categoty_model" :items="move_categoty"></v-select>
-                        <v-btn @click="category_move(move_categoty_model, keyword_checkboxList, 'keyword')">category move</v-btn>
+                        <v-select class="select" v-model="move_categoty_keyword_model" :items="move_categoty"></v-select>
+                        <v-btn class="category_btn" flat color="green" @click="category_move(move_categoty_keyword_model, keyword_checkboxList, 'keyword')">category move</v-btn>
                     </v-layout>
                 </v-subheader>
 
@@ -72,8 +76,8 @@
                 <v-subheader>
                     <h3>SOURCE NAME</h3>
                     <v-layout v-show="source_checkboxList.length > 0">
-                        <v-select v-model="move_categoty_model" :items="move_categoty"></v-select>
-                        <v-btn @click="category_move(move_categoty_model, source_checkboxList, 'source')">category move</v-btn>
+                        <v-select class="select" v-model="move_categoty_source_model" :items="move_categoty"></v-select>
+                        <v-btn class="category_btn" flat color="green" @click="category_move(move_categoty_source_model, source_checkboxList, 'source')">category move</v-btn>
                     </v-layout>
                 </v-subheader>
 
@@ -99,8 +103,8 @@
                 <v-subheader>
                     <h3>KEYWORD NAME</h3>
                     <v-layout v-show="keyword_checkboxList.length > 0">
-                        <v-select v-model="move_categoty_model" :items="move_categoty"></v-select>
-                        <v-btn @click="category_move(move_categoty_model, keyword_checkboxList, 'keyword')">category move</v-btn>
+                        <v-select class="select" v-model="move_categoty_keyword_model" :items="move_categoty"></v-select>
+                        <v-btn class="category_btn" flat color="green" @click="category_move(move_categoty_keyword_model, keyword_checkboxList, 'keyword')">category move</v-btn>
                     </v-layout>
                 </v-subheader>
 
@@ -140,7 +144,8 @@ export default {
             source_checkboxList: [],
             keyword_checkboxList: [],
             move_categoty: [],
-            move_categoty_model: '',
+            move_categoty_source_model: '',
+            move_categoty_keyword_model: '',
         }
     },
     methods: {
@@ -272,6 +277,21 @@ export default {
     .v-input--checkbox{
         flex: none;
     }
-
+    .v-text-field {
+        margin-top: 0px;
+    }
+    .select {
+        flex: none;
+    }
+    .category_container {
+        max-width: 800px;
+        margin-top: 45px;
+    }
+    .category_h1 {
+        margin-bottom: 10px;
+    }
+    .category_btn {
+        margin-top: 15px
+    }
 </style>
 
