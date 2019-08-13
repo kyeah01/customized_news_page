@@ -213,6 +213,11 @@ export default {
 
                 })
         }
+    },
+    destroyed() {
+        if (this.$store.state.follow_openIdx != -1) {
+            this.$store.state.follow_openIdx = -1
+        }
     }
 }
 </script>
