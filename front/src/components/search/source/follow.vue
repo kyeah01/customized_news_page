@@ -17,20 +17,21 @@
                         <v-list class="followExpand" flat>
                             <v-list-tile v-for="item in items" :key="item" @click="create(item)" class="itemStyle">
                                 <v-list-tile-action>
-                                    <v-icon v-if="isFollowCategory(item)" color="#2bb24c">fas fa-rss</v-icon>
-                                    <v-icon v-else>fas fa-rss</v-icon>
+                                    <!-- <v-icon v-if="isFollowCategory(item)" color="#2bb24c">fas fa-rss</v-icon> -->
+                                    <!-- <v-icon v-else>fas fa-rss</v-icon> -->
+                                    <v-icon>fas fa-folder</v-icon>
                                 </v-list-tile-action>
 
                                 <v-list-tile-content>
                                     <v-list-tile-title>{{item}}</v-list-tile-title>
                                 </v-list-tile-content>
 
-                                <v-list-tile-action v-if="isFollowCategory(item)">
-                                    <v-icon @click.stop="unfollow()">
-                                        fas fa-trash-alt
+                                <!-- <v-list-tile-action v-if="isFollowCategory(item)"> -->
+                                    <!-- <v-icon @click.stop="unfollow()"> -->
+                                        <!-- fas fa-trash-alt -->
                                         <!-- <v-icon color="red lighten-1">info</v-icon> -->
-                                    </v-icon>
-                                </v-list-tile-action>
+                                    <!-- </v-icon> -->
+                                <!-- </v-list-tile-action> -->
                             </v-list-tile>
 
                             <v-divider />
@@ -41,7 +42,7 @@
                         </v-list>
                     </div>
 
-                    <div v-else>
+                    <div v-else class="addFeedBox">
                         <span class="title font-weight-bold.font-italic">Feed Name</span>
                         <input v-model="newFeed" class="autocomplete-input" placeholder="New Topic Name" autofocus>
                         <v-btn @click="create(newFeed)" class="success">Create</v-btn>
@@ -268,5 +269,13 @@ export default {
 .itemStyle {
     /* padding: 8px; */
     /* height: 40px; */
+}
+
+.addFeedBox {
+    padding: 16px;
+}
+
+.addFeedBox > span {
+    font-size: 14px !important;
 }
 </style>

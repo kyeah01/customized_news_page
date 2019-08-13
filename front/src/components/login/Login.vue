@@ -41,24 +41,29 @@
                                             hint="input your email address" 
                                             v-model="email"
                                             color="green"
+                                            @keyup.enter="SignUp"
                                            ></v-text-field>
                                 <v-text-field :append-icon="pwShow ? 'visibility' : 'visibility_off'" 
-                                            :rules="[rules.same, rules.min]" 
+                                            :rules="[rules.required, rules.same, rules.min]" 
                                             :type="pwShow ? 'text' : 'password'" 
                                             name="input-10-2" 
                                             label="Password" 
-                                            hint="At least 8 characters" 
+                                            hint="At least 6 characters" 
                                             v-model="password"
                                             color="green"
-                                            @click:append="pwShow = !pwShow"></v-text-field>
-                                <v-text-field :append-icon="pwShow ? 'visibility' : 'visibility_off'" 
-                                            :rules="[rules.min, rules.same]" 
+                                            @click:append="pwShow = !pwShow"
+                                            @keyup.enter="SignUp"
+                                            ></v-text-field>
+                                <!-- <v-text-field :append-icon="pwShow ? 'visibility' : 'visibility_off'" 
+                                            :rules="[rules.required, rules.min, rules.same]" 
                                             :type="pwShow ? 'text' : 'password'" 
                                             name="input-10-2" 
                                             label="Repeat Password" 
                                             color="green"
                                             v-model="repeatPassword"
-                                            @click:append="pwShow = !pwShow"></v-text-field>
+                                            @click:append="pwShow = !pwShow"
+                                            @keyup.enter="SignUp"
+                                            ></v-text-field> -->
                             </v-card-text>
 
                             <v-card-actions>
