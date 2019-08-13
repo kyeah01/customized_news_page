@@ -14,7 +14,7 @@
                 <v-card v-show="expand" class="scroll">
                     <div v-if="addopen===false">
                         <v-list class="followExpand" flat>
-                            <v-list-tile v-for="item in items" :key="item" @click="create(item)">
+                            <v-list-tile v-for="item in items" :key="item" @click="create(item)" class="itemStyle">
                                 <v-list-tile-action>
                                     <!-- <v-icon v-if="isFollowCategory(item)" color="#2bb24c">fas fa-rss</v-icon> -->
                                     <!-- <v-icon v-else>fas fa-rss</v-icon> -->
@@ -72,6 +72,7 @@ export default {
 
         closeDrawer: false,
     }),
+
     methods: {
         unfollow(){
             delete this.$store.state.userKeyword[this.keyword];
@@ -98,6 +99,8 @@ export default {
             this.items = this.$store.state.userCategorys
             
             this.expand = !this.expand
+
+            eventBus.$emit('closeByFollow', this.closeDrawer)
         },
         addFeed: function () {
             this.addopen = true
