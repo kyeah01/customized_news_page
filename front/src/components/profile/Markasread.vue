@@ -141,7 +141,7 @@ export default {
   },
   computed : {
     deleteKey(){
-      return this.markasreadArticles
+      return this.markasreadArticles.slice().reverse()
     }
   }
 
