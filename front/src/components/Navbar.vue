@@ -71,7 +71,8 @@
 
         <v-flex xs12>
             <v-layout justify-space-between>
-                <v-flex style="margin:10px 0px 12px 10px;">Category</v-flex>
+                <!-- <v-flex style="margin:10px 0px 12px 10px;">Category</v-flex> -->
+                <v-flex style="margin:10px 0px 12px 10px;">FEEDS</v-flex>
                 <v-icon @click="Category_move()" style="margin:10px 10px 12px 10px;">fas fa-cog</v-icon>
             </v-layout>
 
@@ -199,7 +200,7 @@ export default {
         },
         navbarSearchFocus() {
             this.isFocusOnNavSearch = true;
-            this.placeholder = 'Search in your feeds';
+            this.placeholder = 'Search in sources and keywords';
         },
         dread() {
             firebase.auth().onAuthStateChanged((user) => {

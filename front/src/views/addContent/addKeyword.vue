@@ -104,6 +104,7 @@ export default {
         }
     },
     created() {
+        this.init()
         this.sDate = timeCheck()
         window.onload = function () {
             var input = document.getElementById("autocomplete").focus();
@@ -146,6 +147,26 @@ export default {
         userLog(user, this.path, this.sDate, this.eDate)
     },
     methods: {
+        init: async function() {
+            firebase.auth().onAuthStateChanged((user) => {
+                firebase.firestore().collection("Userinfo").doc(user.uid).get()
+                .then(r => {
+                    const tmp = r.data()
+
+                    this.$store.commit('loadUserinfoData', tmp)
+                    this.$store.commit('loadRes')
+
+                    let newsId = this.news.id;
+                    let followSource = this.$store.state.followSource;
+
+                    if(followSource[newsId] != null ) {
+                        this.isFollowing = true;
+                    }
+                    else this.isFollowing = false;
+
+                })
+            })
+        },
         getKeywords() {
             firebase.firestore().collection('Keyword').get()
                 .then(snapshot => {
