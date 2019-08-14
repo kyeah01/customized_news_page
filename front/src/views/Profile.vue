@@ -58,7 +58,7 @@ import ProfileCard from '@/components/profile/ProfileCard'
           },
           pCards :[
             // { title : 'General' , icon : 'close', event : 1},
-            { title : 'Mark as read' , icon : 'fas fa-check', event : 1},
+            { title : 'Recently read' , icon : 'fas fa-check', event : 1},
             { title : 'Read later' , icon : 'far fa-bookmark', event : 2},
             { title : 'Your profile' , icon : 'fas fa-user', event : 3},
             { title : 'Coming soon' , icon : 'fas fa-question', event : 4},
