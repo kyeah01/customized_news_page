@@ -90,7 +90,7 @@ export default {
           img:'https://user-images.githubusercontent.com/45934061/62918418-81389500-bdda-11e9-8689-4259ba433019.PNG',
           },
         {
-          img:'',
+          img:'https://user-images.githubusercontent.com/45934061/62986291-cfe73d00-be75-11e9-9d1e-f4bced14a91c.PNG',
           },
       ]
     }
