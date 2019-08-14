@@ -112,6 +112,7 @@ export default {
     }
   },
   created (){
+    this.init()
     this.sDate = timeCheck()
     window.onload = function() {
         var input = document.getElementById("autocomplete").focus();
@@ -139,6 +140,26 @@ export default {
   // const newsapi = new NewsAPI('8b64e14d415f40f2a7d2969321afc5f9'); // 07/13 16:00
 // const newsapi = new NewsAPI('2dc4b8b9d26f4a6b97e21a1f282bac9d'); //hojin : 07/31 23:00
   methods: {
+    init: async function() {
+        firebase.auth().onAuthStateChanged((user) => {
+            firebase.firestore().collection("Userinfo").doc(user.uid).get()
+            .then(r => {
+                const tmp = r.data()
+
+                this.$store.commit('loadUserinfoData', tmp)
+                this.$store.commit('loadRes')
+
+                let newsId = this.news.id;
+                let followSource = this.$store.state.followSource;
+
+                if(followSource[newsId] != null ) {
+                    this.isFollowing = true;
+                }
+                else this.isFollowing = false;
+
+            })
+        })
+    },
     async getSources(){
     await this.$axios.get('https://newsapi.org/v2/sources?apiKey='+env.data().api)
       .then( r=> {
