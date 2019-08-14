@@ -104,7 +104,6 @@
                     </v-icon>
                 </template>
             </v-treeview>
-            {{selectedItems}}
         </v-template>
 
         <v-template v-else>
