@@ -186,8 +186,6 @@ export default {
       } else if (this.input.length == 1) {
         // 너무 짧은 경우
         this.resultSearch = this.noFeeds
-      } else if (!(this.input in this.sources)) {
-        this.resultSearch = this.noFeeds
       } else {
         this.resultSearch = []
         this.sources.forEach(element =>{
