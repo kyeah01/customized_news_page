@@ -17,7 +17,8 @@
           </blockquote>
         </v-layout>
         <v-layout justify-center>
-          <v-btn large dark color="success">GET STARTED FOR FREE</v-btn>
+          <!-- <v-btn large dark color="success">GET STARTED FOR FREE</v-btn> -->
+          <signUp></signUp>
         </v-layout>
         <br>
         <br>
@@ -67,6 +68,7 @@ import FirebaseService from '@/services/FirebaseService'
 import 'firebase/firestore'
 import GitGraph from '../components/GitGraph'
 import Footer from '../components/Footer'
+import signUp from '../components/signUp'
 import { Carousel3d, Slide } from 'vue-carousel-3d';
 
 
@@ -96,6 +98,7 @@ export default {
   components: {
     Carousel3d,
     Slide,
+    signUp
   },
   created (){
     this.sDate = timeCheck()
