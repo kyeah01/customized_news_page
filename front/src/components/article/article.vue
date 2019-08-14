@@ -140,8 +140,8 @@ export default {
             reqNone: false,
             follower: 'XX',
             defaultImage: 'https://via.placeholder.com/300x300/FFFFFF/000000?text=',
-            markAsRead : [],
-            readlater : [],
+            // markAsRead : [],
+            // readlater : [],
         }
     },
     methods: {
@@ -223,22 +223,22 @@ export default {
         async isMarkAsRead(post) {
             // console.log('isMarkAsRead start');
 
-            // var userUid = JSON.parse(sessionStorage.getItem('userInfo')).user.uid
-            // var db = firebase.firestore();
+            var userUid = JSON.parse(sessionStorage.getItem('userInfo')).user.uid
+            var db = firebase.firestore();
             var isMask = false;
-            // var markAsRead = null;
-            // await db.collection("Userinfo").doc(userUid).get().then(function (doc) {
-            //     if (doc.exists) {
-            //         this.markAsRead = doc.data().markasread;
-            //     } else {
-            //         // doc.data() will be undefined in this case
-            //         console.log("No such document!");
-            //     }
-            // }).catch(function (error) {
-            //     console.error("Error getting document:", error);
-            // });
-
-            isMask = this.markAsRead.some(function (element) {
+            var markAsRead = null;
+            await db.collection("Userinfo").doc(userUid).get().then(function (doc) {
+                if (doc.exists) {
+                    markAsRead = doc.data().markasread;
+                } else {
+                    // doc.data() will be undefined in this case
+                    console.log("No such document!");
+                }
+            }).catch(function (error) {
+                console.error("Error getting document:", error);
+            });
+            
+            isMask = markAsRead.some(function (element) {
                 let markAsReadUrl = element.url;
                 // 데이터베이스 안에서 markasread 된 article인지 url로 비교.
                 // 일치하는 값이 있으면 즉시 true return. 
@@ -252,21 +252,21 @@ export default {
 
         },
         async isReadLater(post) {
-            // var userUid = JSON.parse(sessionStorage.getItem('userInfo')).user.uid
+            var userUid = JSON.parse(sessionStorage.getItem('userInfo')).user.uid
             var isMask = false;
-            // var readlater = null;
-            // await firebase.firestore().collection("Userinfo").doc(userUid).get().then(function (doc) {
-            //     if (doc.exists) {
-            //         readlater = doc.data().readlater;
-            //     } else {
-            //         // doc.data() will be undefined in this case
-            //         console.log("No such document!");
-            //     }
-            // }).catch(function (error) {
-            //     console.error("Error getting document:", error);
-            // });
-
-            isMask = this.readlater.some(function (element) {
+            var readlater = null;
+            await firebase.firestore().collection("Userinfo").doc(userUid).get().then(function (doc) {
+                if (doc.exists) {
+                    readlater = doc.data().readlater;
+                } else {
+                    // doc.data() will be undefined in this case
+                    console.log("No such document!");
+                }
+            }).catch(function (error) {
+                console.error("Error getting document:", error);
+            });
+            // console.log('hi', this.markAsRead);
+            isMask = readlater.some(function (element) {
                 // 데이터베이스 안에서 markasread 된 article인지 url로 비교.
                 // 일치하는 값이 있으면 즉시 true return. 
                 // javascript break키워드가 없어서 some method 사용.
@@ -390,8 +390,41 @@ export default {
             }
         }
     },
+    // async beforeCreate(){
+    //     //user markAsRead 로드
+    //     var userUid = JSON.parse(sessionStorage.getItem('userInfo')).user.uid
+    //     var db = firebase.firestore();
+    //     let that = this;
+    //     await db.collection("Userinfo").doc(userUid).get().then(function (doc) {
+    //             if (doc.exists) {
+    //                 that.markAsRead = doc.data().markasread;
+    //             } else {
+    //                 // doc.data() will be undefined in this case
+    //                 console.log("No such document!");
+    //             }
+    //         }).catch(function (error) {
+    //             console.error("Error getting document:", error);
+    //         });
+
+    //     // user recently read
+    //     await db.collection("Userinfo").doc(userUid).get().then(function (doc) {
+    //             if (doc.exists) {
+    //                 that.readlater = doc.data().readlater;
+    //             } else {
+    //                 // doc.data() will be undefined in this case
+    //                 console.log("No such document!");
+    //             }
+    //         }).catch(function (error) {
+    //             console.error("Error getting document:", error);
+    //         });
+    //         console.log(userUid);
+            
+    //         console.log('markAsRead',this.markAsRead);
+    //         console.log('readlater',this.readlater);
+       
+    // },
     //navbar 클릭 X , 새로고침 시 url get,
-    async mounted() {
+     mounted() {
         if (Object.keys(this.$route.params).length === 0 && JSON.stringify(this.$route.params) === JSON.stringify({})) {
             this.reqNone = true
         } else {
@@ -406,37 +439,7 @@ export default {
             // this.type = this.$route.params.type
         }
 
-        //user markAsRead 로드
-        var userUid = JSON.parse(sessionStorage.getItem('userInfo')).user.uid
-        var db = firebase.firestore();
-        let that = this;
-        await db.collection("Userinfo").doc(userUid).get().then(function (doc) {
-                if (doc.exists) {
-                    that.markAsRead = doc.data().markasread;
-                } else {
-                    // doc.data() will be undefined in this case
-                    console.log("No such document!");
-                }
-            }).catch(function (error) {
-                console.error("Error getting document:", error);
-            });
-
-        // user recently read
-        await db.collection("Userinfo").doc(userUid).get().then(function (doc) {
-                if (doc.exists) {
-                    that.readlater = doc.data().readlater;
-                } else {
-                    // doc.data() will be undefined in this case
-                    console.log("No such document!");
-                }
-            }).catch(function (error) {
-                console.error("Error getting document:", error);
-            });
-            console.log(userUid);
-            
-            console.log(this.markAsRead);
-            console.log(this.readlater);
-            
+             
             
 
     },
