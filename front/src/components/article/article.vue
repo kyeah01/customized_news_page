@@ -155,7 +155,10 @@ export default {
                     this.search = "Main"
                     newsapi.v2.topHeadlines({
                         language: 'en',
-                        country: 'us'
+                        country: 'us',
+                        pageSize: this.pageSize,
+                        page: this.page,
+                        category : ['business', 'entertainment', 'health', 'science', 'sports', 'technology']
                     }).then(res => {
                         res.articles.forEach(post => {
                             // console.log('post foreach 시작');
@@ -387,6 +390,8 @@ export default {
             this.busy = false
             if (!this.reqNone) {
                 this.topheadlinesArticle()
+            }else{
+                this.page=1
             }
         }
     },

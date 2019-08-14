@@ -4,7 +4,7 @@
         <v-layout row wrap>
             <v-flex xs10 class="sourceTitle" style="height : 50px">
                 <p class="headline">{{source.name}}</p>
-                <a href="#newUrl" class="sourceUrl">{{source.url}}</a>
+                <a v-bind:href="source.url" target="_blank">{{source.url}}</a>
             </v-flex>
             <v-flex xs2>
                 <follow class="follow" 
